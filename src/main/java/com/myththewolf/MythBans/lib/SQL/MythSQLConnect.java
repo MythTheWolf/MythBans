@@ -60,11 +60,14 @@ public class MythSQLConnect {
 			ps.executeUpdate();
 			//Player Caches
 			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_NameCache` ( `ID` INT NOT NULL , `UUID` VARCHAR(255) NOT NULL , `Name` VARCHAR(255) NOT NULL ) ENGINE = InnoDB;");
+			ps.executeUpdate();
 			//Cron jobs
 			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_CronJobs` ( `ID` INT NOT NULL , `action` VARCHAR(255) NOT NULL , `UUID` VARCHAR(255) NOT NULL , `value1` VARCHAR(255) NULL DEFAULT NULL , `value2` VARCHAR(255) NULL DEFAULT NULL , `value3` VARCHAR(255) NULL DEFAULT NULL , `value4` VARCHAR(255) NULL DEFAULT NULL ) ENGINE = InnoDB;");
+			ps.executeUpdate();
 			//TODO: Make groups table
 			//Site Users
 			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_SiteUsers` ( `ID` INT NOT NULL , `UUID` VARCHAR(255) NOT NULL , `password` VARCHAR(255) NOT NULL , `Last_IP` VARCHAR(255) NOT NULL ) ENGINE = InnoDB;");
+			ps.executeUpdate();
 			}catch(SQLException e){
 				Bukkit.getConsoleSender().sendMessage("SERVERE: Fatal MySQL Error!");
 				e.printStackTrace();
