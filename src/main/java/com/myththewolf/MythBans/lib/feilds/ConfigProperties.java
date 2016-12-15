@@ -11,7 +11,14 @@ public class ConfigProperties {
 	public static int CRON_INTERVAL;
 	public static String PREFIX;
 	public static String VIEWMSG_PERM;
-	public static String DEFAULT_BAN_MSG;
+	public static String USER_BAN_FORMAT;
+	public static String USER_KICK_FORMAT;
+	public static String USER_TEMPBAN_FORMAT;
+	public static String USER_MUTE_FORMAT;
+	public static String SERVER_BAN_FORMAT;
+	public static String SERVER_KICK_FORMAT;
+	public static String SERVER_TEMPBAN_FORMAT;
+	public static String SERVER_MUTE_FORMAT;
 	public static Boolean DEBUG;
 	public static String API_URL;
 	public static String API_KEY;
@@ -25,15 +32,25 @@ public class ConfigProperties {
 		SQL_HOST = cfg.getString("SQL-HOST");
 		SQL_PORT = cfg.getString("SQL-PORT");
 		SQL_DATABASE = cfg.getString("SQL-DATABASE");
-		SQL_USERNAME = cfg.getString("SQL-USER:");
+		SQL_USERNAME = cfg.getString("SQL-USER");
 		SQL_PASSWORD = cfg.getString("SQL-PASSWORD");
-		CRON_INTERVAL = cfg.getInt("CRON-UDPATE-TIMEL");
+		CRON_INTERVAL = cfg.getInt("CRON-UDPATE-TIME");
 		PREFIX = cfg.getString("PREFIX");
 		VIEWMSG_PERM = cfg.getString("BANMESSAGE-PERMISSION");
-		DEFAULT_BAN_MSG = cfg.getString("DEFAULT-BAN");
 		DEBUG = cfg.getBoolean("DEBUG-MODE");
 		API_URL = cfg.getString("API-STARTPOINT");
-		API_KEY = cfg.getString("API_KEY");
+		API_KEY = cfg.getString("API-KEY");
+		USER_BAN_FORMAT = cfg.getString("USER-BAN-FORMAT");
+		USER_KICK_FORMAT = cfg.getString("USER-KICK-FORMAT");
+		USER_TEMPBAN_FORMAT = cfg.getString("USER-TEMPBAN-FORMAT");
+		USER_MUTE_FORMAT = cfg.getString("USER-MUTE-FORMAT");
+		SERVER_BAN_FORMAT = cfg.getString("SERVER-BAN-FORMAT");
+		SERVER_KICK_FORMAT = cfg.getString("SERVER-KICK-FORMAT");
+		SERVER_TEMPBAN_FORMAT = cfg.getString("SERVER-TEMPBAN-FORMAT");
+		SERVER_MUTE_FORMAT = cfg.getString("SERVER-MUTE-FORMAT");
+		
+		
+		
 		}catch(Exception e){
 			MythLog.severe("Could not load MythBans... Malformed Config!");
 			MythLog.severe(e.getStackTrace().toString());

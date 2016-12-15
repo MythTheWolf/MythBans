@@ -1,1 +1,53 @@
-#THIS IS YOUR DEFAULT CONFIG!
+#   ************************************************************
+#   *  ___  ___        _    _      ______                      *
+#   *  |  \/  |       | |  | |     | ___ \                     *
+#   *  | .  . | _   _ | |_ | |__   | |_/ /  __ _  _ __   ___   *
+#   *  | |\/| || | | || __|| '_ \  | ___ \ / _` || '_ \ / __|  *
+#   *  | |  | || |_| || |_ | | | | | |_/ /| (_| || | | |\__ \  *
+#   *  \_|  |_/ \__, | \__||_| |_| \____/  \__,_||_| |_||___/  *
+#   *            __/ |                                         *
+#   *           |___/                                          *
+#   ************************************************************
+#                 Written By MythTheWolf
+#                 http://www.github.com/MythTheWolf
+#                 This is your configuration file!
+#                 If you have any questions, visit the github page.
+#
+#
+#                 *********SQL INFO*********
+#The Hostname/Server IP For your mySQL Database
+SQL-HOST: 'localhost'
+#The port number that the server runs on, default MySQL port is 3306
+SQL-PORT: '3306'
+#The name of the database to use, note that this Database must ALREADY be created.
+SQL-DATABASE: 'myDatabase'
+#Username to use to connect to the database
+SQL-USER: 'root'
+#Password for that user
+SQL-PASSWORD: ''
+#                 *********System config*********
+#How often (in server ticks) should the plugin read and execute CronJobs from the Web UI?
+CRON-UPDATE-TIME: '40'
+#xenAPI Domain Endpoint To use for xenForo E.G http://mydomain.org/forum/API.php
+API-STARTPOINT: 'localhost/API.php'
+#xenAPI Secret key to use
+API-KEY: 'somesecretcode'
+#Should the console spit out a lot of information?
+DEBUG-MODE: false
+#              **********Messages Config********
+#Permission user must have in order to see In-Game messages
+BANMESSAGE-PERMISSION: 'mythbans.viewmessages'
+#Message to display on the user's screen when banned/tempbanned
+#You can use {staffMember},{culprit},{reason},{expire}, as keywords. 
+#Refer to the GitHub Wiki if you are still confused
+USER-BAN-FORMAT: 'You have been banned for {reason} by {staffMember}'
+USER-TEMPBAN-FORMAT: 'You have been banned until {expire} by {staffMember} for {reason}'
+USER-KICK-FORMAT: 'You have been kicked by {staffMember} for {reason}'
+USER-MUTE-FORMAT: '{staffMember} has muted you for {reason}'
+SERVER-KICK-FORMAT: '{staffMember} kicked {culprit} for {reason}'
+SERVER-BAN-FORMAT: '{staffMember} banned {culprit} for {reason}'
+SERVER-TEMPBAN-FORMAT: '{staffMember} banned {culprit} until {expire} for {reason}'
+SERVER-MUTE-FORMAT: '{staffMember} muted {culprit} for {reason}'
+#Chat Prefix to use for In game messages
+#You can leave it to it's default if you want to support me :-)
+PREFIX: '&8[&aMythBans&8]&6'
