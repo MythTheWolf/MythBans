@@ -29,7 +29,7 @@ public class MythSQLConnect {
 			
 		}catch(SQLException e)
 		{
-			Bukkit.getConsoleSender().sendMessage("SERVERE: MySQL Connection FAILE!");
+			Bukkit.getConsoleSender().sendMessage("SERVERE: MySQL Connection FAILED!");
 			e.printStackTrace();
 			return null;
 		}
@@ -40,7 +40,7 @@ public class MythSQLConnect {
 	
 	
 		// isConnected
-		public static boolean isConnected()
+		public boolean isConnected()
 		{
 			return (con == null ? false : true);
 		}

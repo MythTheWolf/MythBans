@@ -21,7 +21,6 @@ public class ConfigProperties {
 	{
 		MythLog = i.getLogger();
 		try{
-		
 		cfg = i.getConfig();
 		SQL_HOST = cfg.getString("SQL-HOST");
 		SQL_PORT = cfg.getString("SQL-PORT");
