@@ -24,6 +24,7 @@ public class MythBans {
             if (!file.exists()) {
             	MythPlugin.getLogger().info("Config.yml not found, creating!");
             	MythPlugin.saveDefaultConfig();
+            	ConfigProperties.dumpProperties(MythPlugin);
             } else {
             	MythPlugin.getLogger().info("Config.yml found, loading!");
             	ConfigProperties.dumpProperties(MythPlugin);
