@@ -17,6 +17,7 @@ public class Startup extends JavaPlugin {
 		MythBans mb = new MythBans(this);
 		mb.loadConfig();
 		mb.loadMySQL();
+		mb.loadEvents();
 		MythLogger.info("Loaded 6 tables.");
 	}
 

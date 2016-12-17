@@ -22,6 +22,8 @@ public class ConfigProperties {
 	public static Boolean DEBUG;
 	public static String API_URL;
 	public static String API_KEY;
+	public static String DEFAULT_BAN_REASON;
+	public static String CONSOLE_UUID;
 	private static FileConfiguration cfg;
 	private static Logger MythLog;
 	public static void dumpProperties(JavaPlugin i)
@@ -48,8 +50,8 @@ public class ConfigProperties {
 		SERVER_KICK_FORMAT = cfg.getString("SERVER-KICK-FORMAT");
 		SERVER_TEMPBAN_FORMAT = cfg.getString("SERVER-TEMPBAN-FORMAT");
 		SERVER_MUTE_FORMAT = cfg.getString("SERVER-MUTE-FORMAT");
-		
-		
+		DEFAULT_BAN_REASON = cfg.getString("DEFAULT-BAN-REASON");
+		CONSOLE_UUID = cfg.getString("CONSOLE-UUID");
 		
 		}catch(Exception e){
 			MythLog.severe("Could not load MythBans... Malformed Config!");

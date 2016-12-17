@@ -50,4 +50,26 @@ public class PlayerCache {
 		ps.setString(2, UUID);
 		ps.executeUpdate();
 	}
+	public void insertPlayer(String UUID, String name) throws SQLException
+	{
+		ps = (PreparedStatement) con.prepareStatement("INSERT INTO MythBANS_NameCache (`UUID`,`name`) VALUES (?,?);");
+		ps.setString(1, UUID);
+		ps.setString(2, name);
+		ps.executeUpdate();
+		
+	}
+	
+	public String getName(String UUID) throws SQLException
+	{
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_NameCache WHERE `UUID` = ?");
+		ps.setString(1, UUID);
+		rs = ps.executeQuery();
+		if(!rs.next())
+		{
+			return null;
+		}else{
+			rs.getString("Name");
+		}
+		return null;
+	}
 }

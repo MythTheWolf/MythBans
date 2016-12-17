@@ -5,6 +5,7 @@ import java.io.File;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
+import com.myththewolf.MythBans.lib.events.player.PlayerJoin;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 
 public class MythBans {
@@ -37,11 +38,14 @@ public class MythBans {
     }
 	
 	
-	
+	public void loadEvents()
+	{
+		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(),MythPlugin);
+	}
 	public void loadMySQL()
 	{
 		MythSQLConnect msc = new MythSQLConnect();
-		msc.getConnection();
+		MythSQLConnect.getConnection();
 		msc.makeTables();
 	}
 }

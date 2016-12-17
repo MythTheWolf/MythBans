@@ -48,6 +48,8 @@ SERVER-KICK-FORMAT: '{staffMember} kicked {culprit} for {reason}'
 SERVER-BAN-FORMAT: '{staffMember} banned {culprit} for {reason}'
 SERVER-TEMPBAN-FORMAT: '{staffMember} banned {culprit} until {expire} for {reason}'
 SERVER-MUTE-FORMAT: '{staffMember} muted {culprit} for {reason}'
+DEFAULT-BAN-REASON: 'The ban hammer has spoken!'
+CONSOLE-UUID: '291b13ae-f276-4bec-a3f0-03cceea206cf'
 #Chat Prefix to use for In game messages
 #You can leave it to it's default if you want to support me :-)
 PREFIX: '&8[&aMythBans&8]&6'
