@@ -20,6 +20,7 @@ public class Player {
 		ps = (PreparedStatement) MythSQLConnect.getConnection()
 				.prepareStatement("SELECT * FROM MythBans_PlayerStats WHERE UUID = ?");
 		ps.setString(1, UUID);
+		rs = ps.executeQuery();
 		while (rs.next())
 		{
 			return rs.getString("status");
@@ -32,6 +33,7 @@ public class Player {
 		ps = (PreparedStatement) MythSQLConnect.getConnection()
 				.prepareStatement("SELECT * FROM MythBans_PlayerStats WHERE UUID = ?");
 		ps.setString(1, UUID);
+		rs = ps.executeQuery();
 		while (rs.next())
 		{
 			return rs.getString("reason");
@@ -44,10 +46,10 @@ public class Player {
 		ps = (PreparedStatement) MythSQLConnect.getConnection()
 				.prepareStatement("SELECT * FROM MythBans_PlayerStats WHERE UUID = ?");
 		ps.setString(1, UUID);
+		rs = ps.executeQuery();
 		while (rs.next())
 		{
-			String BY = rs.getString("byUUID");
-			return pc.getName(BY);
+			return rs.getString("byUUID");
 		}
 		return ConfigProperties.CONSOLE_UUID;
 	}
@@ -68,6 +70,7 @@ public class Player {
 		ps = (PreparedStatement) MythSQLConnect.getConnection()
 				.prepareStatement("SELECT * FROM MythBans_PlayerStats WHERE UUID = ?");
 		ps.setString(1, UUID);
+		rs = ps.executeQuery();
 		while (rs.next())
 		{
 			return MythDate.parseDate(rs.getString("expire"));

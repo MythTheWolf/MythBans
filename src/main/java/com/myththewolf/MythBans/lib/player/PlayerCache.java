@@ -68,8 +68,7 @@ public class PlayerCache {
 		{
 			return null;
 		}else{
-			rs.getString("Name");
+			return rs.getString("Name");
 		}
-		return null;
 	}
 }

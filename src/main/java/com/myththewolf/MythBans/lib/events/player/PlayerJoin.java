@@ -1,7 +1,10 @@
 package com.myththewolf.MythBans.lib.events.player;
 
 import java.sql.SQLException;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -21,6 +24,7 @@ public class PlayerJoin implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException
 	{
 		String message;
+		name = e.getPlayer().getName();
 		if (pc.getPlayerExact(e.getPlayer().getName()) == null)
 		{
 			PlayerClass.processNewUser(e.getPlayer().getUniqueId().toString(), e.getPlayer().getName());
@@ -52,19 +56,20 @@ public class PlayerJoin implements Listener {
 	private String formatTempBan(String UUID) throws SQLException
 	{
 		String toFormat = ConfigProperties.USER_TEMPBAN_FORMAT;
-		toFormat.replaceAll("{staffMember}", PlayerClass.getWhoBanned(UUID));
-		toFormat.replaceAll("{culprit}", name);
-		toFormat.replaceAll("{reason}", PlayerClass.getReason(UUID));
-		toFormat.replaceAll("{expire}", PlayerClass.getExpireDate(UUID).toString());
+		toFormat.replaceAll("\\{staffMember\\}", PlayerClass.getWhoBanned(UUID));
+		toFormat.replaceAll("\\{culprit\\}", name);
+		toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID));
+		toFormat.replaceAll("\\{expire\\}", PlayerClass.getExpireDate(UUID).toString());
 		return toFormat;
 	}
 
-	private String formatBan(String UUID) throws SQLException
+	private String formatBan(String UUID2) throws SQLException
 	{
 		String toFormat = ConfigProperties.USER_BAN_FORMAT;
-		toFormat.replaceAll("{staffMember}", PlayerClass.getWhoBanned(UUID));
-		toFormat.replaceAll("{culprit}", name);
-		toFormat.replaceAll("{reason}", PlayerClass.getReason(UUID));
+		OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2)));
+		toFormat = toFormat.replace("%staffMember%", p.getName());
+		toFormat = toFormat.replace("%culprit%", name);
+		toFormat = toFormat.replace("%reason%", PlayerClass.getReason(UUID2));
 		return toFormat;
 	}
 }
