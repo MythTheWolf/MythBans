@@ -48,6 +48,8 @@ public class PlayerJoin implements Listener {
 					PlayerClass.clearExpire(e.getPlayer().getUniqueId().toString());
 				}
 				break;
+			default:
+				break;
 			}
 
 		}
