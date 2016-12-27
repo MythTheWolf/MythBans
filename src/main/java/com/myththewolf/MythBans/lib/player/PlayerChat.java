@@ -4,11 +4,12 @@ import java.sql.SQLException;
 
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 
-public class PlayerChat {
+public class PlayerChat implements Listener {
 	@EventHandler
 	public void onPlayerChatEvent(AsyncPlayerChatEvent e) throws SQLException
 	{
