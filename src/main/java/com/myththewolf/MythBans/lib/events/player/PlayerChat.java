@@ -1,4 +1,4 @@
-package com.myththewolf.MythBans.lib.player;
+package com.myththewolf.MythBans.lib.events.player;
 
 import java.sql.SQLException;
 
@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.player.Player;
 
 public class PlayerChat implements Listener {
 	@EventHandler

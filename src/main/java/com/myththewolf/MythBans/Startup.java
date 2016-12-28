@@ -18,6 +18,7 @@ public class Startup extends JavaPlugin {
 		mb.loadConfig();
 		mb.loadMySQL();
 		mb.loadEvents();
+		mb.loadCommands();
 		MythLogger.info("Loaded 6 tables.");
 	}
 

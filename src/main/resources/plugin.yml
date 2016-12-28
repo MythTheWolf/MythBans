@@ -2,6 +2,6 @@ name: MythBans
 version: 1.0
 main: com.myththewolf.MythBans.Startup
 commands:
- emotes:
+ mute:
      description: test
      aliases: [emotions]

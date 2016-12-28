@@ -2,12 +2,14 @@ package com.myththewolf.MythBans.lib;
 
 import java.io.File;
 
+
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.myththewolf.MythBans.commands.Mute;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
+import com.myththewolf.MythBans.lib.events.player.PlayerChat;
 import com.myththewolf.MythBans.lib.events.player.PlayerJoin;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.player.PlayerChat;
 
 public class MythBans {
 	private JavaPlugin MythPlugin;
@@ -49,5 +51,9 @@ public class MythBans {
 		MythSQLConnect msc = new MythSQLConnect();
 		MythSQLConnect.getConnection();
 		msc.makeTables();
+	}
+	public void loadCommands()
+	{
+		MythPlugin.getCommand("mute").setExecutor(new Mute());
 	}
 }
