@@ -2,6 +2,8 @@ package com.myththewolf.MythBans.lib.feilds;
 import java.util.logging.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import net.md_5.bungee.api.ChatColor;
 public class ConfigProperties {
 	public static String SQL_HOST;
 	public static String SQL_PORT;
@@ -37,7 +39,7 @@ public class ConfigProperties {
 		SQL_USERNAME = cfg.getString("SQL-USER");
 		SQL_PASSWORD = cfg.getString("SQL-PASSWORD");
 		CRON_INTERVAL = cfg.getInt("CRON-UDPATE-TIME");
-		PREFIX = cfg.getString("PREFIX");
+		PREFIX = ChatColor.translateAlternateColorCodes('&', cfg.getString("PREFIX"));
 		VIEWMSG_PERM = cfg.getString("BANMESSAGE-PERMISSION");
 		DEBUG = cfg.getBoolean("DEBUG-MODE");
 		API_URL = cfg.getString("API-STARTPOINT");
