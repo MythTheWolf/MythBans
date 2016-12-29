@@ -23,7 +23,7 @@ public class Mute implements CommandExecutor {
 		{
 			if (pCache.getOfflinePlayerExact(args[0]) == null)
 			{
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + " player has not been on this server.");
+				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "player has not been on this server.");
 				return true;
 			} else
 			{
