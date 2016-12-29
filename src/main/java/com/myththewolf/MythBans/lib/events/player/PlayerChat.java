@@ -19,7 +19,7 @@ public class PlayerChat implements Listener {
 		Player playerClass = new Player();
 		if(playerClass.getStatus(UUID).equals("muted"))
 		{
-			p.sendMessage(ChatColor.translateAlternateColorCodes('&', ConfigProperties.PREFIX) + "your voice has been silenced!");
+			p.sendMessage(ChatColor.translateAlternateColorCodes('&', ConfigProperties.PREFIX) + "Your voice has been silenced!");
 			e.setCancelled(true);
 		}else{
 			return;

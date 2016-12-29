@@ -2,9 +2,9 @@ package com.myththewolf.MythBans.lib;
 
 import java.io.File;
 
-
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.myththewolf.MythBans.commands.Ban;
 import com.myththewolf.MythBans.commands.Mute;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.events.player.PlayerChat;
@@ -55,5 +55,6 @@ public class MythBans {
 	public void loadCommands()
 	{
 		MythPlugin.getCommand("mute").setExecutor(new Mute());
+		MythPlugin.getCommand("ban").setExecutor(new Ban());
 	}
 }

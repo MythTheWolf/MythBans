@@ -3,5 +3,8 @@ version: 1.0
 main: com.myththewolf.MythBans.Startup
 commands:
  mute:
-     description: test
-     aliases: [emotions]
+     description: Mutes a player from the sever
+     aliases: [silence]
+ ban:
+     description: Bans a player
+     aliases: [b]

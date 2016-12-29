@@ -23,4 +23,19 @@ public class DatabaseCommands {
 		ps.executeUpdate();
 		
 	}
+	public void banUser(String UUID,String byUUID, String reason) throws SQLException
+	{
+		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_PlayerStats SET status = ?, byUUID = ?, reason = ? WHERE UUID = ?");
+		ps.setString(1, "banned");
+		ps.setString(2, byUUID);
+		ps.setString(3, reason);
+		ps.setString(4, UUID);
+		ps.executeUpdate();
+		ps = (PreparedStatement) c.prepareStatement("INSERT INTO MythBans_History (`UUID`,`action`,`byUUID`,`reason`) VALUES (?,?,?,?)");
+		ps.setString(1, UUID);
+		ps.setString(2, "userBan");
+		ps.setString(3, byUUID);
+		ps.setString(4, reason);
+		ps.executeUpdate();
+	}
 }

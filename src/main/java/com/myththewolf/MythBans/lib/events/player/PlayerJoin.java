@@ -69,9 +69,9 @@ public class PlayerJoin implements Listener {
 	{
 		String toFormat = ConfigProperties.USER_BAN_FORMAT;
 		OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2)));
-		toFormat = toFormat.replace("%staffMember%", p.getName());
-		toFormat = toFormat.replace("%culprit%", name);
-		toFormat = toFormat.replace("%reason%", PlayerClass.getReason(UUID2));
+		toFormat = toFormat.replaceAll("\\{staffMember\\}", p.getName());
+		toFormat = toFormat.replaceAll("\\{culprit\\}", name);
+		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID2));
 		return toFormat;
 	}
 }
