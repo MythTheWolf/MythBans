@@ -28,4 +28,8 @@ public class Date {
 			return null;
 		}
 	}
+	public String formatDate(java.util.Date  in)
+	{
+		return f.format(in).toString();
+	}
 }

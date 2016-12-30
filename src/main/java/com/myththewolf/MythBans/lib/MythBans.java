@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.commands.Ban;
 import com.myththewolf.MythBans.commands.Mute;
+import com.myththewolf.MythBans.commands.TempBan;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.events.player.PlayerChat;
 import com.myththewolf.MythBans.lib.events.player.PlayerJoin;
@@ -56,5 +57,6 @@ public class MythBans {
 	{
 		MythPlugin.getCommand("mute").setExecutor(new Mute());
 		MythPlugin.getCommand("ban").setExecutor(new Ban());
+		MythPlugin.getCommand("tempban").setExecutor(new TempBan());
 	}
 }

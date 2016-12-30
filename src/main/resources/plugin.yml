@@ -8,3 +8,6 @@ commands:
  ban:
      description: Bans a player
      aliases: [b]
+ tempban:
+     description: Temporarily Bans a Player
+     aliases: [tb,tmpban]

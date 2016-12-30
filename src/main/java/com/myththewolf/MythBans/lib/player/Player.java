@@ -36,6 +36,10 @@ public class Player {
 		rs = ps.executeQuery();
 		while (rs.next())
 		{
+			if(rs.getString("reason").equals("") || rs.getString("reason").equals(" ") || rs.getString("reason") == null)
+			{
+				return ConfigProperties.DEFAULT_BAN_REASON;
+			}
 			return rs.getString("reason");
 		}
 		return ConfigProperties.DEFAULT_BAN_REASON;
