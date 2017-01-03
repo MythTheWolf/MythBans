@@ -1,12 +1,12 @@
 package com.myththewolf.MythBans.lib.SQL;
 
 import java.sql.DriverManager;
-
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
 
-import com.mysql.jdbc.PreparedStatement;
+
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 
 import java.sql.Connection;

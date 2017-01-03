@@ -1,11 +1,13 @@
 package com.myththewolf.MythBans.lib.player;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 
 import java.sql.SQLException;
 import java.util.Date;
 
-import com.mysql.jdbc.PreparedStatement;
+
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 

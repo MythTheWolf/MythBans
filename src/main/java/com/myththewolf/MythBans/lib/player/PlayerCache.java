@@ -1,6 +1,7 @@
 package com.myththewolf.MythBans.lib.player;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -9,7 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.mysql.jdbc.PreparedStatement;
+
 
 public class PlayerCache {
 	private ResultSet rs;
