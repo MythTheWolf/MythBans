@@ -11,3 +11,6 @@ commands:
  tempban:
      description: Temporarily Bans a Player
      aliases: [tb,tmpban]
+ kick:
+     description: Kick a user from the server
+     aliases: [k,throw]

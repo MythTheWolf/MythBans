@@ -25,7 +25,12 @@ public class ConfigProperties {
 	public static String API_URL;
 	public static String API_KEY;
 	public static String DEFAULT_BAN_REASON;
-	public static String CONSOLE_UUID;
+	public static String BAN_PERMISSION;
+	public static String TEMPBAN_PERMISSION;
+	public static String KICK_PERMISSION;
+	public static String MUTE_PERMISSION;
+	public static String BANIP_PERMISSION;
+	public static String TEMPBANIP_PERMISSION;
 	private static FileConfiguration cfg;
 	private static Logger MythLog;
 	public static void dumpProperties(JavaPlugin i)
@@ -53,8 +58,12 @@ public class ConfigProperties {
 		SERVER_TEMPBAN_FORMAT = cfg.getString("SERVER-TEMPBAN-FORMAT");
 		SERVER_MUTE_FORMAT = cfg.getString("SERVER-MUTE-FORMAT");
 		DEFAULT_BAN_REASON = cfg.getString("DEFAULT-BAN-REASON");
-		CONSOLE_UUID = cfg.getString("CONSOLE-UUID");
-		
+		BAN_PERMISSION = cfg.getString("BAN-PERMISSION");
+		TEMPBAN_PERMISSION = cfg.getString("TEMPBAN-PERMISSION");
+		KICK_PERMISSION = cfg.getString("KICK-PERMISSION");
+		MUTE_PERMISSION = cfg.getString("MUTE-PERMISSION");
+		BANIP_PERMISSION = cfg.getString("BANIP-PERMISSION");
+		TEMPBANIP_PERMISSION = cfg.getString("TEMPBANIP-PERMISSION");
 		}catch(Exception e){
 			MythLog.severe("Could not load MythBans... Malformed Config!");
 			MythLog.severe(e.getStackTrace().toString());

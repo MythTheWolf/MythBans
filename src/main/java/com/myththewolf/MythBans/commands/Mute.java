@@ -17,29 +17,27 @@ public class Mute implements CommandExecutor {
 	private DatabaseCommands dbc = new DatabaseCommands();
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args)
-	{
-		try
-		{
-			if (pCache.getOfflinePlayerExact(args[0]) == null)
-			{
+	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
+		try {
+			if (pCache.getOfflinePlayerExact(args[0]) == null) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "player has not been on this server.");
 				return true;
-			} else
-			{
-				if (sender instanceof ConsoleCommandSender)
-				{
-					dbc.muteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(),
-							"CONSOLE");
-				} else
-				{
+			} else {
+				if (sender instanceof ConsoleCommandSender) {
+					dbc.muteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(), "CONSOLE");
+				}else if(args.length < 1) {
+					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /mute <user>");
+					return true;
+				}else if(!sender.hasPermission(ConfigProperties.BAN_PERMISSION)){
+					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
+					return true;
+				}else{
 					org.bukkit.entity.Player p = (org.bukkit.entity.Player) sender;
 					dbc.muteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(),
 							p.getUniqueId().toString());
 				}
 			}
-		} catch (SQLException e)
-		{
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

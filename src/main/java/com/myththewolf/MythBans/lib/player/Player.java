@@ -57,7 +57,7 @@ public class Player {
 		{
 			return rs.getString("byUUID");
 		}
-		return ConfigProperties.CONSOLE_UUID;
+		return null;
 	}
 
 	public void processNewUser(String UUID, String name) throws SQLException
@@ -79,14 +79,14 @@ public class Player {
 		rs = ps.executeQuery();
 		while (rs.next())
 		{
-			return MythDate.parseDate(rs.getString("expire"));
+			return MythDate.parseDate(rs.getString("expires"));
 		}
 		return MythDate.parseDate(rs.getString("expire"));
 	}
 
 	public void clearExpire(String UUID) throws SQLException
 	{
-		ps = (PreparedStatement) MythSQLConnect.getConnection().prepareStatement("UPDATE MythBans_PlayerStats SET `staus` = ?, `expire` = ? WHERE `UUID` = ?");
+		ps = (PreparedStatement) MythSQLConnect.getConnection().prepareStatement("UPDATE MythBans_PlayerStats SET `status` = ?, `expires` = ? WHERE `UUID` = ?");
 		ps.setString(1, UUID);
 		ps.setString(2, "OK");
 		ps.setString(3, null);

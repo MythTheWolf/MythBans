@@ -1,10 +1,7 @@
 package com.myththewolf.MythBans.lib.events.player;
 
 import java.sql.SQLException;
-import java.util.UUID;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -19,7 +16,7 @@ public class PlayerJoin implements Listener {
 	private String name;
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
 	private final com.myththewolf.MythBans.lib.tool.Date d = new Date();
-
+	private String toFormat = "";
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException
 	{
@@ -33,12 +30,12 @@ public class PlayerJoin implements Listener {
 			switch (PlayerClass.getStatus(e.getPlayer().getUniqueId().toString()))
 			{
 			case "banned":
-				message = this.formatBan(e.getPlayer().getUniqueId().toString());
-				name = e.getPlayer().getName();
+				message = this.formatMessage(e.getPlayer().getUniqueId().toString(), "ban");
+			
 				e.getPlayer().kickPlayer(message);
 				break;
 			case "tempBanned":
-				message = this.formatTempBan(e.getPlayer().getUniqueId().toString());
+				message = this.formatMessage(e.getPlayer().getUniqueId().toString(), "tempBanned");
 				name = e.getPlayer().getName();
 				if (d.getNewDate().before(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString())))
 				{
@@ -55,23 +52,25 @@ public class PlayerJoin implements Listener {
 		}
 	}
 
-	private String formatTempBan(String UUID) throws SQLException
+	private String formatMessage(String UUID,String key) throws SQLException
 	{
-		String toFormat = ConfigProperties.USER_TEMPBAN_FORMAT;
-		toFormat.replaceAll("\\{staffMember\\}", PlayerClass.getWhoBanned(UUID));
-		toFormat.replaceAll("\\{culprit\\}", name);
-		toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID));
-		toFormat.replaceAll("\\{expire\\}", PlayerClass.getExpireDate(UUID).toString());
+		
+		switch(key)
+		{
+		case "ban":
+			toFormat = ConfigProperties.USER_BAN_FORMAT;
+			break;
+		case "tempBanned":
+			toFormat = ConfigProperties.USER_TEMPBAN_FORMAT;
+			toFormat = toFormat.replaceAll("\\{expire\\}", PlayerClass.getExpireDate(UUID).toString());
+			break;
+		default: break;
+		}
+		toFormat = toFormat.replaceAll("\\{staffMember\\}", PlayerClass.getWhoBanned(UUID));
+		toFormat = toFormat.replaceAll("\\{culprit\\}", name);
+		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID));
+		
 		return toFormat;
 	}
 
-	private String formatBan(String UUID2) throws SQLException
-	{
-		String toFormat = ConfigProperties.USER_BAN_FORMAT;
-		OfflinePlayer p = Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2)));
-		toFormat = toFormat.replaceAll("\\{staffMember\\}", p.getName());
-		toFormat = toFormat.replaceAll("\\{culprit\\}", name);
-		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID2));
-		return toFormat;
-	}
 }

@@ -21,12 +21,13 @@
     </repository>
 </repositories>
 <dependencies>
+<!-- JODA TIME -->
+<!-- https://mvnrepository.com/artifact/joda-time/joda-time -->
 <dependency>
-  <groupId>joda-time</groupId>
-  <artifactId>joda-time</artifactId>
-  <version>2.9.7</version>
+    <groupId>joda-time</groupId>
+    <artifactId>joda-time</artifactId>
+    <version>2.9.7</version>
 </dependency>
-    
     <!-- https://mvnrepository.com/artifact/org.json/json -->
 <dependency>
     <groupId>org.json</groupId>
@@ -90,7 +91,23 @@
                     <target>1.7</target>
                 </configuration>
             </plugin>
-        </plugins>
+           <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+      </plugin>
+    </plugins>
     </build>
  
 </project>

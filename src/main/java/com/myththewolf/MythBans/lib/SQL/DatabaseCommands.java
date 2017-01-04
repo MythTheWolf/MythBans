@@ -42,7 +42,7 @@ public class DatabaseCommands {
 	public void tmpBanUser(String UUID,String byUUID, String reason,String expireDate) throws SQLException
 	{
 		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_PlayerStats SET status = ?, byUUID = ?, reason = ?,expires = ? WHERE UUID = ?");
-		ps.setString(1, "banned");
+		ps.setString(1, "tempBanned");
 		ps.setString(2, byUUID);
 		ps.setString(3, reason);
 		ps.setString(4, expireDate);
@@ -64,6 +64,11 @@ public class DatabaseCommands {
 		ps.setString(2, "userKick");
 		ps.setString(3, byUUID);
 		ps.setString(4, reason);
+		ps.executeUpdate();
+		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_PlayerStats SET byUUID = ?,reason = ? WHERE UUID = ?");
+		ps.setString(1, byUUID);
+		ps.setString(2, reason);
+		ps.setString(3, UUID);
 		ps.executeUpdate();
 	}
 	

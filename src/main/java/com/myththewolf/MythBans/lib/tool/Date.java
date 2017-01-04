@@ -4,7 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class Date {
-	private SimpleDateFormat f =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+	private SimpleDateFormat f =  new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
 	public java.util.Date getNewDate()
 	{
 		try
