@@ -3,7 +3,10 @@ package com.myththewolf.MythBans.lib.SQL;
 import java.sql.Connection;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import org.bukkit.entity.Player;
 
 
 
@@ -73,4 +76,22 @@ public class DatabaseCommands {
 		ps.executeUpdate();
 	}
 	
+	public void setIP(Player p) throws SQLException
+	{
+		ps = (PreparedStatement) c.prepareStatement("SELECT * FROM MythBans_IPCache WHERE IP_ADDRESS = ?");
+		ps.setString(1, p.getAddress().getAddress().toString());
+		ResultSet rs = ps.executeQuery();
+		if(rs.next())
+		{
+			ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_IPCache SET IP_ADDRESS = ? WHERE Name = ?");
+			ps.setString(1, p.getAddress().getAddress().toString());
+			ps.setString(2, p.getName());
+		}else{
+			ps = (PreparedStatement) c.prepareStatement("INSERT INTO MythBans_IPCache (`IP_ADDRESS`,`Name`,`Status`) VALUES (?,?,?)");
+			ps.setString(1, p.getAddress().getAddress().toString());
+			ps.setString(2, p.getName());
+			ps.setString(3, "OK");
+			ps.executeUpdate();
+		}
+	}
 }

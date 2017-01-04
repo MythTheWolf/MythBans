@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
@@ -17,6 +18,7 @@ public class PlayerJoin implements Listener {
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
 	private final com.myththewolf.MythBans.lib.tool.Date d = new Date();
 	private String toFormat = "";
+	private DatabaseCommands dbc = new DatabaseCommands();
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException
 	{
@@ -48,7 +50,7 @@ public class PlayerJoin implements Listener {
 			default:
 				break;
 			}
-
+			dbc.setIP(e.getPlayer());
 		}
 	}
 

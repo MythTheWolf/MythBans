@@ -76,7 +76,14 @@ public class MythSQLConnect {
 			{
 				Bukkit.getLogger().info("Loading MySQL Table: NameCache");
 			}
-			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_NameCache` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `Name` VARCHAR(255) NOT NULL, `IP_ADDRESS` VARCHAR(255) NOT NULL, PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
+			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_NameCache` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `Name` VARCHAR(255) NOT NULL, PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
+			ps.executeUpdate();
+			//IP Table
+			if(ConfigProperties.DEBUG)
+			{
+				Bukkit.getLogger().info("Loading MySQL Table: IPCache");
+			}
+			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_IPCache` ( `ID` INT NOT NULL AUTO_INCREMENT, `IP_ADDRESS` VARCHAR(255) NOT NULL , `Name` VARCHAR(255) NOT NULL, `Status` VARCHAR(255) NULL DEFAULT NULL, PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
 			ps.executeUpdate();
 			//Cron jobs
 			if(ConfigProperties.DEBUG)
