@@ -1,6 +1,7 @@
 package com.myththewolf.MythBans.lib.SQL;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 

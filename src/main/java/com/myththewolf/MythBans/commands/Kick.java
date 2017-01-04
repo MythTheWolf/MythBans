@@ -24,6 +24,7 @@ public class Kick implements CommandExecutor {
 	private final DatabaseCommands dbc = new DatabaseCommands();
 	private final com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
 	private Player toKick;
+	private String toUUID;
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
@@ -35,7 +36,7 @@ public class Kick implements CommandExecutor {
 			}
 			if (sender instanceof ConsoleCommandSender) {
 				dbc.kickUser(toKick.getUniqueId().toString(), "CONSOLE", Utils.makeString(args, 1));
-				pc.getPlayerExact(args[0]).kickPlayer(this.formatMessage(toKick.getUniqueId().toString()));
+				pc.getPlayerExact(args[0]).kickPlayer(this.formatMessage(toKick.getUniqueId().toString(),ConfigProperties.USER_KICK_FORMAT));
 				return true;
 			}else if(args.length < 1) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /kick <user> [reason]");
@@ -44,11 +45,23 @@ public class Kick implements CommandExecutor {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
 			}else{
+				
+				if(sender instanceof ConsoleCommandSender){
+					dbc.kickUser(toKick.getUniqueId().toString(), "CONSOLE", Utils.makeString(args, 1));
+				}else{
 				Player p = (Player) sender;
 				dbc.kickUser(toKick.getUniqueId().toString(), p.getUniqueId().toString(), Utils.makeString(args, 1));
-				pc.getPlayerExact(args[0]).kickPlayer(this.formatMessage(toKick.getUniqueId().toString()));
-				return true;
+				
+				}
 			}
+			pc.getPlayerExact(args[0]).kickPlayer(this.formatMessage(toKick.getUniqueId().toString(),ConfigProperties.USER_KICK_FORMAT));
+			for(org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
+				if(player.hasPermission(ConfigProperties.VIEWMSG_PERM))
+				{
+					player.sendMessage(this.formatMessage(toUUID,ConfigProperties.SERVER_BAN_FORMAT));
+				}
+			}
+			return true;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -56,9 +69,9 @@ public class Kick implements CommandExecutor {
 		}
 		
 	}
-	private String formatMessage(String UUID2) throws SQLException
+	private String formatMessage(String UUID2,String format) throws SQLException
 	{
-		String toFormat = ConfigProperties.USER_KICK_FORMAT;
+		String toFormat = format;
 		if(PlayerClass.getWhoBanned(UUID2).equals("CONSOLE"))
 		{
 			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");

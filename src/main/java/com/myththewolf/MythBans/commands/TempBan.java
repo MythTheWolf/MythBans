@@ -5,8 +5,10 @@
 package com.myththewolf.MythBans.commands;
 
 import java.sql.SQLException;
+import java.util.UUID;
 
-
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -27,8 +29,8 @@ public class TempBan implements CommandExecutor {
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private com.myththewolf.MythBans.lib.tool.Date date = new Date();
-	private String toFormat = "";
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new Player();
+	private OfflinePlayer p;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
@@ -36,13 +38,14 @@ public class TempBan implements CommandExecutor {
 			if (pCache.getOfflinePlayerExact(args[0]) == null) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has never played on this server.");
 				return true;
-			} else if(args.length >= 2){
+			} else if (args.length >= 2) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /tempban <user> <time> [reason]");
 				return true;
-			}else if(!sender.hasPermission(ConfigProperties.TEMPBAN_PERMISSION)){
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
+			} else if (!sender.hasPermission(ConfigProperties.TEMPBAN_PERMISSION)) {
+				sender.sendMessage(
+						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
-			}else{
+			} else {
 				final PeriodFormatter format = new PeriodFormatterBuilder().appendDays().appendSuffix("d").appendWeeks()
 						.appendSuffix("w").appendMonths().appendSuffix("mon").appendYears().appendSuffix("y")
 						.appendMinutes().appendSuffix("m").appendSeconds().appendSuffix("s").appendHours()
@@ -56,15 +59,20 @@ public class TempBan implements CommandExecutor {
 					if (sender instanceof org.bukkit.entity.Player) {
 						String byUUID = ((org.bukkit.entity.Player) sender).getUniqueId().toString();
 						dbc.tmpBanUser(UUID, byUUID, reason, dateStr);
-						pCache.getOfflinePlayerExact(args[0]).getPlayer().kickPlayer(this.formatMessage(UUID,
-								"tempBanned", pCache.getOfflinePlayerExact(args[0]).getName()));
-						return true;
+						p = pCache.getOfflinePlayerExact(args[0]);
 					} else {
 						dbc.tmpBanUser(UUID, "CONSOLE", reason, dateStr);
-						pCache.getOfflinePlayerExact(args[0]).getPlayer().kickPlayer(this.formatMessage(UUID,
-								"tempBanned", pCache.getOfflinePlayerExact(args[0]).getName()));
-						return true;
+						p = pCache.getOfflinePlayerExact(args[0]);
 					}
+					for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
+						if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
+							player.sendMessage(this.formatMessage(p.getUniqueId().toString(), ConfigProperties.SERVER_TEMPBAN_FORMAT));
+						}
+					}
+					if (p.isOnline()) {
+						p.getPlayer().kickPlayer(this.formatMessage(p.getUniqueId().toString(), ConfigProperties.USER_TEMPBAN_FORMAT));
+					}
+					return true;
 				} catch (Exception e) {
 					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Invalid date string: " + args[1]);
 					e.printStackTrace();
@@ -79,23 +87,18 @@ public class TempBan implements CommandExecutor {
 		}
 	}
 
-	private String formatMessage(String UUID, String key, String name) throws SQLException {
-
-		switch (key) {
-		case "ban":
-			toFormat = ConfigProperties.USER_BAN_FORMAT;
-			break;
-		case "tempBanned":
-			toFormat = ConfigProperties.USER_TEMPBAN_FORMAT;
-			toFormat = toFormat.replaceAll("\\{expire\\}", PlayerClass.getExpireDate(UUID).toString());
-			break;
-		default:
-			break;
+	private String formatMessage(String UUID2, String format) throws SQLException {
+		String toFormat = format;
+		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
+			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
+		} else {
+			toFormat = toFormat.replaceAll("\\{staffMember\\}",
+					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
 		}
-		toFormat = toFormat.replaceAll("\\{staffMember\\}", PlayerClass.getWhoBanned(UUID));
-		toFormat = toFormat.replaceAll("\\{culprit\\}", name);
-		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID));
 
+		toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
+		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID2));
+		toFormat = toFormat.replaceAll("\\{expire\\}", PlayerClass.getExpireDate(UUID2).toString());
 		return toFormat;
 	}
 }
