@@ -32,7 +32,7 @@ public class Ban implements CommandExecutor{
 				{
 					String reason = Utils.makeString(args, 1);
 					dbc.banUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(),
-							ConfigProperties.CONSOLE_UUID,reason);
+							"CONSOLE",reason);
 				} else
 				{
 					String reason = Utils.makeString(args, 1);

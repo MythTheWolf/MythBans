@@ -30,7 +30,7 @@ public class Mute implements CommandExecutor {
 				if (sender instanceof ConsoleCommandSender)
 				{
 					dbc.muteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(),
-							ConfigProperties.CONSOLE_UUID);
+							"CONSOLE");
 				} else
 				{
 					org.bukkit.entity.Player p = (org.bukkit.entity.Player) sender;

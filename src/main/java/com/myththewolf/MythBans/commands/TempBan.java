@@ -53,7 +53,7 @@ public class TempBan implements CommandExecutor {
 						dbc.tmpBanUser(UUID, byUUID, reason, dateStr);
 						return true;
 					}else{
-						dbc.tmpBanUser(UUID, ConfigProperties.CONSOLE_UUID, reason, dateStr);
+						dbc.tmpBanUser(UUID, "CONSOLE", reason, dateStr);
 						return true;
 					}
 				} catch (Exception e)

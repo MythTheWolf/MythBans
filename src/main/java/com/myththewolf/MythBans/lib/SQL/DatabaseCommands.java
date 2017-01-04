@@ -56,4 +56,15 @@ public class DatabaseCommands {
 		ps.setString(5, expireDate);
 		ps.executeUpdate();
 	}
+	
+	public void kickUser(String UUID, String byUUID,String reason) throws SQLException
+	{
+		ps = (PreparedStatement) c.prepareStatement("INSERT INTO MythBans_History (`UUID`,`action`,`byUUID`,`reason`) VALUES (?,?,?,?)");
+		ps.setString(1, UUID);
+		ps.setString(2, "userKick");
+		ps.setString(3, byUUID);
+		ps.setString(4, reason);
+		ps.executeUpdate();
+	}
+	
 }
