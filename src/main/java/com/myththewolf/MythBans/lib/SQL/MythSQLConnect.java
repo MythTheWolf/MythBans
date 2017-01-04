@@ -76,7 +76,7 @@ public class MythSQLConnect {
 			{
 				Bukkit.getLogger().info("Loading MySQL Table: NameCache");
 			}
-			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_NameCache` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `Name` VARCHAR(255) NOT NULL , PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
+			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_NameCache` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `Name` VARCHAR(255) NOT NULL, `IP_ADDRESS` VARCHAR(255) NOT NULL, PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
 			ps.executeUpdate();
 			//Cron jobs
 			if(ConfigProperties.DEBUG)
@@ -85,7 +85,6 @@ public class MythSQLConnect {
 			}
 			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_CronJobs` ( `ID` INT NOT NULL AUTO_INCREMENT, `action` VARCHAR(255) NOT NULL , `UUID` VARCHAR(255) NOT NULL , `value1` VARCHAR(255) NULL DEFAULT NULL , `value2` VARCHAR(255) NULL DEFAULT NULL , `value3` VARCHAR(255) NULL DEFAULT NULL , `value4` VARCHAR(255) NULL DEFAULT NULL , PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
 			ps.executeUpdate();
-			//TODO: Make groups table
 			//Site Users
 			if(ConfigProperties.DEBUG)
 			{
@@ -93,6 +92,8 @@ public class MythSQLConnect {
 			}
 			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_SiteUsers` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `password` VARCHAR(255) NOT NULL , `Last_IP` VARCHAR(255) NOT NULL, PRIMARY KEY (`ID`) ) ENGINE = InnoDB;");
 			ps.executeUpdate();
+			
+			
 			if(ConfigProperties.DEBUG)
 			{
 				Bukkit.getLogger().info("All MySQL tables generated.");
