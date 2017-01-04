@@ -56,7 +56,7 @@ public class Mute implements CommandExecutor {
 					}
 				}
 				if (p.isOnline()) {
-					p.getPlayer().kickPlayer(this.formatMessage(p.getUniqueId().toString(), ConfigProperties.USER_MUTE_FORMAT));
+					p.getPlayer().sendMessage(this.formatMessage(p.getUniqueId().toString(), ConfigProperties.USER_MUTE_FORMAT));
 				}
 			}
 		} catch (SQLException e) {
