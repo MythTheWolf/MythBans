@@ -1,6 +1,7 @@
 package com.myththewolf.MythBans.lib;
 
 import java.io.File;
+import java.sql.Connection;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -48,11 +49,14 @@ public class MythBans {
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerChat(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(),MythPlugin);
 	}
-	public void loadMySQL()
+	public Connection loadMySQL()
 	{
 		MythSQLConnect msc = new MythSQLConnect();
-		MythSQLConnect.getConnection();
+		if(MythSQLConnect.getConnection() == null){
+			return null;
+		}
 		msc.makeTables();
+		return MythSQLConnect.getConnection();
 	}
 	public void loadCommands()
 	{
