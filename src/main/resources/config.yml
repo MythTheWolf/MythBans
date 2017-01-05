@@ -42,6 +42,7 @@ KICK-PERMISSION: ''
 MUTE-PERMISSION: ''
 BANIP-PERMISSION: ''
 TEMPBANIP-PERMISSION: ''
+PROBATION-PERMISSION:
 #Permission user must have in order to see In-Game messages
 BANMESSAGE-PERMISSION: 'mythbans.viewmessages'
 #Permision to see probation users
