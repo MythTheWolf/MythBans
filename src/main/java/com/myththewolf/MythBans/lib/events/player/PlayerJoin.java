@@ -50,6 +50,26 @@ public class PlayerJoin implements Listener {
 			default:
 				break;
 			}
+			switch(dbc.getIPStatus(dbc.getStoredIP(e.getPlayer().getUniqueId().toString())))
+			{
+			case "banned":
+				message = this.formatMessage(e.getPlayer().getUniqueId().toString(), "ban");
+				
+				e.getPlayer().kickPlayer(message);
+				break;
+			case "tempBanned":
+				message = this.formatMessage(e.getPlayer().getUniqueId().toString(), "tempBanned");
+				name = e.getPlayer().getName();
+				if (d.getNewDate().before(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString())))
+				{
+					e.getPlayer().kickPlayer(message);
+				} else if (d.getNewDate().after(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString())))
+				{
+					PlayerClass.clearExpire(e.getPlayer().getUniqueId().toString());
+				}
+				break;
+			default: break;
+			}
 			dbc.setIP(e.getPlayer());
 		}
 	}

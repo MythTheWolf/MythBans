@@ -44,6 +44,8 @@ BANIP-PERMISSION: ''
 TEMPBANIP-PERMISSION: ''
 #Permission user must have in order to see In-Game messages
 BANMESSAGE-PERMISSION: 'mythbans.viewmessages'
+#Permision to see probation users
+VIEW-PROBATIONS-PERMISSION: ''
 #              **********Messages Config********
 
 #Message to display on the user's screen when banned/tempbanned

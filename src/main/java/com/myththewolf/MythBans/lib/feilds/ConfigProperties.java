@@ -31,6 +31,7 @@ public class ConfigProperties {
 	public static String MUTE_PERMISSION;
 	public static String BANIP_PERMISSION;
 	public static String TEMPBANIP_PERMISSION;
+	public static String VIEW_PROBATION_PERMISSION;
 	private static FileConfiguration cfg;
 	private static Logger MythLog;
 	public static void dumpProperties(JavaPlugin i)
@@ -64,6 +65,7 @@ public class ConfigProperties {
 		MUTE_PERMISSION = cfg.getString("MUTE-PERMISSION");
 		BANIP_PERMISSION = cfg.getString("BANIP-PERMISSION");
 		TEMPBANIP_PERMISSION = cfg.getString("TEMPBANIP-PERMISSION");
+		VIEW_PROBATION_PERMISSION = cfg.getString("VIEW-PROBATIONS-PERMISSION");
 		}catch(Exception e){
 			MythLog.severe("Could not load MythBans... Malformed Config!");
 			MythLog.severe(e.getStackTrace().toString());

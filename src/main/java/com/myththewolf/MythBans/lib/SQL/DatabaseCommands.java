@@ -83,15 +83,38 @@ public class DatabaseCommands {
 		ResultSet rs = ps.executeQuery();
 		if(rs.next())
 		{
-			ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_IPCache SET IP_ADDRESS = ? WHERE Name = ?");
+			ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_IPCache SET IP_ADDRESS = ? WHERE `UUID` = ?");
 			ps.setString(1, p.getAddress().getAddress().toString());
-			ps.setString(2, p.getName());
+			ps.setString(2, p.getUniqueId().toString());
 		}else{
-			ps = (PreparedStatement) c.prepareStatement("INSERT INTO MythBans_IPCache (`IP_ADDRESS`,`Name`,`Status`) VALUES (?,?,?)");
+			ps = (PreparedStatement) c.prepareStatement("INSERT INTO MythBans_IPCache (`IP_ADDRESS`,`UUID`,`Status`) VALUES (?,?,?)");
 			ps.setString(1, p.getAddress().getAddress().toString());
-			ps.setString(2, p.getName());
+			ps.setString(2, p.getUniqueId().toString());
 			ps.setString(3, "OK");
 			ps.executeUpdate();
 		}
+	}
+	
+	public String getStoredIP(String UUID) throws SQLException
+	{
+		ps = (PreparedStatement) c.prepareStatement("SELECT * FROM MythBans_IPCache WHERE `UUID` = ?");
+		ps.setString(1, UUID);
+		ResultSet rs = ps.executeQuery();
+		while(rs.next())
+		{
+			return rs.getString("IP_ADDRESS");
+		}
+		return null;
+	}
+	public String getIPStatus(String IP) throws SQLException
+	{
+		ps = (PreparedStatement) c.prepareStatement("SELECT * FROM MythBans_IPCache WHERE `IP_ADDRESS` = ?");
+		ps.setString(1, IP);
+		ResultSet rs = ps.executeQuery();
+		while(rs.next())
+		{
+			return rs.getString("Status");
+		}
+		return null;
 	}
 }
