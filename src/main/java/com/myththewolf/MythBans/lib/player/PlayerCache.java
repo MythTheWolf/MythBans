@@ -72,4 +72,31 @@ public class PlayerCache {
 			return rs.getString("Name");
 		}
 	}
+	public boolean ipExist(String IP) throws SQLException {
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE `IP_ADDRESS` = ?");
+		ps.setString(1, IP);
+		rs = ps.executeQuery();
+		if(rs.next()){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	public void addIP(String UUID,String IP) throws SQLException
+	{
+		ps = (PreparedStatement) con.prepareStatement("INSERT INTO MythBans_IPCache (`IP_ADDRESS`,`UUID`,`Status`) VALUES (?,?,?);");
+		ps.setString(1, IP);
+		ps.setString(2, UUID);
+		ps.setString(3, "OK");
+	}
+	public String getUUIDbyIP(String IP) throws SQLException{
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE `IP_ADDRESS` = ?");
+		ps.setString(1, IP);
+		rs = ps.executeQuery();
+		if(rs.next()){
+			return rs.getString("UUID");
+		}else{
+			return null;
+		}
+	}
 }

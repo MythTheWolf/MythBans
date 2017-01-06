@@ -19,66 +19,66 @@ public class PlayerJoin implements Listener {
 	private final com.myththewolf.MythBans.lib.tool.Date d = new Date();
 	private String toFormat = "";
 	private DatabaseCommands dbc = new DatabaseCommands();
+
 	@EventHandler
-	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException
-	{
+	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException {
 		String message;
 		name = e.getPlayer().getName();
-		if (pc.getPlayerExact(e.getPlayer().getName()) == null)
-		{
+		if (pc.ipExist(e.getPlayer().getAddress().getAddress().toString())) {
+			if (!e.getPlayer().getUniqueId().toString()
+					.equals(pc.getUUIDbyIP(e.getPlayer().getAddress().getAddress().toString()))) {
+				pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
+			}
+		} else {
+			pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
+		}
+		if (pc.getPlayerExact(e.getPlayer().getName()) == null) {
 			PlayerClass.processNewUser(e.getPlayer().getUniqueId().toString(), e.getPlayer().getName());
-		} else
-		{
-			switch (PlayerClass.getStatus(e.getPlayer().getUniqueId().toString()))
-			{
+		} else {
+			switch (PlayerClass.getStatus(e.getPlayer().getUniqueId().toString())) {
 			case "banned":
 				message = this.formatMessage(e.getPlayer().getUniqueId().toString(), "ban");
-			
+
 				e.getPlayer().kickPlayer(message);
 				break;
 			case "tempBanned":
 				message = this.formatMessage(e.getPlayer().getUniqueId().toString(), "tempBanned");
 				name = e.getPlayer().getName();
-				if (d.getNewDate().before(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString())))
-				{
+				if (d.getNewDate().before(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
 					e.getPlayer().kickPlayer(message);
-				} else if (d.getNewDate().after(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString())))
-				{
+				} else if (d.getNewDate().after(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
 					PlayerClass.clearExpire(e.getPlayer().getUniqueId().toString());
 				}
 				break;
 			default:
 				break;
 			}
-			switch(dbc.getIPStatus(dbc.getStoredIP(e.getPlayer().getUniqueId().toString())))
-			{
+			switch (dbc.getIPStatus(dbc.getStoredIP(e.getPlayer().getUniqueId().toString()))) {
 			case "banned":
 				message = this.formatMessage(e.getPlayer().getUniqueId().toString(), "ban");
-				
+
 				e.getPlayer().kickPlayer(message);
 				break;
 			case "tempBanned":
 				message = this.formatMessage(e.getPlayer().getUniqueId().toString(), "tempBanned");
 				name = e.getPlayer().getName();
-				if (d.getNewDate().before(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString())))
-				{
+				if (d.getNewDate().before(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
 					e.getPlayer().kickPlayer(message);
-				} else if (d.getNewDate().after(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString())))
-				{
+				} else if (d.getNewDate().after(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
 					PlayerClass.clearExpire(e.getPlayer().getUniqueId().toString());
 				}
 				break;
-			default: break;
+			default:
+				break;
+
 			}
-			dbc.setIP(e.getPlayer());
+
 		}
 	}
 
-	private String formatMessage(String UUID,String key) throws SQLException
-	{
-		
-		switch(key)
-		{
+	private String formatMessage(String UUID, String key) throws SQLException {
+
+		switch (key) {
 		case "ban":
 			toFormat = ConfigProperties.USER_BAN_FORMAT;
 			break;
@@ -86,12 +86,13 @@ public class PlayerJoin implements Listener {
 			toFormat = ConfigProperties.USER_TEMPBAN_FORMAT;
 			toFormat = toFormat.replaceAll("\\{expire\\}", PlayerClass.getExpireDate(UUID).toString());
 			break;
-		default: break;
+		default:
+			break;
 		}
 		toFormat = toFormat.replaceAll("\\{staffMember\\}", PlayerClass.getWhoBanned(UUID));
 		toFormat = toFormat.replaceAll("\\{culprit\\}", name);
 		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID));
-		
+
 		return toFormat;
 	}
 

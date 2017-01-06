@@ -117,7 +117,7 @@ public class DatabaseCommands {
 		}
 		return null;
 	}
-
+	
 	public void setProbation(String UUID,String byUUID,String reason) throws SQLException {
 		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_PlayerStats SET status = ? WHERE UUID = ?");
 		ps.setString(1, "trial");
@@ -127,6 +127,21 @@ public class DatabaseCommands {
 				.prepareStatement("INSERT INTO MythBans_History (`UUID`,`action`,`byUUID`,`reason`) VALUES (?,?,?,?)");
 		ps.setString(1, UUID);
 		ps.setString(2, "userProbate");
+		ps.setString(3, byUUID);
+		ps.setString(4, reason);
+		ps.executeUpdate();
+	}
+	
+	public void banIP(String IP,String byUUID,String reason) throws SQLException
+	{
+		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_IPCache SET status = ? WHERE IP_ADDRESS = ?");
+		ps.setString(1, "banned");
+		ps.setString(2, IP);
+		ps.executeUpdate();
+		ps = (PreparedStatement) c
+				.prepareStatement("INSERT INTO MythBans_History (`UUID`,`action`,`byUUID`,`reason`) VALUES (?,?,?,?)");
+		ps.setString(1, IP);
+		ps.setString(2, "IPBan");
 		ps.setString(3, byUUID);
 		ps.setString(4, reason);
 		ps.executeUpdate();
