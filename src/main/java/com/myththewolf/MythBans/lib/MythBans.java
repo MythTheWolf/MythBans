@@ -17,50 +17,47 @@ import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 
 public class MythBans {
 	private JavaPlugin MythPlugin;
-	
-	public MythBans(JavaPlugin inst)
-	{
+
+	public MythBans(JavaPlugin inst) {
 		this.MythPlugin = inst;
 	}
-	
+
 	public void loadConfig() {
-        try {
-            if (!MythPlugin.getDataFolder().exists()) {
-            	MythPlugin.getDataFolder().mkdirs();
-            }
-            File file = new File(MythPlugin.getDataFolder(), "config.yml");
-            if (!file.exists()) {
-            	MythPlugin.getLogger().info("Config.yml not found, creating!");
-            	MythPlugin.saveDefaultConfig();
-            	ConfigProperties.dumpProperties(MythPlugin);
-            } else {
-            	MythPlugin.getLogger().info("Config.yml found, loading!");
-            	ConfigProperties.dumpProperties(MythPlugin);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+		try {
+			if (!MythPlugin.getDataFolder().exists()) {
+				MythPlugin.getDataFolder().mkdirs();
+			}
+			File file = new File(MythPlugin.getDataFolder(), "config.yml");
+			if (!file.exists()) {
+				MythPlugin.getLogger().info("Config.yml not found, creating!");
+				MythPlugin.saveDefaultConfig();
+				ConfigProperties.dumpProperties(MythPlugin);
+			} else {
+				MythPlugin.getLogger().info("Config.yml found, loading!");
+				ConfigProperties.dumpProperties(MythPlugin);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 
-        }
+		}
 
-    }
-	
-	
-	public void loadEvents()
-	{
-		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerChat(), MythPlugin);
-		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(),MythPlugin);
 	}
-	public Connection loadMySQL()
-	{
+
+	public void loadEvents() {
+		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerChat(), MythPlugin);
+		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(), MythPlugin);
+	}
+
+	public Connection loadMySQL() {
 		MythSQLConnect msc = new MythSQLConnect();
-		if(MythSQLConnect.getConnection() == null){
+		if (MythSQLConnect.getConnection() == null) {
 			return null;
 		}
 		msc.makeTables();
 		return MythSQLConnect.getConnection();
 	}
-	public void loadCommands()
-	{
+
+	public void loadCommands() {
 		MythPlugin.getCommand("mute").setExecutor(new Mute());
 		MythPlugin.getCommand("ban").setExecutor(new Ban());
 		MythPlugin.getCommand("tempban").setExecutor(new TempBan());
