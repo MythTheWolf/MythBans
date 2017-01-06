@@ -24,12 +24,10 @@ public class PlayerJoin implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException {
 		String message;
 		name = e.getPlayer().getName();
-		if (pc.ipExist(e.getPlayer().getAddress().getAddress().toString())) {
-			if (!e.getPlayer().getUniqueId().toString()
-					.equals(pc.getUUIDbyIP(e.getPlayer().getAddress().getAddress().toString()))) {
-				pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
-			}
-		} else {
+		if (!pc.ipExist(e.getPlayer().getAddress().getAddress().toString())) {
+			pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
+		} else if (!e.getPlayer().getUniqueId().toString()
+				.equals(pc.getUUIDbyIP(e.getPlayer().getAddress().getAddress().toString()))) {
 			pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
 		}
 		if (pc.getPlayerExact(e.getPlayer().getName()) == null) {
