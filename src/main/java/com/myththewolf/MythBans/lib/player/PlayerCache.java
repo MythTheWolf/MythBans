@@ -76,10 +76,10 @@ public class PlayerCache {
 		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE `IP_ADDRESS` = ?");
 		ps.setString(1, IP);
 		rs = ps.executeQuery();
-		if(rs.next()){
-			return true;
-		}else{
+		if(!rs.next()){
 			return false;
+		}else{
+			return true;
 		}
 	}
 	public void addIP(String UUID,String IP) throws SQLException
@@ -88,6 +88,7 @@ public class PlayerCache {
 		ps.setString(1, IP);
 		ps.setString(2, UUID);
 		ps.setString(3, "OK");
+		ps.executeUpdate();
 	}
 	public String getUUIDbyIP(String IP) throws SQLException{
 		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE `IP_ADDRESS` = ?");
