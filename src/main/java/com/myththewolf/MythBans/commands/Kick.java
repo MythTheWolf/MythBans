@@ -25,40 +25,45 @@ public class Kick implements CommandExecutor {
 	private final com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
 	private Player toKick;
 	private String toUUID;
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
-			if (pc.getPlayerExact(args[0]) == null) {
+			if (args.length < 1) {
+				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /kick <user> [reason]");
+				return true;
+			} else if (pc.getPlayerExact(args[0]) == null) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has not played on this server.");
 				return true;
-			}else{
+			} else {
 				toKick = pc.getPlayerExact(args[0]);
 			}
 			if (sender instanceof ConsoleCommandSender) {
 				dbc.kickUser(toKick.getUniqueId().toString(), "CONSOLE", Utils.makeString(args, 1));
-				pc.getPlayerExact(args[0]).kickPlayer(this.formatMessage(toKick.getUniqueId().toString(),ConfigProperties.USER_KICK_FORMAT));
+				pc.getPlayerExact(args[0]).kickPlayer(
+						this.formatMessage(toKick.getUniqueId().toString(), ConfigProperties.USER_KICK_FORMAT));
 				return true;
-			}else if(args.length < 1) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /kick <user> [reason]");
+			} else if (!sender.hasPermission(ConfigProperties.KICK_PERMISSION)) {
+				sender.sendMessage(
+						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
-			}else if(!sender.hasPermission(ConfigProperties.KICK_PERMISSION)){
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
-				return true;
-			}else{
-				
-				if(sender instanceof ConsoleCommandSender){
+			} else {
+
+				if (sender instanceof ConsoleCommandSender) {
 					dbc.kickUser(toKick.getUniqueId().toString(), "CONSOLE", Utils.makeString(args, 1));
-				}else{
-				Player p = (Player) sender;
-				dbc.kickUser(toKick.getUniqueId().toString(), p.getUniqueId().toString(), Utils.makeString(args, 1));
-				
+				} else {
+					Player p = (Player) sender;
+					dbc.kickUser(toKick.getUniqueId().toString(), p.getUniqueId().toString(),
+							Utils.makeString(args, 1));
+
 				}
 			}
-			pc.getPlayerExact(args[0]).kickPlayer(this.formatMessage(toKick.getUniqueId().toString(),ConfigProperties.USER_KICK_FORMAT));
-			for(org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
-				if(player.hasPermission(ConfigProperties.VIEWMSG_PERM))
-				{
-					player.sendMessage(this.formatMessage(toUUID,ConfigProperties.SERVER_BAN_FORMAT));
+			pc.getPlayerExact(args[0])
+					.kickPlayer(this.formatMessage(toKick.getUniqueId().toString(), ConfigProperties.USER_KICK_FORMAT));
+			for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
+				if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
+					player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+							this.formatMessage(toUUID, ConfigProperties.SERVER_BAN_FORMAT)));
 				}
 			}
 			return true;
@@ -67,18 +72,18 @@ public class Kick implements CommandExecutor {
 			e.printStackTrace();
 			return true;
 		}
-		
+
 	}
-	private String formatMessage(String UUID2,String format) throws SQLException
-	{
+
+	private String formatMessage(String UUID2, String format) throws SQLException {
 		String toFormat = format;
-		if(PlayerClass.getWhoBanned(UUID2).equals("CONSOLE"))
-		{
+		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
 			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
-		}else{
-			toFormat = toFormat.replaceAll("\\{staffMember\\}", Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
+		} else {
+			toFormat = toFormat.replaceAll("\\{staffMember\\}",
+					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
 		}
-		
+
 		toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
 		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID2));
 

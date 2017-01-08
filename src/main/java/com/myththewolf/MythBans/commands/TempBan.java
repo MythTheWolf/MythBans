@@ -35,12 +35,13 @@ public class TempBan implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
-			if (pCache.getOfflinePlayerExact(args[0]) == null) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has never played on this server.");
-				return true;
-			} else if (args.length >= 2) {
+			if (args.length >= 2) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /tempban <user> <time> [reason]");
 				return true;
+			} else if (pCache.getOfflinePlayerExact(args[0]) == null) {
+				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has never played on this server.");
+				return true;
+
 			} else if (!sender.hasPermission(ConfigProperties.TEMPBAN_PERMISSION)) {
 				sender.sendMessage(
 						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
@@ -66,11 +67,13 @@ public class TempBan implements CommandExecutor {
 					}
 					for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 						if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-							player.sendMessage(this.formatMessage(p.getUniqueId().toString(), ConfigProperties.SERVER_TEMPBAN_FORMAT));
+							player.sendMessage(this.formatMessage(p.getUniqueId().toString(),
+									ConfigProperties.SERVER_TEMPBAN_FORMAT));
 						}
 					}
 					if (p.isOnline()) {
-						p.getPlayer().kickPlayer(this.formatMessage(p.getUniqueId().toString(), ConfigProperties.USER_TEMPBAN_FORMAT));
+						p.getPlayer().kickPlayer(
+								this.formatMessage(p.getUniqueId().toString(), ConfigProperties.USER_TEMPBAN_FORMAT));
 					}
 					return true;
 				} catch (Exception e) {

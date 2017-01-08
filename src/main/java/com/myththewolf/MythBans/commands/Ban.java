@@ -27,11 +27,11 @@ public class Ban implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
-			if (pCache.getOfflinePlayerExact(args[0]) == null) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has not been on this server.");
-				return true;
-			} else if (args.length < 1) {
+			if (args.length < 1) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /ban <user> [reason]");
+				return true;
+			} else if (pCache.getOfflinePlayerExact(args[0]) == null) {
+				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has not been on this server.");
 				return true;
 			} else if (!sender.hasPermission(ConfigProperties.BAN_PERMISSION)) {
 				sender.sendMessage(
@@ -54,7 +54,7 @@ public class Ban implements CommandExecutor {
 			}
 			for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 				if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-					player.sendMessage(this.formatMessage(toUUID, ConfigProperties.SERVER_BAN_FORMAT));
+					player.sendMessage(ChatColor.translateAlternateColorCodes('7', this.formatMessage(toUUID, ConfigProperties.SERVER_BAN_FORMAT)));
 				}
 			}
 			if (p.isOnline()) {

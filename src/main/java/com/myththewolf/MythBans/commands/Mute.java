@@ -25,15 +25,15 @@ public class Mute implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
-			if (pCache.getOfflinePlayerExact(args[0]) == null) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "player has not been on this server.");
+			if (args.length < 1) {
+				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /mute <user>");
+				return true;
+			}else if (pCache.getOfflinePlayerExact(args[0]) == null) {
+				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has not been on this server.");
 				return true;
 			} else {
 				if (sender instanceof ConsoleCommandSender) {
 					dbc.muteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(), "CONSOLE");
-				} else if (args.length < 1) {
-					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /mute <user>");
-					return true;
 				} else if (!sender.hasPermission(ConfigProperties.BAN_PERMISSION)) {
 					sender.sendMessage(
 							ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
