@@ -32,7 +32,7 @@ public class IPBan implements CommandExecutor {
 							ConfigProperties.PREFIX + ChatColor.RED + "That IP Has never joined this server.");
 					return true;
 				}
-			} else if (args[0].charAt(0) == '/' && pCache.getOfflinePlayerExact(args[0]) == null) {
+			} else if (args[0].charAt(0) != '/' && pCache.getOfflinePlayerExact(args[0]) == null) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has not been on this server.");
 				return true;
 			} else if (args.length < 1) {
