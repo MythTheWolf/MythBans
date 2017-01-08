@@ -23,6 +23,7 @@ public class Ban implements CommandExecutor {
 	private OfflinePlayer p;
 	private String toUUID;
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
@@ -41,26 +42,24 @@ public class Ban implements CommandExecutor {
 				if (sender instanceof ConsoleCommandSender) {
 					String reason = Utils.makeString(args, 1);
 					dbc.banUser(p.getUniqueId().toString(), "CONSOLE", reason);
-					
+
 					toUUID = p.getUniqueId().toString();
 				} else {
 					String reason = Utils.makeString(args, 1);
 					org.bukkit.entity.Player p = (org.bukkit.entity.Player) sender;
-					dbc.banUser(p.getUniqueId().toString(),
-							p.getUniqueId().toString(), reason);
-					
+					dbc.banUser(p.getUniqueId().toString(), p.getUniqueId().toString(), reason);
+
 					toUUID = p.getUniqueId().toString();
 				}
 			}
-			for(org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
-				if(player.hasPermission(ConfigProperties.VIEWMSG_PERM))
-				{
-					player.sendMessage(this.formatMessage(toUUID,ConfigProperties.SERVER_BAN_FORMAT));
+			for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
+				if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
+					player.sendMessage(this.formatMessage(toUUID, ConfigProperties.SERVER_BAN_FORMAT));
 				}
 			}
-			if(p.isOnline())
-			{
-				p.getPlayer().kickPlayer(this.formatMessage(p.getUniqueId().toString(), ConfigProperties.USER_BAN_FORMAT));
+			if (p.isOnline()) {
+				p.getPlayer()
+						.kickPlayer(this.formatMessage(p.getUniqueId().toString(), ConfigProperties.USER_BAN_FORMAT));
 			}
 		} catch (
 
@@ -70,16 +69,16 @@ public class Ban implements CommandExecutor {
 		}
 		return true;
 	}
-	private String formatMessage(String UUID2, String format) throws SQLException
-	{
+
+	private String formatMessage(String UUID2, String format) throws SQLException {
 		String toFormat = format;
-		if(PlayerClass.getWhoBanned(UUID2).equals("CONSOLE"))
-		{
+		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
 			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
-		}else{
-			toFormat = toFormat.replaceAll("\\{staffMember\\}", Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
+		} else {
+			toFormat = toFormat.replaceAll("\\{staffMember\\}",
+					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
 		}
-		
+
 		toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
 		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID2));
 

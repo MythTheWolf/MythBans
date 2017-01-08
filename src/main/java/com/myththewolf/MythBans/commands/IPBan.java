@@ -22,6 +22,7 @@ public class IPBan implements CommandExecutor {
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private String toIP;
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
@@ -54,13 +55,11 @@ public class IPBan implements CommandExecutor {
 					dbc.banIP(toIP, p.getUniqueId().toString(), reason);
 				}
 				for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
-					if(player.getAddress().getAddress().toString().equals(toIP))
-					{
+					if (player.getAddress().getAddress().toString().equals(toIP)) {
 						player.kickPlayer(this.formatMessage(toIP, ConfigProperties.USER_IPBAN_FORMAT));
-					}else
-					if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
+					} else if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
 						player.sendMessage(this.formatMessage(toIP, ConfigProperties.SERVER_IPBAN_FORMAT));
-					}else{
+					} else {
 						continue;
 					}
 				}
