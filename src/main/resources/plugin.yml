@@ -14,6 +14,9 @@ commands:
  kick:
      description: Kick a user from the server
      aliases: [k,throw]
+ banip:
+     description: Bans a IP from the server
+     aliases: [bip,banip,ib]
  probate:
      description: Throws a user into probation
      aliases: [p,probation,trial,pb]

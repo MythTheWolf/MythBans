@@ -6,6 +6,7 @@ import java.sql.Connection;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.commands.Ban;
+import com.myththewolf.MythBans.commands.IPBan;
 import com.myththewolf.MythBans.commands.Kick;
 import com.myththewolf.MythBans.commands.Mute;
 import com.myththewolf.MythBans.commands.Probate;
@@ -63,5 +64,6 @@ public class MythBans {
 		MythPlugin.getCommand("tempban").setExecutor(new TempBan());
 		MythPlugin.getCommand("kick").setExecutor(new Kick());
 		MythPlugin.getCommand("probate").setExecutor(new Probate());
+		MythPlugin.getCommand("banip").setExecutor(new IPBan());
 	}
 }
