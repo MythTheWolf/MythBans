@@ -85,7 +85,12 @@ public class PlayerJoin implements Listener {
 					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
 		}
 
-		toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
+		if(UUID2.charAt(0) == '/')
+		{
+			toFormat = toFormat.replaceAll("\\{culprit\\}", UUID2);
+		}else{
+			toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
+		}
 		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID2));
 
 		return toFormat;
