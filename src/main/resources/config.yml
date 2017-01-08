@@ -36,13 +36,15 @@ API-KEY: 'somesecretcode'
 DEBUG-MODE: false
 # ******************Permission Config*************************
 #Permissions for commands
-BAN-PERMISSION: ''
-TEMPBAN-PERMISSION: ''
-KICK-PERMISSION: ''
-MUTE-PERMISSION: ''
-BANIP-PERMISSION: ''
-TEMPBANIP-PERMISSION: ''
-PROBATION-PERMISSION:
+BAN-PERMISSION: 'mythbans.ban'
+TEMPBAN-PERMISSION: 'mythbans.tempban'
+KICK-PERMISSION: 'mythbans.kick'
+MUTE-PERMISSION: 'mythbans.mute'
+BANIP-PERMISSION: 'mythbans.banip'
+TEMPBANIP-PERMISSION: 'mythbans.tempbanip'
+MUTEIP-PERMISSION: 'mythbans.muteip'
+KICKIP-PERMISSSION: 'mythbans.kickip'
+PROBATION-PERMISSION: 'mythbans.probate'
 #Permission user must have in order to see In-Game messages
 BANMESSAGE-PERMISSION: 'mythbans.viewmessages'
 #Permision to see probation users
