@@ -100,4 +100,15 @@ public class PlayerCache {
 			return null;
 		}
 	}
+	public String getIPbyUUID(String UUID) throws SQLException
+	{
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE `UUID` = ?");
+		ps.setString(1, UUID);
+		rs = ps.executeQuery();
+		if(rs.next()){
+			return rs.getString("IP_ADDRESS");
+		}else{
+			return null;
+		}
+	}
 }

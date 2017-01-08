@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class DatabaseCommands {
@@ -138,6 +139,18 @@ public class DatabaseCommands {
 		ps.setString(1, "banned");
 		ps.setString(2, IP);
 		ps.executeUpdate();
+		for(Player p : Bukkit.getOnlinePlayers())
+		{
+			if(p.getAddress().getAddress().toString().equals(IP))
+			{
+				ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_PlayerStats SET byUUID = ?, reason = ? WHERE UUID = ?");
+				ps.setString(1, byUUID);
+				ps.setString(2, reason);
+				ps.setString(3, p.getUniqueId().toString());
+				ps.executeUpdate();
+			}
+		}
+		
 		ps = (PreparedStatement) c
 				.prepareStatement("INSERT INTO MythBans_History (`UUID`,`action`,`byUUID`,`reason`) VALUES (?,?,?,?)");
 		ps.setString(1, IP);
