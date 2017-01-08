@@ -16,16 +16,14 @@ import com.myththewolf.MythBans.lib.tool.Date;
 
 public class PlayerJoin implements Listener {
 	private PlayerCache pc = new PlayerCache(MythSQLConnect.getConnection());
-	private String name;
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
 	private final com.myththewolf.MythBans.lib.tool.Date d = new Date();
-	private String toFormat = "";
 	private DatabaseCommands dbc = new DatabaseCommands();
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException {
 		String message;
-		name = e.getPlayer().getName();
+		e.getPlayer().getName();
 		if (!pc.ipExist(e.getPlayer().getAddress().getAddress().toString())) {
 			pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
 		} else if (!e.getPlayer().getUniqueId().toString()
@@ -43,7 +41,7 @@ public class PlayerJoin implements Listener {
 				break;
 			case "tempBanned":
 				message = this.formatMessage(e.getPlayer().getUniqueId().toString(), ConfigProperties.USER_TEMPBAN_FORMAT);
-				name = e.getPlayer().getName();
+				e.getPlayer().getName();
 				if (d.getNewDate().before(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
 					e.getPlayer().kickPlayer(message);
 				} else if (d.getNewDate().after(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
@@ -61,7 +59,7 @@ public class PlayerJoin implements Listener {
 				break;
 			case "tempBanned":
 				message = this.formatMessage(e.getPlayer().getUniqueId().toString(), ConfigProperties.USER_IPTEMPBAN_FORMAT);
-				name = e.getPlayer().getName();
+				e.getPlayer().getName();
 				if (d.getNewDate().before(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
 					e.getPlayer().kickPlayer(message);
 				} else if (d.getNewDate().after(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
