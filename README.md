@@ -48,4 +48,4 @@ I see lots of servers with many users, but can't remember names of who they ban.
 With my plugin, you can host it yourself. (As long as you have PHP of course :D )
 ## License
 
-A short snippet describing the license (MIT, Apache, etc.)
+GNU General Public License v3.0
