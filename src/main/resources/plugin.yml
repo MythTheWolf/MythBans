@@ -20,3 +20,6 @@ commands:
  probate:
      description: Throws a user into probation
      aliases: [p,probation,trial,pb]
+ import:
+     description: Dumps your banned players to mySQL
+     aliases: [dump,export]
