@@ -35,7 +35,7 @@ public class TempBan implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
-			if (args.length >= 2) {
+			if (args.length <= 2) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /tempban <user> <time> [reason]");
 				return true;
 			} else if (pCache.getOfflinePlayerExact(args[0]) == null) {
