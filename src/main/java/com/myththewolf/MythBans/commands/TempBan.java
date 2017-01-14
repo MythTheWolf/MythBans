@@ -55,7 +55,7 @@ public class TempBan implements CommandExecutor {
 					long milli = format.parsePeriod(args[1]).toStandardDuration().getMillis();
 					java.util.Date finalDate = new java.util.Date(System.currentTimeMillis() + milli);
 					String dateStr = date.formatDate(finalDate);
-					String reason = Utils.makeString(args, 3);
+					String reason = Utils.makeString(args, 2);
 					String UUID = pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString();
 					if (sender instanceof org.bukkit.entity.Player) {
 						String byUUID = ((org.bukkit.entity.Player) sender).getUniqueId().toString();
