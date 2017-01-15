@@ -31,6 +31,7 @@ public class PlayerChat implements Listener {
 			e.setCancelled(true);
 			return;
 		} else if (playerClass.getStatus(e.getPlayer().getUniqueId().toString()).equals("trial")) {
+			e.setCancelled(true);
 			String message = e.getMessage();
 			for (org.bukkit.entity.Player i : Bukkit.getOnlinePlayers()) {
 				String who = ChatColor.translateAlternateColorCodes('&', e.getPlayer().getDisplayName());

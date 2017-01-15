@@ -37,7 +37,7 @@ public class Probate implements CommandExecutor {
 				return true;
 			} else {
 				p = pCache.getOfflinePlayerExact(args[0]);
-				if (playerClass.getStatus(p.getUniqueId().toString()).equals("trial")) {
+				
 					if (sender instanceof ConsoleCommandSender) {
 						dbc.setProbation(p.getUniqueId().toString(), "CONSOLE", Utils.makeString(args, 2));
 					} else {
@@ -46,7 +46,6 @@ public class Probate implements CommandExecutor {
 								Utils.makeString(args, 2));
 					}
 				}
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
