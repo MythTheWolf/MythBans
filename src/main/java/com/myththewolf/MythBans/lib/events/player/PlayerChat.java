@@ -36,20 +36,20 @@ public class PlayerChat implements Listener {
 			for (org.bukkit.entity.Player i : Bukkit.getOnlinePlayers()) {
 				String who = ChatColor.translateAlternateColorCodes('&', e.getPlayer().getDisplayName());
 				if (i.hasPermission(ConfigProperties.VIEW_PROBATION_PERMISSION)) {
-					if (i.hasPermission("essentials.chat.color")) {
+					if (e.getPlayer().hasPermission("essentials.chat.color")) {
 
-						i.sendMessage(ChatColor.WHITE + "< " + ChatColor.RED + "* " + who + ChatColor.WHITE + "> "
+						i.sendMessage(ChatColor.RED + " * " + ChatColor.WHITE + "<" + who + ChatColor.WHITE + "> "
 								+ ChatColor.translateAlternateColorCodes('&', message));
 					} else {
-						i.sendMessage(ChatColor.WHITE + "< " + ChatColor.RED + "* " + who + ChatColor.WHITE + " > "
+						i.sendMessage(ChatColor.RED + " * " + ChatColor.WHITE + "<" + ChatColor.RED + "*" + who + ChatColor.WHITE + " > "
 								+ message);
 					}
 				} else {
-					if (i.hasPermission("essentials.chat.color")) {
-						i.sendMessage(ChatColor.WHITE + "< " + who + ChatColor.WHITE + "> "
+					if (e.getPlayer().hasPermission("essentials.chat.color")) {
+						i.sendMessage(ChatColor.WHITE + "<" + who + ChatColor.WHITE + "> "
 								+ ChatColor.translateAlternateColorCodes('&', message));
 					} else {
-						i.sendMessage(ChatColor.WHITE + "< " + who + ChatColor.WHITE + "> " + message);
+						i.sendMessage(ChatColor.WHITE + "<" + who + ChatColor.WHITE + "> " + message);
 					}
 				}
 			}
