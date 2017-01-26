@@ -54,7 +54,7 @@ public class Ban implements CommandExecutor {
 			}
 			for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 				if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-					player.sendMessage(ChatColor.translateAlternateColorCodes('7', this.formatMessage(toUUID, ConfigProperties.SERVER_BAN_FORMAT)));
+					player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.formatMessage(toUUID, ConfigProperties.SERVER_BAN_FORMAT)));
 				}
 			}
 			if (p.isOnline()) {

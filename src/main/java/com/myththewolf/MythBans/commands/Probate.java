@@ -37,15 +37,32 @@ public class Probate implements CommandExecutor {
 				return true;
 			} else {
 				p = pCache.getOfflinePlayerExact(args[0]);
-				
+				if (playerClass.getStatus(p.getUniqueId().toString()).equals("trial")) {
+					if(sender instanceof ConsoleCommandSender)
+					{
+						dbc.unProbate(p.getUniqueId().toString(), "CONSOLE");
+						sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Unprobated " + p.getName());
+						return true;
+					}else{
+						dbc.unProbate(p.getUniqueId().toString(), ((org.bukkit.entity.Player) sender).getUniqueId().toString());
+						sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Unprobated " + p.getName());
+						return true;
+					}
+				} else {
 					if (sender instanceof ConsoleCommandSender) {
 						dbc.setProbation(p.getUniqueId().toString(), "CONSOLE", Utils.makeString(args, 2));
+						sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Set " + p.getName() + " on probation.");
+						return true;
 					} else {
 						org.bukkit.entity.Player pp = (org.bukkit.entity.Player) sender;
 						dbc.setProbation(p.getUniqueId().toString(), pp.getUniqueId().toString(),
 								Utils.makeString(args, 2));
+						sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Set " + p.getName() + " on probation.");
+						return true;
 					}
+
 				}
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

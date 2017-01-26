@@ -1,6 +1,7 @@
 package com.myththewolf.MythBans.commands;
 
 import java.io.FileReader;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
@@ -14,13 +15,10 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
-import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.player.Player;
-import com.myththewolf.MythBans.lib.player.PlayerCache;
 
 public class importJSON implements CommandExecutor {
 	private DatabaseCommands dbc = new DatabaseCommands();
-	private PlayerCache pc = new PlayerCache(MythSQLConnect.getConnection());
 	private com.myththewolf.MythBans.lib.player.Player pp = new Player();
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
