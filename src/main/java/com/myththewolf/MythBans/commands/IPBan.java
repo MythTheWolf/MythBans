@@ -29,7 +29,9 @@ public class IPBan implements CommandExecutor {
 		try {
 			if (args.length < 1) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED
-						+ "Usage: /banip <user or IP> [reason] (NOTE: IP must start with slash. E.g /120.0.0.1");
+						+ "Usage: /banip <user or IP> [reason]");
+				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED
+						+ "Note: If typing actual IP rather than player name, use a / then ip. e.g: /127.0.0.1");
 				return true;
 			} else if (args[0].charAt(0) == '/' && !pCache.ipExist(args[0])) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "IP has never joined this server");
