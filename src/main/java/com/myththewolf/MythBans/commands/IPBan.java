@@ -28,8 +28,7 @@ public class IPBan implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
 			if (args.length < 1) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED
-						+ "Usage: /banip <user or IP> [reason]");
+				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /banip <user or IP> [reason]");
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED
 						+ "Note: If typing actual IP rather than player name, use a / then ip. e.g: /127.0.0.1");
 				return true;
@@ -44,39 +43,36 @@ public class IPBan implements CommandExecutor {
 				sender.sendMessage(
 						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
-			} else if(args[0].charAt(0) == '/' && pCache.ipExist(args[0])){
-				if(sender instanceof ConsoleCommandSender)
-				{
+			} else if (args[0].charAt(0) == '/' && pCache.ipExist(args[0])) {
+				if (sender instanceof ConsoleCommandSender) {
 					dbc.banIP(args[0], "CONSOLE", Utils.makeString(args, 1));
 					toIP = args[0];
-				}else{
+				} else {
 					Player s = (Player) sender;
 					dbc.banIP(args[0], s.getUniqueId().toString(), Utils.makeString(args, 1));
 					toIP = args[0];
 				}
-			}else if(args[0].charAt(0) != '/' && pCache.getOfflinePlayerExact(args[0]) != null){
+			} else if (args[0].charAt(0) != '/' && pCache.getOfflinePlayerExact(args[0]) != null) {
 				OfflinePlayer p = pCache.getOfflinePlayerExact(args[0]);
 				String IP = pCache.getIPbyUUID(p.getUniqueId().toString());
-				if(sender instanceof ConsoleCommandSender)
-				{
+				if (sender instanceof ConsoleCommandSender) {
 					dbc.banIP(IP, "CONSOLE", Utils.makeString(args, 1));
 					toIP = IP;
-				}else{
+				} else {
 					Player s = (Player) sender;
 					dbc.banIP(IP, s.getUniqueId().toString(), Utils.makeString(args, 1));
 					toIP = IP;
 				}
-				
+
 			}
-			for(Player i : Bukkit.getOnlinePlayers())
-			{
-				if(i.getAddress().getAddress().toString().equals(toIP))
-				{
+			for (Player i : Bukkit.getOnlinePlayers()) {
+				if (i.getAddress().getAddress().toString().equals(toIP)) {
 					i.kickPlayer(this.formatMessage(i.getUniqueId().toString(), ConfigProperties.USER_IPBAN_FORMAT));
-				}else if(i.hasPermission(ConfigProperties.VIEWMSG_PERM)){
-					i.sendMessage(ChatColor.translateAlternateColorCodes('&', this.formatMessage(toIP, ConfigProperties.SERVER_IPBAN_FORMAT)));
+				} else if (i.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
+					i.sendMessage(ChatColor.translateAlternateColorCodes('&',
+							this.formatMessage(toIP, ConfigProperties.SERVER_IPBAN_FORMAT)));
 				}
-					
+
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -93,13 +89,12 @@ public class IPBan implements CommandExecutor {
 			toFormat = toFormat.replaceAll("\\{staffMember\\}",
 					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
 		}
-		if(UUID2.charAt(0) == '/')
-		{
+		if (UUID2.charAt(0) == '/') {
 			toFormat = toFormat.replaceAll("\\{culprit\\}", UUID2);
-		}else{
+		} else {
 			toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
 		}
-		
+
 		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID2));
 
 		return toFormat;
