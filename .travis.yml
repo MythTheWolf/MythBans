@@ -7,6 +7,7 @@ deploy:
   provider: releases
   api_key:
     secure: YshFbuOqWvFlyceCRXHHmgO2WCAO/DfSBNJMFmud5od+x3NpJ54izQa05NVdx5XAf4NBF23KqqLboCg1DON1594Vr9Z9+JdWOXG+3vMO6EeUtHxAfrseHzev2CZNNCfNvoTffSxxlKDJhX7s/DVC4RGWD4Dp1qV4/+5d10B7tTndeOMQZYKvmLtYA3D0OUUDLOJWsBY7pLIVf0dNLRdZLrp6Tlglp+h3xlbi28AhGa5E2CVMuG7MFeECQwpiD3o6XtVqrI5zjraGJ+T3JJrwrN6hVB0QayzPBMadvvG75UJjrHBrwoBEYsui8Vz/75KjoKgce6dHJwuuQqtg09kGuu3zo0ai4aN27eeSJi1QLgkPaK5TWqgl1W4QisQUZs55cPe7xGoH1nROpyGAEzO0AZ0mqziczLnQ6IY9sIsd3oOBU5MDmpf1Nj/uFuXD2rLzarj7kOcV+/9w7f/NY/G+M/8ez3L/o2PD/sXKXqHDfVEo+7YkLUe+IocFaubJEZWBzW6ctIcql8612BDfTdsfS7fDzumLS9Sc72bvMnlX61XkcH400TikbT0OKk1/V7rBZd4uFu6iCNpdmcmjBFzI5fi3x2Cy4Op2jQ6KP+NBlLW4Feh413i43E5Z+WwuoHAOV6yT6NnP7htmYWXWSoUq/VhE3Zs/adys+x6/+z05ggY=
-  file: MythBans.jar
+ file_glob: true
+ file: MythBans.jar
   on:
     repo: MythTheWolf/MythBans-JavaPlugin
