@@ -1,6 +1,8 @@
 language: java
 sudo: false
-script: mvn package
+script:
+- mvn clean install
+- mv target/MythBans.jar MythBans.jar
 deploy:
   provider: releases
   api_key:
