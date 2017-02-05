@@ -1,4 +1,4 @@
-## MythBans
+## MythBans [![Build Status](https://travis-ci.org/MythTheWolf/MythBans-JavaPlugin.svg?branch=master)](https://travis-ci.org/MythTheWolf/MythBans-JavaPlugin)
 
 Powerfull Craftbukkit plugin that allows you to manage bans VIA SQL in-game and through a web UI.
 
