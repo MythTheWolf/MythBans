@@ -97,7 +97,7 @@ public class MythSQLConnect {
 			{
 				Bukkit.getLogger().info("Loading MySQL Table: SiteUsers");
 			}
-			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_SiteUsers` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `password` VARCHAR(255) NOT NULL , `Last_IP` VARCHAR(255) NOT NULL, PRIMARY KEY (`ID`) ) ENGINE = InnoDB;");
+			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_SiteUsers` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `password` VARCHAR(255) NOT NULL ,`group` VARCHAR(255) NOT NULL,`Last_IP` VARCHAR(255) NOT NULL, PRIMARY KEY (`ID`) ) ENGINE = InnoDB;");
 			ps.executeUpdate();
 			
 			
