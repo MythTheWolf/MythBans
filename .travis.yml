@@ -11,4 +11,5 @@ deploy:
   skip_cleanup: true
   on:
     repo: MythTheWolf/MythBans-JavaPlugin
-    tags: true
+    tags: false
+    
