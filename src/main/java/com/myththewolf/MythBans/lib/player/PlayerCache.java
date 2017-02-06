@@ -53,7 +53,7 @@ public class PlayerCache {
 	}
 	public void insertPlayer(String UUID, String name) throws SQLException
 	{
-		ps = (PreparedStatement) con.prepareStatement("INSERT INTO MythBANS_NameCache (`UUID`,`name`) VALUES (?,?);");
+		ps = (PreparedStatement) con.prepareStatement("INSERT INTO MythBans_NameCache (`UUID`,`name`) VALUES (?,?);");
 		ps.setString(1, UUID);
 		ps.setString(2, name);
 		ps.executeUpdate();
