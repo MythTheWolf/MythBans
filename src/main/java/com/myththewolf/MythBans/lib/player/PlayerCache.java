@@ -50,6 +50,7 @@ public class PlayerCache {
 		ps.setString(1, name);
 		ps.setString(2, UUID);
 		ps.executeUpdate();
+		ps.close();
 	}
 	public void insertPlayer(String UUID, String name) throws SQLException
 	{
@@ -57,6 +58,7 @@ public class PlayerCache {
 		ps.setString(1, UUID);
 		ps.setString(2, name);
 		ps.executeUpdate();
+		ps.close();
 		
 	}
 	

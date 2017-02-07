@@ -37,6 +37,7 @@ public class DatabaseCommands {
 		ps.setString(3, reason);
 		ps.setString(4, UUID);
 		ps.executeUpdate();
+		ps.close();
 		ps = (PreparedStatement) c
 				.prepareStatement("INSERT INTO MythBans_History (`UUID`,`action`,`byUUID`,`reason`) VALUES (?,?,?,?)");
 		ps.setString(1, UUID);
@@ -44,6 +45,7 @@ public class DatabaseCommands {
 		ps.setString(3, byUUID);
 		ps.setString(4, reason);
 		ps.executeUpdate();
+		ps.close();
 	}
 
 	public void tmpBanUser(String UUID, String byUUID, String reason, String expireDate) throws SQLException {

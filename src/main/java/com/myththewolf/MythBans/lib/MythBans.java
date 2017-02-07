@@ -65,6 +65,6 @@ public class MythBans {
 		MythPlugin.getCommand("kick").setExecutor(new Kick());
 		MythPlugin.getCommand("probate").setExecutor(new Probate());
 		MythPlugin.getCommand("banip").setExecutor(new IPBan());
-		MythPlugin.getCommand("import").setExecutor(new importJSON());
+		MythPlugin.getCommand("import").setExecutor(new importJSON(MythPlugin));
 	}
 }

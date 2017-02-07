@@ -66,6 +66,7 @@ public class Player {
 		ps.setString(2, "OK");
 		ps.setString(3, "DEFAULT");
 		ps.executeUpdate();
+		ps.close();
 	}
 
 	public Date getExpireDate(String UUID) throws SQLException
@@ -88,5 +89,6 @@ public class Player {
 		ps.setString(2, "OK");
 		ps.setString(3, null);
 		ps.executeUpdate();
+		ps.close();
 	}
 }
