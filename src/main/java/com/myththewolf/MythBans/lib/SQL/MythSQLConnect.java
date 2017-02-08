@@ -94,6 +94,14 @@ public class MythSQLConnect {
 			ps.executeUpdate();
 			
 			
+			
+			///Groups
+			if(ConfigProperties.DEBUG)
+			{
+				Bukkit.getLogger().info("Loading MySQL Table: Groups");
+			}
+			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_Groups` ( `ID` INT NOT NULL , `group_name` VARCHAR(255) NOT NULL , `level` INT NOT NULL , `remove_logs` INT NOT NULL DEFAULT '0' , `manage_groups` INT NOT NULL DEFAULT '0' , `download_logs` INT NOT NULL DEFAULT '0' , `ban` INT NOT NULL DEFAULT '0' , `kick` INT NOT NULL DEFAULT '0' , `probate` INT NOT NULL DEFAULT '0' , `mute` INT NOT NULL DEFAULT '0' , `delete_user` INT NOT NULL DEFAULT '0' , `halt_service` INT NOT NULL DEFAULT '0' , `advanced` INT NOT NULL DEFAULT '0' ) ENGINE = InnoDB;");
+			ps.executeUpdate();
 			if(ConfigProperties.DEBUG)
 			{
 				Bukkit.getLogger().info("All MySQL tables generated.");

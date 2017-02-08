@@ -20,11 +20,11 @@ SQL-HOST: 'localhost'
 #The port number that the server runs on, default MySQL port is 3306
 SQL-PORT: '3306'
 #The name of the database to use, note that this Database must ALREADY be created.
-SQL-DATABASE: 'myDatabase'
+SQL-DATABASE: 'main'
 #Username to use to connect to the database
 SQL-USER: 'root'
 #Password for that user
-SQL-PASSWORD: ''
+SQL-PASSWORD: 'root'
 #                 *********System config*********
 #How often (in server ticks) should the plugin read and execute CronJobs from the Web UI?
 CRON-UPDATE-TIME: '40'
@@ -43,7 +43,7 @@ MUTE-PERMISSION: 'mythbans.mute'
 BANIP-PERMISSION: 'mythbans.banip'
 TEMPBANIP-PERMISSION: 'mythbans.tempbanip'
 MUTEIP-PERMISSION: 'mythbans.muteip'
-KICKIP-PERMISSSION: 'mythbans.kickip'
+KICKIP-PERMISSION: 'mythbans.kickip'
 PROBATION-PERMISSION: 'mythbans.probate'
 #Permission user must have in order to see In-Game messages
 BANMESSAGE-PERMISSION: 'mythbans.viewmessages'
@@ -60,18 +60,18 @@ USER-BAN-FORMAT: 'You have been banned for {reason} by {staffMember}'
 USER-TEMPBAN-FORMAT: 'You have been banned until {expire} by {staffMember} for {reason}'
 USER-KICK-FORMAT: 'You have been kicked by {staffMember} for {reason}'
 USER-MUTE-FORMAT: '{staffMember} has muted you for {reason}'
-USER-IPMUTE-FORMAT: '{staffMember} has muted your IP for {reason}'
-USER-IPBAN-FORMAT:  'Your IP have been banned for {reason} by {staffMember}'
-USER-IPTEMPBAN-FORMAT: 'Your IP has been banned until {expire} by {staffMember} for {reason}'
+USER-IP-MUTE-FORMAT: '{staffMember} has muted your IP for {reason}'
+USER-IP-BAN-FORMAT:  'Your IP have been banned for {reason} by {staffMember}'
+USER-IP-TEMPBAN-FORMAT: 'Your IP has been banned until {expire} by {staffMember} for {reason}'
 USER-IP-KICK-FORMAT: 'Your IP has been kicked by {staffMember} for {reason}'
 SERVER-KICK-FORMAT: '{staffMember} kicked {culprit} for {reason}'
 SERVER-BAN-FORMAT: '{staffMember} banned {culprit} for {reason}'
 SERVER-TEMPBAN-FORMAT: '{staffMember} banned {culprit} until {expire} for {reason}'
 SERVER-MUTE-FORMAT: '{staffMember} muted {culprit} for {reason}'
-SERVER-IPBAN-FORMAT: '{staffMember} banned IP {culprit} for {reason}'
-SERVER-IPMUTE-FORMAT: '{staffMember} muted IP {culprint} for {reason}'
-SERVER-IPKICK-FORMAT: '{staffMember} kicked IP {culprint} for {reason}'
-SERVER-IPTEMPBAN-FORMAT: '{staffMember} banned IP {culprint} until {expire} for {reason}'
+SERVER-IP-BAN-FORMAT: '{staffMember} banned IP {culprit} for {reason}'
+SERVER-IP-MUTE-FORMAT: '{staffMember} muted IP {culprint} for {reason}'
+SERVER-IP-KICK-FORMAT: '{staffMember} kicked IP {culprint} for {reason}'
+SERVER-IP-TEMPBAN-FORMAT: '{staffMember} banned IP {culprint} until {expire} for {reason}'
 DEFAULT-BAN-REASON: 'The ban hammer has spoken!'
 #Chat Prefix to use for In game messages
 #You can leave it to it's default if you want to support me :-)
