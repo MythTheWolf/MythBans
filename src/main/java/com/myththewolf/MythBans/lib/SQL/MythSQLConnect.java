@@ -90,7 +90,7 @@ public class MythSQLConnect {
 			{
 				Bukkit.getLogger().info("Loading MySQL Table: SiteUsers");
 			}
-			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_SiteUsers` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `password` VARCHAR(255) NOT NULL ,`group` VARCHAR(255) NOT NULL,`Last_IP` VARCHAR(255) NOT NULL, PRIMARY KEY (`ID`) ) ENGINE = InnoDB;");
+			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_SiteUsers` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `password` VARCHAR(255) NOT NULL ,`group` VARCHAR(255) NOT NULL,`Last_IP` VARCHAR(255) NULL DEFAULT NULL, PRIMARY KEY (`ID`) ) ENGINE = InnoDB;");
 			ps.executeUpdate();
 			
 			
@@ -100,7 +100,7 @@ public class MythSQLConnect {
 			{
 				Bukkit.getLogger().info("Loading MySQL Table: Groups");
 			}
-			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_Groups` ( `ID` INT NOT NULL , `group_name` VARCHAR(255) NOT NULL , `level` INT NOT NULL , `remove_logs` INT NOT NULL DEFAULT '0' , `manage_groups` INT NOT NULL DEFAULT '0' , `download_logs` INT NOT NULL DEFAULT '0' , `ban` INT NOT NULL DEFAULT '0' , `kick` INT NOT NULL DEFAULT '0' , `probate` INT NOT NULL DEFAULT '0' , `mute` INT NOT NULL DEFAULT '0' , `delete_user` INT NOT NULL DEFAULT '0' , `halt_service` INT NOT NULL DEFAULT '0' , `advanced` INT NOT NULL DEFAULT '0' ) ENGINE = InnoDB;");
+			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_Groups` ( `ID` INT NOT NULL , `group_name` VARCHAR(255) NOT NULL , `level` INT NOT NULL , `remove_logs` INT NOT NULL DEFAULT '0' , `pardon` INT NOT NULL DEFAULT '0' ,`manage_groups` INT NOT NULL DEFAULT '0' , `download_logs` INT NOT NULL DEFAULT '0' , `ban` INT NOT NULL DEFAULT '0' , `kick` INT NOT NULL DEFAULT '0' , `probate` INT NOT NULL DEFAULT '0' , `mute` INT NOT NULL DEFAULT '0' , `delete_user` INT NOT NULL DEFAULT '0' , `halt_service` INT NOT NULL DEFAULT '0' , `advanced` INT NOT NULL DEFAULT '0' ) ENGINE = InnoDB;");
 			ps.executeUpdate();
 			if(ConfigProperties.DEBUG)
 			{

@@ -23,3 +23,6 @@ commands:
  import:
      description: Dumps your banned players to mySQL
      aliases: [dump,export]
+ createUI:
+     description: Create a site user
+     aliases: []

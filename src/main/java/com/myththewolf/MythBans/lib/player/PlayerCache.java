@@ -78,6 +78,18 @@ public class PlayerCache {
 			return rs.getString("Name");
 		}
 	}
+	public String getUUID(String name) throws SQLException
+	{
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_NameCache WHERE `Name` = ?");
+		ps.setString(1, name);
+		rs = ps.executeQuery();
+		if(!rs.next())
+		{
+			return null;
+		}else{
+			return rs.getString("UUID");
+		}
+	}
 	public boolean ipExist(String IP) throws SQLException {
 		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE `IP_ADDRESS` = ?");
 		ps.setString(1, IP);
