@@ -71,4 +71,9 @@ public class MythBans {
 		MythPlugin.getCommand("import").setExecutor(new importJSON(MythPlugin));
 		MythPlugin.getCommand("createUI").setExecutor(new createUI());
 	}
+	
+	public void startDaemon()
+	{
+		
+	}
 }

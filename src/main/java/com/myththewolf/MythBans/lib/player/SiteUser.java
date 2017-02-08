@@ -28,8 +28,7 @@ public class SiteUser {
 		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_SiteUsers WHERE UUID = ?");
 		ps.setString(1, pc.getUUID(username));
 		ResultSet rs = ps.executeQuery();
-		if(!rs.next())
-		{
+		if (!rs.next()) {
 			return false;
 		}
 		return true;
