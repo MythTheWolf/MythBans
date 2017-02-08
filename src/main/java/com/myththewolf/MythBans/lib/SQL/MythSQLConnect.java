@@ -69,7 +69,7 @@ public class MythSQLConnect {
 			{
 				Bukkit.getLogger().info("Loading MySQL Table: PlayerStats");
 			}
-			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_PlayerStats` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `status` VARCHAR(255) NOT NULL , `group` VARCHAR(255) NOT NULL ,`expires` VARCHAR(255) NULL DEFAULT NULL , `reason` VARCHAR(255) NULL DEFAULT NULL , `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `byUUID` VARCHAR(255) NULL DEFAULT NULL , PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
+			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_PlayerStats` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `status` VARCHAR(255) NOT NULL , `group` VARCHAR(255) NOT NULL ,`expires` VARCHAR(255) NULL DEFAULT NULL , `reason` VARCHAR(255) NULL DEFAULT NULL , `timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP , `byUUID` VARCHAR(255) NULL DEFAULT NULL , `last_name` VARCHAR(255) NOT NULL, PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
 			ps.executeUpdate();
 			//Player Caches
 			if(ConfigProperties.DEBUG)
@@ -84,13 +84,6 @@ public class MythSQLConnect {
 				Bukkit.getLogger().info("Loading MySQL Table: IPCache");
 			}
 			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_IPCache` ( `ID` INT NOT NULL AUTO_INCREMENT, `IP_ADDRESS` VARCHAR(255) NOT NULL , `UUID` VARCHAR(255) NOT NULL, `Status` VARCHAR(255) NULL DEFAULT NULL, PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
-			ps.executeUpdate();
-			//Cron jobs
-			if(ConfigProperties.DEBUG)
-			{
-				Bukkit.getLogger().info("Loading MySQL Table: CronJobs");
-			}
-			ps = (PreparedStatement) con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_CronJobs` ( `ID` INT NOT NULL AUTO_INCREMENT, `action` VARCHAR(255) NOT NULL , `UUID` VARCHAR(255) NOT NULL , `value1` VARCHAR(255) NULL DEFAULT NULL , `value2` VARCHAR(255) NULL DEFAULT NULL , `value3` VARCHAR(255) NULL DEFAULT NULL , `value4` VARCHAR(255) NULL DEFAULT NULL , PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
 			ps.executeUpdate();
 			//Site Users
 			if(ConfigProperties.DEBUG)

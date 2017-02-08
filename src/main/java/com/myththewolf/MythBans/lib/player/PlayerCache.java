@@ -50,6 +50,10 @@ public class PlayerCache {
 		ps.setString(1, name);
 		ps.setString(2, UUID);
 		ps.executeUpdate();
+		ps = (PreparedStatement) con.prepareStatement("UPDATE MythBans_PlayerStats SET `name` = ? WHERE `UUID` = ?");
+		ps.setString(1, name);
+		ps.setString(2, UUID);
+		ps.executeUpdate();
 		ps.close();
 	}
 	public void insertPlayer(String UUID, String name) throws SQLException

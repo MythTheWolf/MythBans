@@ -18,13 +18,11 @@ import com.myththewolf.MythBans.lib.player.Player;
 
 public class ImportJSON extends BukkitRunnable {
 
-	private final JavaPlugin plugin;
 	private final CommandSender sender;
 	private final Player pp = new Player();
 	private final DatabaseCommands dbc = new DatabaseCommands();
 
 	public ImportJSON(JavaPlugin plugin, CommandSender se) {
-		this.plugin = plugin;
 		this.sender = se;
 	}
 
@@ -51,7 +49,7 @@ public class ImportJSON extends BukkitRunnable {
 				if (!Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).hasPlayedBefore()) {
 					if (!checked.contains(UUID2)) {
 						pp.processNewUser(UUID2, name);
-
+						
 					}
 				}
 				if (expires.equals("forever")) {

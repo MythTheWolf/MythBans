@@ -61,10 +61,11 @@ public class Player {
 	{
 		pc.insertPlayer(UUID, name);
 		ps = (PreparedStatement) MythSQLConnect.getConnection()
-				.prepareStatement("INSERT INTO MythBans_PlayerStats (`UUID`,`status`,`group`) VALUES (?,?,?);");
+				.prepareStatement("INSERT INTO MythBans_PlayerStats (`UUID`,`status`,`group`,`last_name`) VALUES (?,?,?,?);");
 		ps.setString(1, UUID);
 		ps.setString(2, "OK");
 		ps.setString(3, "DEFAULT");
+		ps.setString(4, name);
 		ps.executeUpdate();
 		ps.close();
 	}

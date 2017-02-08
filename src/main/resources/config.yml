@@ -47,6 +47,8 @@ KICKIP-PERMISSSION: 'mythbans.kickip'
 PROBATION-PERMISSION: 'mythbans.probate'
 #Permission user must have in order to see In-Game messages
 BANMESSAGE-PERMISSION: 'mythbans.viewmessages'
+#Permission to create a web UI user, allowing them to manage bans/etc from the webUI
+CREATE-UI-PERMISSION: 'mythbans.createui'
 #Permision to see probation users
 VIEW-PROBATIONS-PERMISSION: ''
 #              **********Messages Config********
