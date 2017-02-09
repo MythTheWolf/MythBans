@@ -48,8 +48,10 @@ public class MythBans {
 	}
 
 	public void loadEvents() {
+		/*
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerChat(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(), MythPlugin);
+		*/
 	}
 
 	public Connection loadMySQL() {
