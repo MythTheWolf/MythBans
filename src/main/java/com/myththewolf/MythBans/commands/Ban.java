@@ -40,6 +40,7 @@ public class Ban implements CommandExecutor {
 			} else {
 				toBan = pCache.getOfflinePlayerExact(args[0]);
 				if (sender instanceof ConsoleCommandSender) {
+					System.out.prinln(ConfigProperties.PREFIX + "Banned " + toBan.getName());
 					String reason = Utils.makeString(args, 1);
 					dbc.banUser(toBan.getUniqueId().toString(), "CONSOLE", reason);
 
@@ -71,6 +72,7 @@ public class Ban implements CommandExecutor {
 
 	private String formatMessage(String UUID2, String format) throws SQLException {
 		String toFormat = format;
+		
 		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
 			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
 		} else {
