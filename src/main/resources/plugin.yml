@@ -26,3 +26,6 @@ commands:
  createUI:
      description: Create a site user
      aliases: []
+ pardon:
+     description: Unbans a player
+     aliases: [unban,ub]

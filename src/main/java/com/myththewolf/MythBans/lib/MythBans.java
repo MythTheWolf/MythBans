@@ -9,6 +9,7 @@ import com.myththewolf.MythBans.commands.Ban;
 import com.myththewolf.MythBans.commands.IPBan;
 import com.myththewolf.MythBans.commands.Kick;
 import com.myththewolf.MythBans.commands.Mute;
+import com.myththewolf.MythBans.commands.Pardon;
 import com.myththewolf.MythBans.commands.Probate;
 import com.myththewolf.MythBans.commands.TempBan;
 import com.myththewolf.MythBans.commands.createUI;
@@ -72,6 +73,7 @@ public class MythBans {
 		MythPlugin.getCommand("banip").setExecutor(new IPBan());
 		MythPlugin.getCommand("import").setExecutor(new importJSON(MythPlugin));
 		MythPlugin.getCommand("createUI").setExecutor(new createUI());
+		MythPlugin.getCommand("pardon").setExecutor(new Pardon());
 	}
 	
 	public void startDaemon()
