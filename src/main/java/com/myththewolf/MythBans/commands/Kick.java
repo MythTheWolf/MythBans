@@ -63,7 +63,7 @@ public class Kick implements CommandExecutor {
 			for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 				if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
 					player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-							this.formatMessage(toUUID, ConfigProperties.SERVER_BAN_FORMAT)));
+							this.formatMessage(toKick.getUniqueId().toString(), ConfigProperties.SERVER_KICK_FORMAT)));
 				}
 			}
 			return true;

@@ -50,7 +50,7 @@ BANMESSAGE-PERMISSION: 'mythbans.viewmessages'
 #Permission to create a web UI user, allowing them to manage bans/etc from the webUI
 CREATE-UI-PERMISSION: 'mythbans.createui'
 #Permision to see probation users
-VIEW-PROBATIONS-PERMISSION: ''
+VIEW-PROBATIONS-PERMISSION: 'mythbans.viewprobate'
 #              **********Messages Config********
 
 #Message to display on the user's screen when banned/tempbanned

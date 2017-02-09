@@ -41,7 +41,7 @@ public class PlayerChat implements Listener {
 						i.sendMessage(ChatColor.RED + " * " + ChatColor.WHITE + "<" + who + ChatColor.WHITE + "> "
 								+ ChatColor.translateAlternateColorCodes('&', message));
 					} else {
-						i.sendMessage(ChatColor.RED + " * " + ChatColor.WHITE + "<" + ChatColor.RED + "*" + who + ChatColor.WHITE + " > "
+						i.sendMessage(ChatColor.RED + " * " + ChatColor.WHITE + "<" + who + ChatColor.WHITE + " > "
 								+ message);
 					}
 				} else {

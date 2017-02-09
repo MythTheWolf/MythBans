@@ -34,6 +34,9 @@ public class PlayerJoin implements Listener {
 			PlayerClass.processNewUser(e.getPlayer().getUniqueId().toString(), e.getPlayer().getName());
 		} else {
 			switch (PlayerClass.getStatus(e.getPlayer().getUniqueId().toString())) {
+			case "OK":
+				dbc.cleanUser(e.getPlayer().getUniqueId().toString());
+				break;
 			case "banned":
 				message = this.formatMessage(e.getPlayer().getUniqueId().toString(), ConfigProperties.USER_BAN_FORMAT);
 
