@@ -21,7 +21,7 @@ public class Pardon implements CommandExecutor {
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private String toUUID = "";
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
-
+	private String byUUID;
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
@@ -41,6 +41,7 @@ public class Pardon implements CommandExecutor {
 					dbc.pardonUser(toUUID, "CONSOLE");
 				} else {
 					dbc.pardonUser(toUUID, ((Player) sender).getUniqueId().toString());
+					byUUID = ((Player) sender).getUniqueId().toString();
 				}
 				for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 					if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
@@ -61,7 +62,7 @@ public class Pardon implements CommandExecutor {
 			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
 		} else {
 			toFormat = toFormat.replaceAll("\\{staffMember\\}",
-					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
+					pCache.getName(byUUID));
 		}
 
 		toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());

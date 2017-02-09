@@ -16,7 +16,7 @@ commands:
      aliases: [k,throw]
  banip:
      description: Bans a IP from the server
-     aliases: [bip,banip,ib]
+     aliases: [bip,banip,ib,ipban]
  probate:
      description: Throws a user into probation
      aliases: [p,probation,trial,pb]
