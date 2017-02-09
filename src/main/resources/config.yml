@@ -45,6 +45,7 @@ TEMPBANIP-PERMISSION: 'mythbans.tempbanip'
 MUTEIP-PERMISSION: 'mythbans.muteip'
 KICKIP-PERMISSION: 'mythbans.kickip'
 PROBATION-PERMISSION: 'mythbans.probate'
+PARDON-PERMISSION: 'mythbans.pardon'
 #Permission user must have in order to see In-Game messages
 BANMESSAGE-PERMISSION: 'mythbans.viewmessages'
 #Permission to create a web UI user, allowing them to manage bans/etc from the webUI
@@ -66,6 +67,7 @@ USER-IP-TEMPBAN-FORMAT: 'Your IP has been banned until {expire} by {staffMember}
 USER-IP-KICK-FORMAT: 'Your IP has been kicked by {staffMember} for {reason}'
 SERVER-KICK-FORMAT: '{staffMember} kicked {culprit} for {reason}'
 SERVER-BAN-FORMAT: '{staffMember} banned {culprit} for {reason}'
+SERVER-PARDON-FORMAT: '{staffMember} unbanned {culprit}'
 SERVER-TEMPBAN-FORMAT: '{staffMember} banned {culprit} until {expire} for {reason}'
 SERVER-MUTE-FORMAT: '{staffMember} muted {culprit} for {reason}'
 SERVER-IP-BAN-FORMAT: '{staffMember} banned IP {culprit} for {reason}'

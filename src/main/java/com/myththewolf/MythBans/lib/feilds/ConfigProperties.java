@@ -32,6 +32,7 @@ public class ConfigProperties {
 	public static String SERVER_IPMUTE_FORMAT;
 	public static String SERVER_IPKICK_FORMAT;
 	public static String CREATE_UI_PERMISSION;
+	public static String PARDON_PERMISSION;
 	public static Boolean DEBUG;
 	public static String API_URL;
 	public static String API_KEY;
@@ -48,6 +49,7 @@ public class ConfigProperties {
 	public static String PROBATION_PERMISSION;
 	private static FileConfiguration cfg;
 	private static Logger MythLog;
+	public static String SERVER_PARDON_FORMAT;
 
 	public static void dumpProperties(JavaPlugin i) {
 		MythLog = i.getLogger();
@@ -80,6 +82,7 @@ public class ConfigProperties {
 			SERVER_IPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IP-TEMPBAN-FORMAT"));
 			SERVER_IPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IP-MUTE-FORMAT"));
 			SERVER_IPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IP-KICK-FORMAT"));
+			SERVER_PARDON_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-PARDON-FORMAT"));
 			DEFAULT_BAN_REASON = ChatColor.translateAlternateColorCodes('&', cfg.getString("DEFAULT-BAN-REASON"));
 			BAN_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("BAN-PERMISSION"));
 			TEMPBAN_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("TEMPBAN-PERMISSION"));
@@ -92,6 +95,7 @@ public class ConfigProperties {
 			VIEW_PROBATION_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("VIEW-PROBATIONS-PERMISSION"));
 			PROBATION_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("PROBATION-PERMISSION"));
 			CREATE_UI_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("CREATE-UI-PERMISSION"));
+			PARDON_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("PARDON-PERMISSION"));
 		} catch (Exception e) {
 			MythLog.severe("Could not load MythBans... Malformed Config!");
 			e.printStackTrace();

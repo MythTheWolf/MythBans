@@ -180,6 +180,18 @@ public class DatabaseCommands {
 		ps.setString(3, "");
 		ps.setString(4, UUID);
 		ps.executeUpdate();
-		
+	}
+	
+	public void pardonUser(String UUID,String byUUID) throws SQLException {
+		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_PlayerStats SET status = ? WHERE UUID = ?");
+		ps.setString(1, "OK");
+		ps.setString(2, UUID);
+		ps.executeUpdate();
+		ps = (PreparedStatement) c
+				.prepareStatement("INSERT INTO MythBans_History (`UUID`,`action`,`byUUID`) VALUES (?,?,?)");
+		ps.setString(1, UUID);
+		ps.setString(2, "userPardon");
+		ps.setString(3, byUUID);
+		ps.executeUpdate();
 	}
 }
