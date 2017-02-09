@@ -58,7 +58,7 @@ public class Ban implements CommandExecutor {
 				}
 			}
 			if (toBan.isOnline()) {
-				toban.getPlayer().kickPlayer(this.formatMessage(toUUID, ConfigProperties.USER_BAN_FORMAT));
+				toBan.getPlayer().kickPlayer(this.formatMessage(toUUID, ConfigProperties.USER_BAN_FORMAT));
 			}
 		} catch (
 
