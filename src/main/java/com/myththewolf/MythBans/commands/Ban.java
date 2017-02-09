@@ -20,7 +20,7 @@ import com.myththewolf.MythBans.lib.tool.Utils;
 public class Ban implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private DatabaseCommands dbc = new DatabaseCommands();
-	private OfflinePlayer p;
+	private OfflinePlayer toBan;
 	private String toUUID;
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
 
@@ -38,18 +38,18 @@ public class Ban implements CommandExecutor {
 						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
 			} else {
-				p = pCache.getOfflinePlayerExact(args[0]);
+				toBan = pCache.getOfflinePlayerExact(args[0]);
 				if (sender instanceof ConsoleCommandSender) {
 					String reason = Utils.makeString(args, 1);
-					dbc.banUser(p.getUniqueId().toString(), "CONSOLE", reason);
+					dbc.banUser(toBan.getUniqueId().toString(), "CONSOLE", reason);
 
 					toUUID = p.getUniqueId().toString();
 				} else {
 					String reason = Utils.makeString(args, 1);
 					org.bukkit.entity.Player by  = (org.bukkit.entity.Player) sender;
-					dbc.banUser(p.getUniqueId().toString(), by.getUniqueId().toString(), reason);
+					dbc.banUser(toBan.getUniqueId().toString(), by.getUniqueId().toString(), reason);
 
-					toUUID = p.getUniqueId().toString();
+					toUUID = toBan.getUniqueId().toString();
 				}
 			}
 			for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
