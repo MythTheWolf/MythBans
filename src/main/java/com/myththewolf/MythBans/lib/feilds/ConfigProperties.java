@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.md_5.bungee.api.ChatColor;
 
 public class ConfigProperties {
+	public static String SERVER_UNMUTE_FORMAT;
 	public static String SQL_HOST;
 	public static String SQL_PORT;
 	public static String SQL_DATABASE;
@@ -50,6 +51,7 @@ public class ConfigProperties {
 	private static FileConfiguration cfg;
 	private static Logger MythLog;
 	public static String SERVER_PARDON_FORMAT;
+	public static String USER_UNMUTE_FORMAT;
 
 	public static void dumpProperties(JavaPlugin i) {
 		MythLog = i.getLogger();
@@ -69,6 +71,7 @@ public class ConfigProperties {
 			USER_BAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("USER-BAN-FORMAT"));
 			USER_KICK_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("USER-KICK-FORMAT"));
 			USER_TEMPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("USER-TEMPBAN-FORMAT"));
+			USER_UNMUTE_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("USER-UNMUTE-FORMAT"));
 			USER_MUTE_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("USER-MUTE-FORMAT"));
 			USER_IPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("USER-IP-BAN-FORMAT"));
 			USER_IPTEMPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("USER-IP-TEMPBAN-FORMAT"));
@@ -78,6 +81,7 @@ public class ConfigProperties {
 			SERVER_KICK_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-KICK-FORMAT"));
 			SERVER_TEMPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-TEMPBAN-FORMAT"));
 			SERVER_MUTE_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-MUTE-FORMAT"));
+			SERVER_UNMUTE_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-UNMUTE-FORMAT"));
 			SERVER_IPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IP-BAN-FORMAT"));
 			SERVER_IPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IP-TEMPBAN-FORMAT"));
 			SERVER_IPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IP-MUTE-FORMAT"));

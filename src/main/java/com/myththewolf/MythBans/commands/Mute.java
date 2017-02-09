@@ -1,6 +1,7 @@
 package com.myththewolf.MythBans.commands;
 
 import java.sql.SQLException;
+
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -19,44 +20,73 @@ import com.myththewolf.MythBans.lib.player.PlayerCache;
 
 public class Mute implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
+
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private OfflinePlayer p;
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new Player();
+	private boolean isUnmute = false;
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
 			if (args.length < 1) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /mute <user>");
 				return true;
-			}else if (pCache.getOfflinePlayerExact(args[0]) == null) {
+			} else if (pCache.getOfflinePlayerExact(args[0]) == null) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has not been on this server.");
 				return true;
 			} else {
 				if (sender instanceof ConsoleCommandSender) {
 					dbc.muteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(), "CONSOLE");
-				} else if (!sender.hasPermission(ConfigProperties.BAN_PERMISSION)) {
+				} else if (!sender.hasPermission(ConfigProperties.MUTE_PERMISSION)) {
 					sender.sendMessage(
 							ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 					return true;
 				} else {
-					if (sender instanceof ConsoleCommandSender) {
-						dbc.muteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(), "CONSOLE");
-						p = pCache.getOfflinePlayerExact(args[0]);
+					if (PlayerClass.getStatus(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString())
+							.equals("muted")) {
+						if (sender instanceof ConsoleCommandSender) {
+							dbc.UnmuteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(), "CONSOLE");
+							p = pCache.getOfflinePlayerExact(args[0]);
+							isUnmute = true;
+						} else {
+							org.bukkit.entity.Player pp = (org.bukkit.entity.Player) sender;
+							dbc.UnmuteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(),
+									pp.getUniqueId().toString());
+							p = pCache.getOfflinePlayerExact(args[0]);
+							isUnmute = true;
+						}
 					} else {
-						org.bukkit.entity.Player pp = (org.bukkit.entity.Player) sender;
-						dbc.muteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(),
-								pp.getUniqueId().toString());
-						p = pCache.getOfflinePlayerExact(args[0]);
+						if (sender instanceof ConsoleCommandSender) {
+							dbc.muteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(), "CONSOLE");
+							p = pCache.getOfflinePlayerExact(args[0]);
+						} else {
+							org.bukkit.entity.Player pp = (org.bukkit.entity.Player) sender;
+							dbc.muteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(),
+									pp.getUniqueId().toString());
+							p = pCache.getOfflinePlayerExact(args[0]);
+						}
 					}
-					
 				}
 				for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 					if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-						player.sendMessage(this.formatMessage(p.getUniqueId().toString(), ConfigProperties.SERVER_MUTE_FORMAT));
+
+						if (!isUnmute) {
+							player.sendMessage(this.formatMessage(p.getUniqueId().toString(),
+									ConfigProperties.SERVER_MUTE_FORMAT));
+						} else {
+							player.sendMessage(this.formatMessage(p.getUniqueId().toString(),
+									ConfigProperties.SERVER_UNMUTE_FORMAT));
+						}
 					}
 				}
 				if (p.isOnline()) {
-					p.getPlayer().sendMessage(this.formatMessage(p.getUniqueId().toString(), ConfigProperties.USER_MUTE_FORMAT));
+					if (!isUnmute) {
+						p.getPlayer().sendMessage(
+								this.formatMessage(p.getUniqueId().toString(), ConfigProperties.USER_UNMUTE_FORMAT));
+					} else {
+
+					}
 				}
 			}
 		} catch (SQLException e) {
@@ -65,7 +95,7 @@ public class Mute implements CommandExecutor {
 		}
 		return true;
 	}
-	
+
 	private String formatMessage(String UUID2, String format) throws SQLException {
 		String toFormat = format;
 		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
@@ -76,8 +106,6 @@ public class Mute implements CommandExecutor {
 		}
 
 		toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
-		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID2));
-		toFormat = toFormat.replaceAll("\\{expire\\}", PlayerClass.getExpireDate(UUID2).toString());
 		return toFormat;
 	}
 
