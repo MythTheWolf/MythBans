@@ -43,7 +43,7 @@ public class Ban implements CommandExecutor {
 					String reason = Utils.makeString(args, 1);
 					dbc.banUser(toBan.getUniqueId().toString(), "CONSOLE", reason);
 
-					toUUID = p.getUniqueId().toString();
+					toUUID = toBan.getUniqueId().toString();
 				} else {
 					String reason = Utils.makeString(args, 1);
 					org.bukkit.entity.Player by  = (org.bukkit.entity.Player) sender;
@@ -57,9 +57,8 @@ public class Ban implements CommandExecutor {
 					player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.formatMessage(toUUID, ConfigProperties.SERVER_BAN_FORMAT)));
 				}
 			}
-			if (p.isOnline()) {
-				p.getPlayer()
-						.kickPlayer(this.formatMessage(toUUID, ConfigProperties.USER_BAN_FORMAT));
+			if (toBan.isOnline()) {
+				toban.getPlayer().kickPlayer(this.formatMessage(toUUID, ConfigProperties.USER_BAN_FORMAT));
 			}
 		} catch (
 
