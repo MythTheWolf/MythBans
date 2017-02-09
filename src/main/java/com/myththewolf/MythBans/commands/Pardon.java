@@ -41,6 +41,7 @@ public class Pardon implements CommandExecutor {
 					dbc.pardonUser(toUUID, "CONSOLE");
 				} else {
 					dbc.pardonUser(toUUID, ((Player) sender).getUniqueId().toString());
+					dbc.cleanUser(toUUID);
 					byUUID = ((Player) sender).getUniqueId().toString();
 				}
 				for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
