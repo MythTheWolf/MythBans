@@ -2,11 +2,11 @@ package com.myththewolf.MythBans.lib.SQL;
 
 import java.sql.Connection;
 
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class DatabaseCommands {

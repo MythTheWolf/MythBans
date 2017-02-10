@@ -24,8 +24,6 @@ public class Kick implements CommandExecutor {
 	private final DatabaseCommands dbc = new DatabaseCommands();
 	private final com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
 	private Player toKick;
-	private String toUUID;
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {

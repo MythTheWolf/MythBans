@@ -22,26 +22,10 @@ public class Mute implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 
 	private DatabaseCommands dbc = new DatabaseCommands();
-	private OfflinePlayer p;
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new Player();
-	private boolean isUnmute = false;
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		return true;
-	}
-
-	private String formatMessage(String UUID2, String format) throws SQLException {
-		String toFormat = format;
-		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
-			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
-		} else {
-			toFormat = toFormat.replaceAll("\\{staffMember\\}",
-					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
-		}
-
-		toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
-		return toFormat;
 	}
 
 }

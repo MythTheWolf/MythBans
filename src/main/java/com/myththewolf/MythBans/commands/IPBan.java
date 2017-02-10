@@ -24,8 +24,6 @@ public class IPBan implements CommandExecutor {
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private String toIP;
 	private IP ipClass = new IP();
-	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
