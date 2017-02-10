@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
+import com.myththewolf.MythBans.lib.events.player.IP;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Utils;
@@ -22,6 +23,7 @@ public class IPBan implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private String toIP;
+	private IP ipClass = new IP();
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
 
 	@Override
@@ -83,20 +85,16 @@ public class IPBan implements CommandExecutor {
 
 	private String formatMessage(String UUID2, String format) throws SQLException {
 		String toFormat = format;
-		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
+		toFormat = toFormat.replaceAll("\\{culprit\\}", UUID2);
+
+		if (ipClass.getWhoBanned(UUID2).equals("CONSOLE")) {
 			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
 		} else {
 			toFormat = toFormat.replaceAll("\\{staffMember\\}",
-					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
+					Bukkit.getOfflinePlayer(UUID.fromString(ipClass.getWhoBanned(UUID2))).getName());
 		}
-		if (UUID2.charAt(0) == '/') {
-			toFormat = toFormat.replaceAll("\\{culprit\\}", UUID2);
-		} else {
-			toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
-		}
-
-		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID2));
-
+		toFormat = toFormat.replaceAll("\\{reason\\}", ipClass.getReason(UUID2));
 		return toFormat;
 	}
+
 }

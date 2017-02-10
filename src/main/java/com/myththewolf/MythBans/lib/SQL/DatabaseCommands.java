@@ -136,21 +136,12 @@ public class DatabaseCommands {
 	}
 
 	public void banIP(String IP, String byUUID, String reason) throws SQLException {
-		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_IPCache SET status = ? WHERE IP_ADDRESS = ?");
+		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_IPCache SET status = ?, byUUID = ?, reason = ? WHERE IP_ADDRESS = ?");
 		ps.setString(1, "banned");
-		ps.setString(2, IP);
+		ps.setString(2, byUUID);
+		ps.setString(3, reason);
+		ps.setString(4, IP);
 		ps.executeUpdate();
-		for (Player p : Bukkit.getOnlinePlayers()) {
-			if (p.getAddress().getAddress().toString().equals(IP)) {
-				ps = (PreparedStatement) c
-						.prepareStatement("UPDATE MythBans_PlayerStats SET byUUID = ?, reason = ? WHERE UUID = ?");
-				ps.setString(1, byUUID);
-				ps.setString(2, reason);
-				ps.setString(3, p.getUniqueId().toString());
-				ps.executeUpdate();
-			}
-		}
-
 		ps = (PreparedStatement) c
 				.prepareStatement("INSERT INTO MythBans_History (`UUID`,`action`,`byUUID`,`reason`) VALUES (?,?,?,?)");
 		ps.setString(1, IP);
