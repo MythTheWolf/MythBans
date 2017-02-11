@@ -82,7 +82,24 @@ public class DatabaseCommands {
 		ps.setString(3, UUID);
 		ps.executeUpdate();
 	}
-
+	
+	public void pardonIP(String IP) throws SQLException
+	{
+		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_IPCache SET status = ? WHERE IP_ADDRESS = ?");
+		ps.setString(1, "OK");
+		ps.setString(2, IP);
+		ps.executeUpdate();
+	}
+	
+	public void cleanIP(String IP) throws SQLException
+	{
+		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_IPCache SET status = ?, reason = ?, byUUID = ? WHERE IP_ADDRESS = ?");
+		ps.setString(1, "OK");
+		ps.setString(2, "");
+		ps.setString(3, "");
+		ps.setString(4, IP);
+		ps.executeUpdate();
+	}
 	public void setIP(Player p) throws SQLException {
 		ps = (PreparedStatement) c.prepareStatement("SELECT * FROM MythBans_IPCache WHERE IP_ADDRESS = ?");
 		ps.setString(1, p.getAddress().getAddress().toString());

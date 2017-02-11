@@ -24,8 +24,8 @@ public class PlayerJoin implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException {
+		System.out.println("IMBOUND---->"+e.getPlayer().getName());
 		String message;
-		e.getPlayer().getName();
 		if (!pc.ipExist(e.getPlayer().getAddress().getAddress().toString())) {
 			pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
 		} else if (!e.getPlayer().getUniqueId().toString()

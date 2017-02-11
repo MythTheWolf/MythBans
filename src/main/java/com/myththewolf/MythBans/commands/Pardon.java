@@ -39,6 +39,8 @@ public class Pardon implements CommandExecutor {
 				toUUID = pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString();
 				if (sender instanceof ConsoleCommandSender) {
 					dbc.pardonUser(toUUID, "CONSOLE");
+					byUUID = "CONSOLE";
+					dbc.cleanUser(toUUID);
 				} else {
 					dbc.pardonUser(toUUID, ((Player) sender).getUniqueId().toString());
 					dbc.cleanUser(toUUID);

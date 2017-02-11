@@ -29,3 +29,6 @@ commands:
  pardon:
      description: Unbans a player
      aliases: [unban,ub]
+ pardonIP:
+     description: Unbans a IP Address
+     aliases: [ubanip,pip]

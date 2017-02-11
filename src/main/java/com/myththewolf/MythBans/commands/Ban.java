@@ -58,7 +58,7 @@ public class Ban implements CommandExecutor {
 					player.sendMessage(ChatColor.translateAlternateColorCodes('&',
 							this.formatMessage(toUUID, ConfigProperties.SERVER_BAN_FORMAT)));
 				}
-			}
+			}			
 			if (toBan.isOnline()) {
 				toBan.getPlayer().kickPlayer(this.formatMessage(toUUID, ConfigProperties.USER_BAN_FORMAT));
 			}

@@ -21,6 +21,9 @@ public class IP {
 		}
 		return null;
 	}
+	
+	
+	
 
 	public String getReason(String IP) throws SQLException {
 		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE IP_ADDRESS = ?");

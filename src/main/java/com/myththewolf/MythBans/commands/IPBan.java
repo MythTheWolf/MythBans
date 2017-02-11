@@ -24,6 +24,7 @@ public class IPBan implements CommandExecutor {
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private String toIP;
 	private IP ipClass = new IP();
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
@@ -67,10 +68,11 @@ public class IPBan implements CommandExecutor {
 			}
 			for (Player i : Bukkit.getOnlinePlayers()) {
 				if (i.getAddress().getAddress().toString().equals(toIP)) {
-					i.kickPlayer(this.formatMessage(toIP, ConfigProperties.USER_IPBAN_FORMAT));
+					i.kickPlayer(this.formatMessage(i.getAddress().getAddress().toString(),
+							ConfigProperties.USER_IPBAN_FORMAT));
 				} else if (i.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-					i.sendMessage(ChatColor.translateAlternateColorCodes('&',
-							this.formatMessage(toIP, ConfigProperties.SERVER_IPBAN_FORMAT)));
+					i.sendMessage(ChatColor.translateAlternateColorCodes('&', this.formatMessage(
+							i.getAddress().getAddress().toString(), ConfigProperties.SERVER_IPBAN_FORMAT)));
 				}
 
 			}

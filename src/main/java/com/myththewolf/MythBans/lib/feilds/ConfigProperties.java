@@ -26,6 +26,7 @@ public class ConfigProperties {
 	public static String USER_IPTEMPBAN_FORMAT;
 	public static String SERVER_BAN_FORMAT;
 	public static String SERVER_KICK_FORMAT;
+	public static String SERVER_IPUNBAN_FORMAT;
 	public static String SERVER_TEMPBAN_FORMAT;
 	public static String SERVER_MUTE_FORMAT;
 	public static String SERVER_IPBAN_FORMAT;
@@ -74,7 +75,8 @@ public class ConfigProperties {
 			USER_UNMUTE_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("USER-UNMUTE-FORMAT"));
 			USER_MUTE_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("USER-MUTE-FORMAT"));
 			USER_IPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("USER-IP-BAN-FORMAT"));
-			USER_IPTEMPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("USER-IP-TEMPBAN-FORMAT"));
+			USER_IPTEMPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&',
+					cfg.getString("USER-IP-TEMPBAN-FORMAT"));
 			USER_IPKICK_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("USER-IP-KICK-FORMAT"));
 			USER_IPMUTE_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("USER-IP-MUTE-FORMAT"));
 			SERVER_BAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-BAN-FORMAT"));
@@ -83,10 +85,12 @@ public class ConfigProperties {
 			SERVER_MUTE_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-MUTE-FORMAT"));
 			SERVER_UNMUTE_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-UNMUTE-FORMAT"));
 			SERVER_IPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IP-BAN-FORMAT"));
-			SERVER_IPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IP-TEMPBAN-FORMAT"));
-			SERVER_IPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IP-MUTE-FORMAT"));
-			SERVER_IPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IP-KICK-FORMAT"));
+			SERVER_IPTEMPBAN_FORMAT = ChatColor.translateAlternateColorCodes('&',
+					cfg.getString("SERVER-IP-TEMPBAN-FORMAT"));
+			SERVER_IPMUTE_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IP-MUTE-FORMAT"));
+			SERVER_IPKICK_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IP-KICK-FORMAT"));
 			SERVER_PARDON_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-PARDON-FORMAT"));
+			SERVER_IPUNBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IPPARDON-FORMAT"));
 			DEFAULT_BAN_REASON = ChatColor.translateAlternateColorCodes('&', cfg.getString("DEFAULT-BAN-REASON"));
 			BAN_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("BAN-PERMISSION"));
 			TEMPBAN_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("TEMPBAN-PERMISSION"));
@@ -96,7 +100,8 @@ public class ConfigProperties {
 			TEMPBANIP_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("TEMPBANIP-PERMISSION"));
 			MUTEIP_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("MUTEIP-PERMISSION"));
 			KICKIP_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("KICKIP-PERMISSION"));
-			VIEW_PROBATION_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("VIEW-PROBATIONS-PERMISSION"));
+			VIEW_PROBATION_PERMISSION = ChatColor.translateAlternateColorCodes('&',
+					cfg.getString("VIEW-PROBATIONS-PERMISSION"));
 			PROBATION_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("PROBATION-PERMISSION"));
 			CREATE_UI_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("CREATE-UI-PERMISSION"));
 			PARDON_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("PARDON-PERMISSION"));
