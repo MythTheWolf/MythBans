@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -21,7 +22,7 @@ public class PlayerJoin implements Listener {
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private IP ipClass = new IP();
 
-	@EventHandler
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException {
 		String message;
 		e.getPlayer().getName();
