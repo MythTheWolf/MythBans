@@ -47,7 +47,7 @@ public class Ban implements CommandExecutor {
 					toUUID = toBan.getUniqueId().toString();
 				} else {
 					String reason = Utils.makeString(args, 1);
-					org.bukkit.entity.Player by  = (org.bukkit.entity.Player) sender;
+					org.bukkit.entity.Player by = (org.bukkit.entity.Player) sender;
 					dbc.banUser(toBan.getUniqueId().toString(), by.getUniqueId().toString(), reason);
 
 					toUUID = toBan.getUniqueId().toString();
@@ -55,7 +55,8 @@ public class Ban implements CommandExecutor {
 			}
 			for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 				if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-					player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.formatMessage(toUUID, ConfigProperties.SERVER_BAN_FORMAT)));
+					player.sendMessage(ChatColor.translateAlternateColorCodes('&',
+							this.formatMessage(toUUID, ConfigProperties.SERVER_BAN_FORMAT)));
 				}
 			}
 			if (toBan.isOnline()) {
@@ -72,7 +73,7 @@ public class Ban implements CommandExecutor {
 
 	private String formatMessage(String UUID2, String format) throws SQLException {
 		String toFormat = format;
-		
+
 		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
 			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
 		} else {
