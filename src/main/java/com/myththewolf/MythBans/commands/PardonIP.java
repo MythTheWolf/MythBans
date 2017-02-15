@@ -1,6 +1,7 @@
 package com.myththewolf.MythBans.commands;
 
 import java.sql.SQLException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,8 +11,8 @@ import org.bukkit.entity.Player;
 
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
-import com.myththewolf.MythBans.lib.events.player.IP;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.player.IP;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 
 import net.md_5.bungee.api.ChatColor;
