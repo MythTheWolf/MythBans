@@ -86,9 +86,9 @@ public class Player {
 	public void clearExpire(String UUID) throws SQLException
 	{
 		ps = (PreparedStatement) MythSQLConnect.getConnection().prepareStatement("UPDATE MythBans_PlayerStats SET `status` = ?, `expires` = ? WHERE `UUID` = ?");
-		ps.setString(1, UUID);
-		ps.setString(2, "OK");
-		ps.setString(3, null);
+		ps.setString(1, "OK");
+		ps.setString(2, null);
+		ps.setString(3, UUID);
 		ps.executeUpdate();
 		ps.close();
 	}
