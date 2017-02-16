@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -118,16 +120,25 @@ public class PlayerCache {
 			return null;
 		}
 	}
-	public String getIPbyUUID(String UUID) throws SQLException
+	public String[] getIPbyUUID(String UUID) throws SQLException
 	{
+		List<String> IPs = new ArrayList<String>();
 		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE `UUID` = ?");
 		ps.setString(1, UUID);
 		rs = ps.executeQuery();
-		if(rs.next()){
-			return rs.getString("IP_ADDRESS");
-		}else{
+		int count = 0;
+		while(rs.next())
+		{
+			IPs.add(rs.getString("IP_ADDRESS"));
+			count++;
+		}
+		if(count <= 0)
+		{
 			return null;
 		}
+		String[] arr = new String[IPs.size()];
+		arr = IPs.toArray(new String[IPs.size()]);
+		return arr;
 	}
 	
 	

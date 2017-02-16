@@ -19,7 +19,7 @@ public class IP {
 		while (rs.next()) {
 			return rs.getString("byUUID");
 		}
-		return null;
+		return "NO_USER_FOUND";
 	}
 	
 	
@@ -32,6 +32,6 @@ public class IP {
 		while (rs.next()) {
 			return rs.getString("reason");
 		}
-		return null;
+		return "NO_REASON_FOUND";
 	}
 }
