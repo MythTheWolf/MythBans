@@ -25,7 +25,7 @@ public class PlayerChat implements Listener {
 			p.sendMessage(ChatColor.translateAlternateColorCodes('&', ConfigProperties.PREFIX)
 					+ "Your voice has been silenced!");
 			e.setCancelled(true);
-		} else if (dbc.getIPStatus(dbc.getStoredIP(e.getPlayer().getUniqueId().toString())).equals("muted")) {
+		} else if (dbc.getIPStatus(e.getPlayer().getAddress().getAddress().toString()).equals("muted")) {
 			p.sendMessage(ChatColor.translateAlternateColorCodes('&', ConfigProperties.PREFIX)
 					+ "Your voice has been silenced!");
 			e.setCancelled(true);

@@ -118,6 +118,7 @@ public class DatabaseCommands {
 		}
 	}
 
+	@Deprecated
 	public String getStoredIP(String UUID) throws SQLException {
 		ps = (PreparedStatement) c.prepareStatement("SELECT * FROM MythBans_IPCache WHERE `UUID` = ?");
 		ps.setString(1, UUID);
@@ -139,9 +140,10 @@ public class DatabaseCommands {
 	}
 
 	public void setProbation(String UUID, String byUUID, String reason) throws SQLException {
-		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_PlayerStats SET status = ? WHERE UUID = ?");
+		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_PlayerStats SET status = ?, byUUID = ? WHERE UUID = ?");
 		ps.setString(1, "trial");
-		ps.setString(2, UUID);
+		ps.setString(2, byUUID);
+		ps.setString(3, UUID);
 		ps.executeUpdate();
 		ps = (PreparedStatement) c
 				.prepareStatement("INSERT INTO MythBans_History (`UUID`,`action`,`byUUID`,`reason`) VALUES (?,?,?,?)");

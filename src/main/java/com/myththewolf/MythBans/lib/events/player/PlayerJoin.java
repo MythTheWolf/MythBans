@@ -1,9 +1,11 @@
 package com.myththewolf.MythBans.lib.events.player;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -16,6 +18,8 @@ import com.myththewolf.MythBans.lib.player.IP;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Date;
 
+import net.md_5.bungee.api.ChatColor;
+
 public class PlayerJoin implements Listener {
 	private PlayerCache pc = new PlayerCache(MythSQLConnect.getConnection());
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
@@ -25,12 +29,9 @@ public class PlayerJoin implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException {
-		System.out.println("IMBOUND---->"+e.getPlayer().getName());
+		System.out.println("IMBOUND---->" + e.getPlayer().getName());
 		String message;
 		if (!pc.ipExist(e.getPlayer().getAddress().getAddress().toString())) {
-			pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
-		} else if (!e.getPlayer().getUniqueId().toString()
-				.equals(pc.getUUIDbyIP(e.getPlayer().getAddress().getAddress().toString()))) {
 			pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
 		}
 		if (pc.getPlayerExact(e.getPlayer().getName()) == null) {
@@ -59,10 +60,10 @@ public class PlayerJoin implements Listener {
 			default:
 				break;
 			}
-			switch (dbc.getIPStatus(dbc.getStoredIP(e.getPlayer().getUniqueId().toString()))) {
+			switch (dbc.getIPStatus(e.getPlayer().getAddress().getAddress().toString())) {
 			case "banned":
-				message = this.formatMessage(dbc.getStoredIP(e.getPlayer().getUniqueId().toString()), ConfigProperties.USER_IPBAN_FORMAT,
-						true);
+				message = this.formatMessage(e.getPlayer().getAddress().getAddress().toString(),
+						ConfigProperties.USER_IPBAN_FORMAT, true);
 				e.getPlayer().kickPlayer(message);
 				break;
 			case "tempBanned":
@@ -79,7 +80,15 @@ public class PlayerJoin implements Listener {
 				break;
 
 			}
-
+			if (ipClass.getTheFam(e.getPlayer().getAddress().getAddress().toString(),e.getPlayer().getUniqueId().toString()) != null) {
+				for (Player p : Bukkit.getOnlinePlayers()) {
+					if (p.hasPermission(ConfigProperties.VIEW_PROBATION_PERMISSION)) {
+						p.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "WARNING: " + ChatColor.GOLD
+								+ e.getPlayer().getName() + " shares the same IPs as "
+								+ Arrays.toString(ipClass.getTheFam(e.getPlayer().getAddress().getAddress().toString(),e.getPlayer().getUniqueId().toString())) + ChatColor.YELLOW + " IP : " + e.getPlayer().getAddress().getAddress().toString());
+					}
+				}
+			}
 		}
 	}
 

@@ -110,6 +110,7 @@ public class PlayerCache {
 		ps.setString(3, "OK");
 		ps.executeUpdate();
 	}
+	@Deprecated
 	public String getUUIDbyIP(String IP) throws SQLException{
 		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE `IP_ADDRESS` = ?");
 		ps.setString(1, IP);

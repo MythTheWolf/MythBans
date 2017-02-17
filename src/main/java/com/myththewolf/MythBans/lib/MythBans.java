@@ -14,6 +14,7 @@ import com.myththewolf.MythBans.commands.PardonIP;
 import com.myththewolf.MythBans.commands.Probate;
 import com.myththewolf.MythBans.commands.TempBan;
 import com.myththewolf.MythBans.commands.createUI;
+import com.myththewolf.MythBans.commands.getFam;
 import com.myththewolf.MythBans.commands.importJSON;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.events.player.PlayerChat;
@@ -71,11 +72,12 @@ public class MythBans {
 		MythPlugin.getCommand("tempban").setExecutor(new TempBan());
 		MythPlugin.getCommand("kick").setExecutor(new Kick());
 		MythPlugin.getCommand("probate").setExecutor(new Probate());
-		MythPlugin.getCommand("banip").setExecutor(new IPBan());
+		MythPlugin.getCommand("banip").setExecutor(new IPBan(MythPlugin));
 		MythPlugin.getCommand("import").setExecutor(new importJSON(MythPlugin));
 		MythPlugin.getCommand("createUI").setExecutor(new createUI());
 		MythPlugin.getCommand("pardon").setExecutor(new Pardon());
-		MythPlugin.getCommand("pardonIP").setExecutor(new PardonIP());
+		MythPlugin.getCommand("pardonIP").setExecutor(new PardonIP(MythPlugin));
+		MythPlugin.getCommand("getFam").setExecutor(new getFam());
 	}
 	
 	public void startDaemon()

@@ -32,3 +32,6 @@ commands:
  pardonIP:
      description: Unbans a IP Address
      aliases: [ubanip,pip]
+ getFam:
+     description: Prints users of the same IP
+     aliases: [sharedip,getthefam,group,fam,family]
