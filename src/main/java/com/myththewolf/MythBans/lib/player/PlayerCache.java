@@ -110,17 +110,6 @@ public class PlayerCache {
 		ps.setString(3, "OK");
 		ps.executeUpdate();
 	}
-	@Deprecated
-	public String getUUIDbyIP(String IP) throws SQLException{
-		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE `IP_ADDRESS` = ?");
-		ps.setString(1, IP);
-		rs = ps.executeQuery();
-		if(rs.next()){
-			return rs.getString("UUID");
-		}else{
-			return null;
-		}
-	}
 	public String[] getIPbyUUID(String UUID) throws SQLException
 	{
 		List<String> IPs = new ArrayList<String>();
@@ -142,5 +131,24 @@ public class PlayerCache {
 		return arr;
 	}
 	
-	
+	public String[] getUUIDbyIP(String IP) throws SQLException
+	{
+		List<String> IPs = new ArrayList<String>();
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE `IP_ADDRESS` = ?");
+		ps.setString(1, IP);
+		rs = ps.executeQuery();
+		int count = 0;
+		while(rs.next())
+		{
+			IPs.add(rs.getString("UUID"));
+			count++;
+		}
+		if(count <= 0)
+		{
+			return null;
+		}
+		String[] arr = new String[IPs.size()];
+		arr = IPs.toArray(new String[IPs.size()]);
+		return arr;
+	}
 }

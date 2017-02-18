@@ -22,14 +22,14 @@ import com.myththewolf.MythBans.lib.player.IP;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Utils;
 
-public class IPBan implements CommandExecutor {
+public class IPKick implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private IP ipClass = new IP();
 	private String[] packet;
 	private JavaPlugin MythPlugin;
-
-	public IPBan(JavaPlugin pl) {
+	private String byUUID;
+	public IPKick(JavaPlugin pl) {
 		MythPlugin = pl;
 	}
 
@@ -42,7 +42,7 @@ public class IPBan implements CommandExecutor {
 				return true;
 			}
 			if (args.length < 1) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /banip <user|ip> [reason]");
+				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /kickip <user|ip> [reason]");
 				return true;
 			}
 			if (args[0].charAt(0) == '/' && pCache.ipExist(args[0]) == false) {
@@ -54,84 +54,79 @@ public class IPBan implements CommandExecutor {
 				return true;
 			}
 			if (args[0].charAt(0) != '/') {
+			
+				if (sender instanceof ConsoleCommandSender) {
+					byUUID = "CONSOLE";
+				} else {
+					byUUID = ((Player) sender).getUniqueId().toString();
+				}
 				packet = pCache.getIPbyUUID(pCache.getUUID(args[0]));
 				String IPs = Arrays.toString(packet);
-				if (ConfigProperties.DEBUG)
+				if (ConfigProperties.DEBUG) {
 					MythPlugin.getLogger().info("Handeling IP Packet--> " + IPs);
-
-				List<String> list = new ArrayList<String>();
-				List<String> userPack = new ArrayList<String>();
-				for (String IP : packet) {
-					for(String UUID : pCache.getUUIDbyIP(IP))
-					{
-						userPack.add(pCache.getName(UUID));
-					}
-					list.add(IP);
-					if (sender instanceof ConsoleCommandSender) {
-						dbc.banIP(IP, "CONSOLE", Utils.makeString(args, 1));
-					} else {
-						Player p = (Player) sender;
-						dbc.banIP(IP, p.getUniqueId().toString(), Utils.makeString(args, 1));
-					}
 				}
-				String[] dumpUsers = new String[userPack.size()];
-				dumpUsers = userPack.toArray(new String[userPack.size()]);
-				String users = Arrays.toString(dumpUsers);
-				for (Player i : Bukkit.getOnlinePlayers()) {
-					if (list.contains(i.getAddress().getAddress().toString())) {
-						i.kickPlayer(this.formatMessage(packet[0], ConfigProperties.USER_IPBAN_FORMAT));
-					} else if (i.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-						
-						String dump = this.formatMessage(packet[0], ConfigProperties.SERVER_IPBAN_FORMAT);
-						dump = dump.replaceAll("\\{culprit\\}", users);
-						dump = dump.replaceAll("\\{IP\\}",  packet[0]);
-						i.sendMessage(dump);
+				List<String> list = new ArrayList<String>();
+			
+				for (String IP : packet) {
+					list.add(IP);
+					
+				}
+				for (Player p : Bukkit.getOnlinePlayers()) {
+					if (list.contains(p.getAddress().getAddress().toString())) {
+						p.kickPlayer(this.formatMessage(p.getAddress().getAddress().toString(),
+								ConfigProperties.USER_IPKICK_FORMAT, byUUID,Utils.makeString(args, 1)));
+					} else if (p.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
+						String dump = this.formatMessage(list.get(0), ConfigProperties.SERVER_IPKICK_FORMAT, byUUID,Utils.makeString(args, 1));
+						dump = dump.replaceAll("\\{culprit\\}", IPs);
+						p.kickPlayer(dump);
 					} else {
 						continue;
 					}
 				}
+				return true;
 			} else {
-				/*** Its a IP String we are banning now ***/
 				String IP = args[0];
 				if (sender instanceof ConsoleCommandSender) {
-					dbc.banIP(IP, "CONSOLE", Utils.makeString(args, 1));
+					byUUID = "CONSOLE";
 				} else {
-					Player p = (Player) sender;
-					dbc.banIP(IP, p.getUniqueId().toString(), Utils.makeString(args, 1));
+					byUUID = ((Player) sender).getUniqueId().toString();
 				}
-				String users = Arrays.toString(pCache.getUUIDbyIP(IP));
-				for (Player i : Bukkit.getOnlinePlayers()) {
-					if (i.getAddress().getAddress().toString().equals(IP)) {
-						i.kickPlayer(this.formatMessage(i.getAddress().getAddress().toString(),
-								ConfigProperties.USER_IPBAN_FORMAT));
-					} else if (i.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-						String dump = this.formatMessage(IP, ConfigProperties.SERVER_IPBAN_FORMAT);
-						dump = dump.replaceAll("\\{culprit\\}", users);
-						dump = dump.replaceAll("\\{IP\\}",  IP);
-						i.sendMessage(dump);
-					} else {
-						continue;
+				String[] userPacket = pCache.getUUIDbyIP(IP);
+				String userPack = Arrays.toString(userPacket);
+				List<String> list = new ArrayList<String>();
+				
+				for(String UUID : userPacket)
+				{
+					list.add(UUID);
+				}
+				for(Player p : Bukkit.getOnlinePlayers()){
+					if(list.contains(p.getAddress().getAddress().toString())){
+						p.kickPlayer(this.formatMessage(p.getAddress().getAddress().toString(), ConfigProperties.USER_IPKICK_FORMAT, byUUID,Utils.makeString(args, 1)));
+					}else if(p.hasPermission(ConfigProperties.VIEWMSG_PERM))
+					{
+						String dump = this.formatMessage(p.getAddress().getAddress().toString(), ConfigProperties.SERVER_IPKICK_FORMAT, byUUID,Utils.makeString(args, 1));
+						dump = dump.replaceAll("\\{culprit\\}", userPack);
+						dump = dump.replaceAll("\\{IP\\}", IP);
+						p.sendMessage(dump);
 					}
 				}
 			}
-			return true;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return true;
-
 	}
 
-	private String formatMessage(String IP, String format) throws SQLException {
+	private String formatMessage(String IP, String format, String byUUID, String reason) throws SQLException {
 		String toFormat = format;
 
-		if (ipClass.getWhoBanned(IP).equals("CONSOLE")) {
+		if (byUUID.equals("CONSOLE")) {
 			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
 		} else {
 			toFormat = toFormat.replaceAll("\\{staffMember\\}",
-					Bukkit.getOfflinePlayer(UUID.fromString(ipClass.getWhoBanned(IP))).getName());
+					Bukkit.getOfflinePlayer(UUID.fromString(byUUID)).getName());
 		}
-		toFormat = toFormat.replaceAll("\\{reason\\}", ipClass.getReason(IP));
+		toFormat = toFormat.replaceAll("\\{reason\\}", reason);
 
 		return toFormat;
 
