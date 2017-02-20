@@ -16,7 +16,7 @@ import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 
-public class Pardon implements CommandExecutor {
+public class PardonUser implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private String toUUID = "";
@@ -40,10 +40,8 @@ public class Pardon implements CommandExecutor {
 				if (sender instanceof ConsoleCommandSender) {
 					dbc.pardonUser(toUUID, "CONSOLE");
 					byUUID = "CONSOLE";
-					dbc.cleanUser(toUUID);
 				} else {
 					dbc.pardonUser(toUUID, ((Player) sender).getUniqueId().toString());
-					dbc.cleanUser(toUUID);
 					byUUID = ((Player) sender).getUniqueId().toString();
 				}
 				for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
@@ -52,6 +50,7 @@ public class Pardon implements CommandExecutor {
 								this.formatMessage(toUUID, ConfigProperties.SERVER_PARDON_FORMAT)));
 					}
 				}
+				dbc.cleanUser(toUUID);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

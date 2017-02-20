@@ -35,3 +35,15 @@ commands:
  getFam:
      description: Prints users of the same IP
      aliases: [sharedip,getthefam,group,fam,family]
+ kickip:
+     description: Kicks all users with given IP
+     aliases: [kip,ipkick]
+ compare:
+     description: Compares a user to another
+     aliases: [diff,difference]
+ reportGreif:
+     description: Reports greif to all server staffing.
+     aliases: [greif]
+ playertime:
+     description: Displays Total PlayerTime
+     aliases: [playtime,pt]

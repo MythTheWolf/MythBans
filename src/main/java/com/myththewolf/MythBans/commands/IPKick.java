@@ -29,6 +29,7 @@ public class IPKick implements CommandExecutor {
 	private String[] packet;
 	private JavaPlugin MythPlugin;
 	private String byUUID;
+
 	public IPKick(JavaPlugin pl) {
 		MythPlugin = pl;
 	}
@@ -54,7 +55,7 @@ public class IPKick implements CommandExecutor {
 				return true;
 			}
 			if (args[0].charAt(0) != '/') {
-			
+
 				if (sender instanceof ConsoleCommandSender) {
 					byUUID = "CONSOLE";
 				} else {
@@ -62,21 +63,26 @@ public class IPKick implements CommandExecutor {
 				}
 				packet = pCache.getIPbyUUID(pCache.getUUID(args[0]));
 				String IPs = Arrays.toString(packet);
+				if (packet.length < 1) {
+					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "No users currently on with that IP");
+					return true;
+				}
 				if (ConfigProperties.DEBUG) {
 					MythPlugin.getLogger().info("Handeling IP Packet--> " + IPs);
 				}
 				List<String> list = new ArrayList<String>();
-			
+
 				for (String IP : packet) {
 					list.add(IP);
-					
+
 				}
 				for (Player p : Bukkit.getOnlinePlayers()) {
 					if (list.contains(p.getAddress().getAddress().toString())) {
 						p.kickPlayer(this.formatMessage(p.getAddress().getAddress().toString(),
-								ConfigProperties.USER_IPKICK_FORMAT, byUUID,Utils.makeString(args, 1)));
+								ConfigProperties.USER_IPKICK_FORMAT, byUUID, Utils.makeString(args, 1)));
 					} else if (p.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-						String dump = this.formatMessage(list.get(0), ConfigProperties.SERVER_IPKICK_FORMAT, byUUID,Utils.makeString(args, 1));
+						String dump = this.formatMessage(list.get(0), ConfigProperties.SERVER_IPKICK_FORMAT, byUUID,
+								Utils.makeString(args, 1));
 						dump = dump.replaceAll("\\{culprit\\}", IPs);
 						p.kickPlayer(dump);
 					} else {
@@ -94,17 +100,16 @@ public class IPKick implements CommandExecutor {
 				String[] userPacket = pCache.getUUIDbyIP(IP);
 				String userPack = Arrays.toString(userPacket);
 				List<String> list = new ArrayList<String>();
-				
-				for(String UUID : userPacket)
-				{
+				for (String UUID : userPacket) {
 					list.add(UUID);
 				}
-				for(Player p : Bukkit.getOnlinePlayers()){
-					if(list.contains(p.getAddress().getAddress().toString())){
-						p.kickPlayer(this.formatMessage(p.getAddress().getAddress().toString(), ConfigProperties.USER_IPKICK_FORMAT, byUUID,Utils.makeString(args, 1)));
-					}else if(p.hasPermission(ConfigProperties.VIEWMSG_PERM))
-					{
-						String dump = this.formatMessage(p.getAddress().getAddress().toString(), ConfigProperties.SERVER_IPKICK_FORMAT, byUUID,Utils.makeString(args, 1));
+				for (Player p : Bukkit.getOnlinePlayers()) {
+					if (list.contains(p.getAddress().getAddress().toString())) {
+						p.kickPlayer(this.formatMessage(p.getAddress().getAddress().toString(),
+								ConfigProperties.USER_IPKICK_FORMAT, byUUID, Utils.makeString(args, 1)));
+					} else if (p.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
+						String dump = this.formatMessage(p.getAddress().getAddress().toString(),
+								ConfigProperties.SERVER_IPKICK_FORMAT, byUUID, Utils.makeString(args, 1));
 						dump = dump.replaceAll("\\{culprit\\}", userPack);
 						dump = dump.replaceAll("\\{IP\\}", IP);
 						p.sendMessage(dump);

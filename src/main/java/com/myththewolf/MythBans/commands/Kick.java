@@ -31,7 +31,7 @@ public class Kick implements CommandExecutor {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /kick <user> [reason]");
 				return true;
 			} else if (pc.getPlayerExact(args[0]) == null) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has not played on this server.");
+				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player not online.");
 				return true;
 			} else {
 				toKick = pc.getPlayerExact(args[0]);

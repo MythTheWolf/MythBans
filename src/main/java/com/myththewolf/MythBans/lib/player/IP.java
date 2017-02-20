@@ -14,6 +14,7 @@ public class IP {
 	private PreparedStatement ps;
 	private ResultSet rs;
 	private PlayerCache pc = new PlayerCache(con);
+
 	public String getWhoBanned(String IP) throws SQLException {
 		System.out.println("INPUT---->" + IP);
 		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE IP_ADDRESS = ?");
@@ -35,9 +36,10 @@ public class IP {
 		return "NO_REASON_FOUND";
 	}
 
-	public String[] getTheFam(String IP,String UUID) throws SQLException {
+	public String[] getTheFam(String IP, String UUID) throws SQLException {
 		List<String> fam = new ArrayList<String>();
-		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE IP_ADDRESS = ? and (UUID <> ?);");
+		ps = (PreparedStatement) con
+				.prepareStatement("SELECT * FROM MythBans_IPCache WHERE IP_ADDRESS = ? and (UUID <> ?);");
 		ps.setString(1, IP);
 		ps.setString(2, UUID);
 		rs = ps.executeQuery();
@@ -50,10 +52,37 @@ public class IP {
 		}
 		if (theAmount < 1) {
 			return null;
-		}else{
+		} else {
 			String[] arr = new String[fam.size()];
 			arr = fam.toArray(new String[fam.size()]);
 			return arr;
+		}
+	}
+
+	public String[] getIPPack(String UUID) throws SQLException {
+		List<String> list = new ArrayList<String>();
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE UUID = ?");
+		ps.setString(1, UUID);
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			list.add(rs.getString("IP_ADDRESS"));
+		}
+		String[] arr = new String[list.size()];
+		arr = list.toArray(new String[list.size()]);
+		return arr;
+	}
+
+	public boolean mappedIpExist(String UUID, String IP) throws SQLException {
+		ps = (PreparedStatement) con
+				.prepareStatement("SELECT * FROM MythBans_IPCache WHERE IP_ADDRESS = ? AND UUID = ?");
+		ps.setString(1, IP);
+		ps.setString(2, UUID);
+		rs = ps.executeQuery();
+		if (rs.next()) {
+			return true;
+		} else {
+			return false;
+
 		}
 	}
 }

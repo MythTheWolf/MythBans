@@ -34,11 +34,17 @@ public class PlayerJoin implements Listener {
 		if (!pc.ipExist(e.getPlayer().getAddress().getAddress().toString())) {
 			pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
 		}
+		if (!ipClass.mappedIpExist(e.getPlayer().getUniqueId().toString(),
+				e.getPlayer().getAddress().getAddress().toString())) {
+			pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
+		}
 		if (pc.getPlayerExact(e.getPlayer().getName()) == null) {
 			PlayerClass.processNewUser(e.getPlayer().getUniqueId().toString(), e.getPlayer().getName());
 		} else {
+		
 			switch (PlayerClass.getStatus(e.getPlayer().getUniqueId().toString())) {
 			case "OK":
+				PlayerClass.setSession(e.getPlayer().getUniqueId().toString(), d.formatDate(d.getNewDate()));
 				dbc.cleanUser(e.getPlayer().getUniqueId().toString());
 				break;
 			case "banned":
@@ -80,12 +86,15 @@ public class PlayerJoin implements Listener {
 				break;
 
 			}
-			if (ipClass.getTheFam(e.getPlayer().getAddress().getAddress().toString(),e.getPlayer().getUniqueId().toString()) != null) {
+			if (ipClass.getTheFam(e.getPlayer().getAddress().getAddress().toString(),
+					e.getPlayer().getUniqueId().toString()) != null) {
 				for (Player p : Bukkit.getOnlinePlayers()) {
 					if (p.hasPermission(ConfigProperties.VIEW_PROBATION_PERMISSION)) {
 						p.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "WARNING: " + ChatColor.GOLD
 								+ e.getPlayer().getName() + " shares the same IPs as "
-								+ Arrays.toString(ipClass.getTheFam(e.getPlayer().getAddress().getAddress().toString(),e.getPlayer().getUniqueId().toString())) + ChatColor.YELLOW + " IP : " + e.getPlayer().getAddress().getAddress().toString());
+								+ Arrays.toString(ipClass.getTheFam(e.getPlayer().getAddress().getAddress().toString(),
+										e.getPlayer().getUniqueId().toString()))
+								+ ChatColor.YELLOW + " IP : " + e.getPlayer().getAddress().getAddress().toString());
 					}
 				}
 			}

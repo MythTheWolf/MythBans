@@ -51,7 +51,7 @@ public class Mute implements CommandExecutor {
 					dbc.muteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(),
 							pp.getUniqueId().toString());
 				}
-				dbc.cleanUser(toMute.getUniqueId().toString());
+		
 
 				for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 					if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
@@ -67,10 +67,12 @@ public class Mute implements CommandExecutor {
 				toMute = pCache.getOfflinePlayerExact(args[0]);
 				if (sender instanceof ConsoleCommandSender) {
 					dbc.UnmuteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(), "CONSOLE");
+
 				} else {
 					org.bukkit.entity.Player pp = (org.bukkit.entity.Player) sender;
 					dbc.UnmuteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(),
 							pp.getUniqueId().toString());
+					
 				}
 
 				for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
@@ -83,6 +85,7 @@ public class Mute implements CommandExecutor {
 					toMute.getPlayer().sendMessage(
 							this.formatMessage(toMute.getUniqueId().toString(), ConfigProperties.USER_UNMUTE_FORMAT));
 				}
+				dbc.cleanUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
 
 			}
 			return true;

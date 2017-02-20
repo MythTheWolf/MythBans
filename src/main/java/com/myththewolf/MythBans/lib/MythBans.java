@@ -6,19 +6,24 @@ import java.sql.Connection;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.commands.Ban;
+import com.myththewolf.MythBans.commands.Compare;
 import com.myththewolf.MythBans.commands.IPBan;
+import com.myththewolf.MythBans.commands.IPKick;
 import com.myththewolf.MythBans.commands.Kick;
 import com.myththewolf.MythBans.commands.Mute;
-import com.myththewolf.MythBans.commands.Pardon;
 import com.myththewolf.MythBans.commands.PardonIP;
+import com.myththewolf.MythBans.commands.PardonUser;
+import com.myththewolf.MythBans.commands.PlayerTime;
 import com.myththewolf.MythBans.commands.Probate;
 import com.myththewolf.MythBans.commands.TempBan;
 import com.myththewolf.MythBans.commands.createUI;
 import com.myththewolf.MythBans.commands.getFam;
 import com.myththewolf.MythBans.commands.importJSON;
+import com.myththewolf.MythBans.commands.ticket.ReportGrief;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.events.player.PlayerChat;
 import com.myththewolf.MythBans.lib.events.player.PlayerJoin;
+import com.myththewolf.MythBans.lib.events.player.PlayerQuit;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 
 public class MythBans {
@@ -51,10 +56,10 @@ public class MythBans {
 	}
 
 	public void loadEvents() {
-		
+
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerChat(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(), MythPlugin);
-		
+		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerQuit(), MythPlugin);
 	}
 
 	public Connection loadMySQL() {
@@ -75,13 +80,16 @@ public class MythBans {
 		MythPlugin.getCommand("banip").setExecutor(new IPBan(MythPlugin));
 		MythPlugin.getCommand("import").setExecutor(new importJSON(MythPlugin));
 		MythPlugin.getCommand("createUI").setExecutor(new createUI());
-		MythPlugin.getCommand("pardon").setExecutor(new Pardon());
+		MythPlugin.getCommand("pardon").setExecutor(new PardonUser());
 		MythPlugin.getCommand("pardonIP").setExecutor(new PardonIP(MythPlugin));
 		MythPlugin.getCommand("getFam").setExecutor(new getFam());
+		MythPlugin.getCommand("kickip").setExecutor(new IPKick(MythPlugin));
+		MythPlugin.getCommand("compare").setExecutor(new Compare());
+		MythPlugin.getCommand("reportGreif").setExecutor(new ReportGrief());
+		MythPlugin.getCommand("playertime").setExecutor(new PlayerTime());
 	}
-	
-	public void startDaemon()
-	{
-		
+
+	public void startDaemon() {
+
 	}
 }
