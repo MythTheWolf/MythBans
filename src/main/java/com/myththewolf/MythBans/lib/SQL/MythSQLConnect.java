@@ -62,7 +62,7 @@ public class MythSQLConnect {
 				Bukkit.getLogger().info("Loading MySQL Table: PlayerStats");
 			}
 			ps = (PreparedStatement) con.prepareStatement(
-					"CREATE TABLE IF NOT EXISTS `MythBans_PlayerStats` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `status` VARCHAR(255) NOT NULL , `group` VARCHAR(255) NOT NULL ,`expires` VARCHAR(255) NULL DEFAULT NULL , `reason` VARCHAR(255) NULL DEFAULT NULL , `timestamp` VARCHAR(255) NOT NULL, `byUUID` VARCHAR(255) NULL DEFAULT NULL , `last_quit_date` VARCHAR(255) NULL DEFAULT NULL, `last_name` VARCHAR(255) NOT NULL, `playtime` BIGINT NULL DEFAULT NULL, `session_start` VARCHAR(255) NULL DEFAULT NULL,PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
+					"CREATE TABLE IF NOT EXISTS `MythBans_PlayerStats` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `status` VARCHAR(255) NOT NULL , `group` VARCHAR(255) NOT NULL ,`expires` VARCHAR(255) NULL DEFAULT NULL , `reason` VARCHAR(255) NULL DEFAULT NULL , `timestamp` VARCHAR(255) NOT NULL, `byUUID` VARCHAR(255) NULL DEFAULT NULL , `last_quit_date` VARCHAR(255) NULL DEFAULT NULL, `last_name` VARCHAR(255) NOT NULL, `playtime` LONGTEXT NULL DEFAULT NULL, `session_start` VARCHAR(255) NULL DEFAULT NULL,PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
 			ps.executeUpdate();
 			// Player Caches
 			if (ConfigProperties.DEBUG) {
@@ -93,7 +93,7 @@ public class MythSQLConnect {
 			ps = (PreparedStatement) con.prepareStatement(
 					"CREATE TABLE IF NOT EXISTS `MythBans_Groups` ( `ID` INT NOT NULL , `group_name` VARCHAR(255) NOT NULL , `level` INT NOT NULL , `remove_logs` INT NOT NULL DEFAULT '0' , `pardon` INT NOT NULL DEFAULT '0' ,`manage_groups` INT NOT NULL DEFAULT '0' , `download_logs` INT NOT NULL DEFAULT '0' , `ban` INT NOT NULL DEFAULT '0' , `kick` INT NOT NULL DEFAULT '0' , `probate` INT NOT NULL DEFAULT '0' , `mute` INT NOT NULL DEFAULT '0' , `delete_user` INT NOT NULL DEFAULT '0' , `halt_service` INT NOT NULL DEFAULT '0' , `advanced` INT NOT NULL DEFAULT '0' ) ENGINE = InnoDB;");
 			ps.executeUpdate();
-			//Tickets & Reports
+			// Tickets & Reports
 			if (ConfigProperties.DEBUG) {
 				Bukkit.getLogger().info("Loading MySQL Table: Tickets");
 			}
