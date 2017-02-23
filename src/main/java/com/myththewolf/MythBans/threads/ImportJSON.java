@@ -49,7 +49,7 @@ public class ImportJSON extends BukkitRunnable {
 				if (!Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).hasPlayedBefore()) {
 					if (!checked.contains(UUID2)) {
 						pp.processNewUser(UUID2, name);
-						
+
 					}
 				}
 				if (expires.equals("forever")) {
@@ -60,9 +60,9 @@ public class ImportJSON extends BukkitRunnable {
 					dbc.banUser(UUID2, source, reason);
 					count++;
 				} else {
-					
+
 				}
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
