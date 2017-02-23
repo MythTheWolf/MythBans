@@ -89,6 +89,10 @@ public class MythBans {
 		MythPlugin.getCommand("playertime").setExecutor(new PlayerTime());
 	}
 
+	public void buildCommandMap() {
+
+	}
+
 	public void startDaemon() {
 
 	}

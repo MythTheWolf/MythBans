@@ -17,7 +17,7 @@ public class CallUserName extends BukkitCommand{
 	}
 
 	@Override
-	public boolean execute(CommandSender arg0, String arg1, String[] arg2) {
+	public boolean execute(CommandSender sender, String arg1, String[] args) {
 		// TODO Auto-generated method stub
 		return false;
 	}

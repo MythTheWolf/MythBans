@@ -1,6 +1,7 @@
 package com.myththewolf.MythBans.commands.ticket;
 
 import org.bukkit.command.Command;
+
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -50,3 +51,5 @@ public class ReportGrief implements CommandExecutor {
 	}
 
 }
+
+

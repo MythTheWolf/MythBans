@@ -40,6 +40,7 @@ public class PlayerJoin implements Listener {
 		}
 		if (pc.getPlayerExact(e.getPlayer().getName()) == null) {
 			PlayerClass.processNewUser(e.getPlayer().getUniqueId().toString(), e.getPlayer().getName());
+			PlayerClass.setSession(e.getPlayer().getUniqueId().toString(), d.formatDate(d.getNewDate()));
 		} else {
 		
 			switch (PlayerClass.getStatus(e.getPlayer().getUniqueId().toString())) {
