@@ -22,7 +22,7 @@ public class Startup extends JavaPlugin {
 		mb.loadEvents();
 		mb.loadCommands();
 		MythLogger.info("Loaded 6 tables.");
-		
+		mb.startDaemon();
 	}
 
 }

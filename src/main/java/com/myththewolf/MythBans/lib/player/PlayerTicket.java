@@ -5,9 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
+
 public class PlayerTicket {
 	private PreparedStatement ps;
-	private Connection con;
+	private Connection con = MythSQLConnect.getConnection();
 	private ResultSet rs;
 
 	public void recordGreif(String UUID, String timestamp, String location, String text) throws SQLException {
@@ -19,5 +21,39 @@ public class PlayerTicket {
 		ps.setString(4, text);
 		ps.setString(5, location);
 		ps.executeUpdate();
+	}
+
+	public boolean exists(String ticket_id) throws SQLException {
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Tickets WHERE ID = ?");
+		ps.setString(1, ticket_id);
+		rs = ps.executeQuery();
+		if (!rs.next()) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	public String getLocation(String ticket_id) throws SQLException
+	{
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Tickets WHERE ID = ?");
+		ps.setString(1, ticket_id);
+		rs = ps.executeQuery();
+		while(rs.next())
+		{
+			return rs.getString("location");
+		}
+		return null;
+	}
+
+	public int getUnclosed() throws SQLException {
+	int count = 0;
+	ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Tickets WHERE status = ?");
+	ps.setString(1, "OPEN");
+	rs = ps.executeQuery();
+	while(rs.next())
+	{
+		count++;
+	}
+	return count;
 	}
 }

@@ -3,6 +3,7 @@ package com.myththewolf.MythBans.lib;
 import java.io.File;
 import java.sql.Connection;
 
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.commands.Ban;
@@ -25,6 +26,7 @@ import com.myththewolf.MythBans.lib.events.player.PlayerChat;
 import com.myththewolf.MythBans.lib.events.player.PlayerJoin;
 import com.myththewolf.MythBans.lib.events.player.PlayerQuit;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.threads.WarnUnsolvedTickets;
 
 public class MythBans {
 	private JavaPlugin MythPlugin;
@@ -94,6 +96,6 @@ public class MythBans {
 	}
 
 	public void startDaemon() {
-
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(MythPlugin, new WarnUnsolvedTickets(), 20, 6000);
 	}
 }
