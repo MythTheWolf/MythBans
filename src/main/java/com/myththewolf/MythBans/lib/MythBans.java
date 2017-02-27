@@ -21,6 +21,7 @@ import com.myththewolf.MythBans.commands.createUI;
 import com.myththewolf.MythBans.commands.getFam;
 import com.myththewolf.MythBans.commands.importJSON;
 import com.myththewolf.MythBans.commands.ticket.ReportGrief;
+import com.myththewolf.MythBans.commands.ticket.tickettp;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.events.player.PlayerChat;
 import com.myththewolf.MythBans.lib.events.player.PlayerJoin;
@@ -89,6 +90,7 @@ public class MythBans {
 		MythPlugin.getCommand("compare").setExecutor(new Compare());
 		MythPlugin.getCommand("reportGreif").setExecutor(new ReportGrief());
 		MythPlugin.getCommand("playertime").setExecutor(new PlayerTime());
+		MythPlugin.getCommand("tickettp").setExecutor(new tickettp());
 	}
 
 	public void buildCommandMap() {
@@ -96,6 +98,6 @@ public class MythBans {
 	}
 
 	public void startDaemon() {
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(MythPlugin, new WarnUnsolvedTickets(), 20, 6000);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(MythPlugin, new WarnUnsolvedTickets(MythPlugin), 20, 6000);
 	}
 }

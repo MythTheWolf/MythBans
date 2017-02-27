@@ -33,27 +33,35 @@ public class PlayerTicket {
 			return true;
 		}
 	}
-	public String getLocation(String ticket_id) throws SQLException
-	{
+
+	public String getLocation(String ticket_id) throws SQLException {
 		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Tickets WHERE ID = ?");
 		ps.setString(1, ticket_id);
 		rs = ps.executeQuery();
-		while(rs.next())
-		{
+		while (rs.next()) {
 			return rs.getString("location");
 		}
 		return null;
 	}
 
 	public int getUnclosed() throws SQLException {
-	int count = 0;
-	ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Tickets WHERE status = ?");
-	ps.setString(1, "OPEN");
-	rs = ps.executeQuery();
-	while(rs.next())
-	{
-		count++;
+		int count = 0;
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Tickets WHERE status = ?");
+		ps.setString(1, "OPEN");
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			count++;
+		}
+		return count;
 	}
-	return count;
+
+	public void closeTicket(String ID, String handle, String text) throws SQLException {
+		ps = (PreparedStatement) con.prepareStatement(
+				"UPDATE MythBans_Tickets SET status = ?, handler = ?, close_message = ? WHERE ID = ?");
+		ps.setString(1, "CLOSED");
+		ps.setString(2, handle);
+		ps.setString(3, text);
+		ps.setString(4, ID);
+		ps.executeUpdate();
 	}
 }

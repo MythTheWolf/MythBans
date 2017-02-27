@@ -41,33 +41,34 @@ public class PlayerJoin implements Listener {
 		if (pc.getPlayerExact(e.getPlayer().getName()) == null) {
 			PlayerClass.processNewUser(e.getPlayer().getUniqueId().toString(), e.getPlayer().getName());
 			PlayerClass.setSession(e.getPlayer().getUniqueId().toString(), d.formatDate(d.getNewDate()));
-		} else {
-		
-			switch (PlayerClass.getStatus(e.getPlayer().getUniqueId().toString())) {
-			case "OK":
-				PlayerClass.setSession(e.getPlayer().getUniqueId().toString(), d.formatDate(d.getNewDate()));
-				dbc.cleanUser(e.getPlayer().getUniqueId().toString());
-				break;
-			case "banned":
-				message = this.formatMessage(e.getPlayer().getUniqueId().toString(), ConfigProperties.USER_BAN_FORMAT,
-						false);
+		}
 
+		switch (PlayerClass.getStatus(e.getPlayer().getUniqueId().toString())) {
+		case "OK":
+			PlayerClass.setSession(e.getPlayer().getUniqueId().toString(), d.formatDate(d.getNewDate()));
+			dbc.cleanUser(e.getPlayer().getUniqueId().toString());
+			break;
+		case "banned":
+			message = this.formatMessage(e.getPlayer().getUniqueId().toString(), ConfigProperties.USER_BAN_FORMAT,
+					false);
+
+			e.getPlayer().kickPlayer(message);
+			break;
+		case "tempBanned":
+			message = this.formatMessage(e.getPlayer().getUniqueId().toString(), ConfigProperties.USER_TEMPBAN_FORMAT,
+					false);
+			e.getPlayer().getName();
+			if (d.getNewDate().before(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
 				e.getPlayer().kickPlayer(message);
-				break;
-			case "tempBanned":
-				message = this.formatMessage(e.getPlayer().getUniqueId().toString(),
-						ConfigProperties.USER_TEMPBAN_FORMAT, false);
-				e.getPlayer().getName();
-				if (d.getNewDate().before(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
-					e.getPlayer().kickPlayer(message);
-				} else if (d.getNewDate().after(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
-					PlayerClass.clearExpire(e.getPlayer().getUniqueId().toString());
-				}
-				break;
-			default:
-				break;
+			} else if (d.getNewDate().after(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
+				PlayerClass.clearExpire(e.getPlayer().getUniqueId().toString());
 			}
-			switch (dbc.getIPStatus(e.getPlayer().getAddress().getAddress().toString())) {
+			break;
+		default:
+			break;
+		}
+		for (String IP : ipClass.getIPPack(e.getPlayer().getUniqueId().toString())) {
+			switch (dbc.getIPStatus(IP)) {
 			case "banned":
 				message = this.formatMessage(e.getPlayer().getAddress().getAddress().toString(),
 						ConfigProperties.USER_IPBAN_FORMAT, true);
@@ -87,16 +88,16 @@ public class PlayerJoin implements Listener {
 				break;
 
 			}
-			if (ipClass.getTheFam(e.getPlayer().getAddress().getAddress().toString(),
-					e.getPlayer().getUniqueId().toString()) != null) {
-				for (Player p : Bukkit.getOnlinePlayers()) {
-					if (p.hasPermission(ConfigProperties.VIEW_PROBATION_PERMISSION)) {
-						p.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "WARNING: " + ChatColor.GOLD
-								+ e.getPlayer().getName() + " shares the same IPs as "
-								+ Arrays.toString(ipClass.getTheFam(e.getPlayer().getAddress().getAddress().toString(),
-										e.getPlayer().getUniqueId().toString()))
-								+ ChatColor.YELLOW + " IP : " + e.getPlayer().getAddress().getAddress().toString());
-					}
+		}
+		if (ipClass.getTheFam(e.getPlayer().getAddress().getAddress().toString(),
+				e.getPlayer().getUniqueId().toString()) != null) {
+			for (Player p : Bukkit.getOnlinePlayers()) {
+				if (p.hasPermission(ConfigProperties.VIEW_PROBATION_PERMISSION)) {
+					p.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "WARNING: " + ChatColor.GOLD
+							+ e.getPlayer().getName() + " shares the same IPs as "
+							+ Arrays.toString(ipClass.getTheFam(e.getPlayer().getAddress().getAddress().toString(),
+									e.getPlayer().getUniqueId().toString()))
+							+ ChatColor.YELLOW + " IP : " + e.getPlayer().getAddress().getAddress().toString());
 				}
 			}
 		}

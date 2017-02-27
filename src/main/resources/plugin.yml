@@ -47,3 +47,6 @@ commands:
  playertime:
      description: Displays Total PlayerTime
      aliases: [playtime,pt]
+ tickettp:
+     description: Teleports you to point of specified ticket
+     aliases: [ttp,whereisgreif]
