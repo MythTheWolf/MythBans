@@ -98,7 +98,7 @@ public class MythSQLConnect {
 				Bukkit.getLogger().info("Loading MySQL Table: Tickets");
 			}
 			ps = (PreparedStatement) con.prepareStatement(
-					"CREATE TABLE IF NOT EXISTS `MythBans_Tickets` ( `ID` INT NOT NULL AUTO_INCREMENT, `SENDER_UUID` VARCHAR(255) NULL DEFAULT NULL , `priority` VARCHAR(255) NULL DEFAULT NULL ,`status` VARCHAR(255) NULL DEFAULT NULL,`message` VARCHAR(255) NULL DEFAULT NULL, `close_message` VARCHAR(255) NULL DEFAULT NULL ,`handler` VARCHAR(255) NULL DEFAULT NULL, `location` VARCHAR(255) NULL DEFAULT NULL ,PRIMARY KEY (`ID`) ) ENGINE = InnoDB;");
+					"CREATE TABLE IF NOT EXISTS `MythBans_Tickets` ( `ID` INT NOT NULL AUTO_INCREMENT, `SENDER_UUID` VARCHAR(255) NULL DEFAULT NULL , `priority` VARCHAR(255) NULL DEFAULT NULL ,`status` VARCHAR(255) NULL DEFAULT NULL,`message` VARCHAR(255) NULL DEFAULT NULL, `close_message` VARCHAR(255) NULL DEFAULT NULL ,`handler` VARCHAR(255) NULL DEFAULT NULL, `location` VARCHAR(255) NULL DEFAULT NULL, `user_seen` VARCHAR(255) NULL DEFAULT NULL ,PRIMARY KEY (`ID`) ) ENGINE = InnoDB;");
 			ps.executeUpdate();
 			if (ConfigProperties.DEBUG) {
 				Bukkit.getLogger().info("All MySQL tables generated.");

@@ -20,7 +20,11 @@ import com.myththewolf.MythBans.commands.TempBan;
 import com.myththewolf.MythBans.commands.createUI;
 import com.myththewolf.MythBans.commands.getFam;
 import com.myththewolf.MythBans.commands.importJSON;
+import com.myththewolf.MythBans.commands.ticket.CloseTicket;
+import com.myththewolf.MythBans.commands.ticket.MyTickets;
 import com.myththewolf.MythBans.commands.ticket.ReportGrief;
+import com.myththewolf.MythBans.commands.ticket.Ticket;
+import com.myththewolf.MythBans.commands.ticket.Tickets;
 import com.myththewolf.MythBans.commands.ticket.tickettp;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.events.player.PlayerChat;
@@ -91,6 +95,10 @@ public class MythBans {
 		MythPlugin.getCommand("reportGreif").setExecutor(new ReportGrief());
 		MythPlugin.getCommand("playertime").setExecutor(new PlayerTime());
 		MythPlugin.getCommand("tickettp").setExecutor(new tickettp());
+		MythPlugin.getCommand("tickets").setExecutor(new Tickets());
+		MythPlugin.getCommand("mytickets").setExecutor(new MyTickets());
+		MythPlugin.getCommand("ticket").setExecutor(new Ticket());
+		MythPlugin.getCommand("close").setExecutor(new CloseTicket());
 	}
 
 	public void buildCommandMap() {

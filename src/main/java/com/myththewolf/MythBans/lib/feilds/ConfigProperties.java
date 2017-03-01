@@ -49,6 +49,8 @@ public class ConfigProperties {
 	public static String KICKIP_PERMISSION;
 	public static String VIEW_PROBATION_PERMISSION;
 	public static String PROBATION_PERMISSION;
+	public static String CLOSETICKET_PERMISSION;
+	public static String TICKETS_OTHER_PERMISSION;
 	private static FileConfiguration cfg;
 	private static Logger MythLog;
 	public static String SERVER_PARDON_FORMAT;
@@ -90,21 +92,23 @@ public class ConfigProperties {
 			SERVER_IPMUTE_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IP-MUTE-FORMAT"));
 			SERVER_IPKICK_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IP-KICK-FORMAT"));
 			SERVER_PARDON_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-PARDON-FORMAT"));
-			SERVER_IPUNBAN_FORMAT = ChatColor.translateAlternateColorCodes('&', cfg.getString("SERVER-IPPARDON-FORMAT"));
+			SERVER_IPUNBAN_FORMAT = ChatColor.translateAlternateColorCodes('&',
+					cfg.getString("SERVER-IPPARDON-FORMAT"));
 			DEFAULT_BAN_REASON = ChatColor.translateAlternateColorCodes('&', cfg.getString("DEFAULT-BAN-REASON"));
-			BAN_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("BAN-PERMISSION"));
-			TEMPBAN_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("TEMPBAN-PERMISSION"));
-			KICK_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("KICK-PERMISSION"));
-			MUTE_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("MUTE-PERMISSION"));
-			BANIP_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("BANIP-PERMISSION"));
-			TEMPBANIP_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("TEMPBANIP-PERMISSION"));
-			MUTEIP_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("MUTEIP-PERMISSION"));
-			KICKIP_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("KICKIP-PERMISSION"));
-			VIEW_PROBATION_PERMISSION = ChatColor.translateAlternateColorCodes('&',
-					cfg.getString("VIEW-PROBATIONS-PERMISSION"));
-			PROBATION_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("PROBATION-PERMISSION"));
-			CREATE_UI_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("CREATE-UI-PERMISSION"));
-			PARDON_PERMISSION = ChatColor.translateAlternateColorCodes('&', cfg.getString("PARDON-PERMISSION"));
+			BAN_PERMISSION = cfg.getString("BAN-PERMISSION");
+			TEMPBAN_PERMISSION = cfg.getString("TEMPBAN-PERMISSION");
+			KICK_PERMISSION = cfg.getString("KICK-PERMISSION");
+			MUTE_PERMISSION = cfg.getString("MUTE-PERMISSION");
+			BANIP_PERMISSION = cfg.getString("BANIP-PERMISSION");
+			TEMPBANIP_PERMISSION = cfg.getString("TEMPBANIP-PERMISSION");
+			MUTEIP_PERMISSION = cfg.getString("MUTEIP-PERMISSION");
+			KICKIP_PERMISSION = cfg.getString("KICKIP-PERMISSION");
+			VIEW_PROBATION_PERMISSION = cfg.getString("VIEW-PROBATIONS-PERMISSION");
+			PROBATION_PERMISSION = cfg.getString("PROBATION-PERMISSION");
+			CREATE_UI_PERMISSION = cfg.getString("CREATE-UI-PERMISSION");
+			PARDON_PERMISSION = cfg.getString("PARDON-PERMISSION");
+			CLOSETICKET_PERMISSION = cfg.getString("CLOSE-TICKET-PERMISSION");
+			TICKETS_OTHER_PERMISSION = cfg.getString("VIEW-SERVER-TICKETS-PERMISSION");
 		} catch (Exception e) {
 			MythLog.severe("Could not load MythBans... Malformed Config!");
 			e.printStackTrace();

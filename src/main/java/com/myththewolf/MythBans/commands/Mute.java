@@ -40,6 +40,12 @@ public class Mute implements CommandExecutor {
 						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
 			}
+			String stat = PlayerClass
+					.getStatus(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString().toLowerCase());
+			if (!stat.equals("ok") || !stat.equals("muted")) {
+				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + " Can't override status; User is not currently set to \"OK\"");
+				return true;
+			}
 			// System.out.println(PlayerClass.getStatus(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString()));
 			if (!PlayerClass.getStatus(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString())
 					.equals("muted")) {
@@ -51,7 +57,6 @@ public class Mute implements CommandExecutor {
 					dbc.muteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(),
 							pp.getUniqueId().toString());
 				}
-		
 
 				for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 					if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
@@ -72,7 +77,7 @@ public class Mute implements CommandExecutor {
 					org.bukkit.entity.Player pp = (org.bukkit.entity.Player) sender;
 					dbc.UnmuteUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString(),
 							pp.getUniqueId().toString());
-					
+
 				}
 
 				for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {

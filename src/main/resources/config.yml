@@ -35,7 +35,7 @@ API-KEY: 'somesecretcode'
 #Should the console spit out a lot of information?
 DEBUG-MODE: false
 # ******************Permission Config*************************
-#Permissions for commands
+#Permissions for punishment commands
 BAN-PERMISSION: 'mythbans.ban'
 TEMPBAN-PERMISSION: 'mythbans.tempban'
 KICK-PERMISSION: 'mythbans.kick'
@@ -52,6 +52,9 @@ BANMESSAGE-PERMISSION: 'mythbans.viewmessages'
 CREATE-UI-PERMISSION: 'mythbans.createui'
 #Permision to see probation users
 VIEW-PROBATIONS-PERMISSION: 'mythbans.viewprobate'
+#Tickets permissions
+VIEW-SERVER-TICKETS-PERMISSION: "mythbans.tickets.other"
+CLOSE-TICKET-PERMISSION: "mythbans.closeticket"
 #              **********Messages Config********
 
 #Message to display on the user's screen when banned/tempbanned

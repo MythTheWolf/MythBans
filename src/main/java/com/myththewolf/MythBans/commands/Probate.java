@@ -36,28 +36,37 @@ public class Probate implements CommandExecutor {
 						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
 			} else {
+				String stat = playerClass
+						.getStatus(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString().toLowerCase());
+				if (!stat.equals("ok") || !stat.equals("muted")) {
+					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED
+							+ " Can't override status; User is not currently set to \"OK\"");
+					return true;
+				}
 				p = pCache.getOfflinePlayerExact(args[0]);
 				if (playerClass.getStatus(p.getUniqueId().toString()).equals("trial")) {
-					if(sender instanceof ConsoleCommandSender)
-					{
+					if (sender instanceof ConsoleCommandSender) {
 						dbc.unProbate(p.getUniqueId().toString(), "CONSOLE");
 						sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Unprobated " + p.getName());
 						return true;
-					}else{
-						dbc.unProbate(p.getUniqueId().toString(), ((org.bukkit.entity.Player) sender).getUniqueId().toString());
+					} else {
+						dbc.unProbate(p.getUniqueId().toString(),
+								((org.bukkit.entity.Player) sender).getUniqueId().toString());
 						sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Unprobated " + p.getName());
 						return true;
 					}
 				} else {
 					if (sender instanceof ConsoleCommandSender) {
 						dbc.setProbation(p.getUniqueId().toString(), "CONSOLE", Utils.makeString(args, 2));
-						sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Set " + p.getName() + " on probation.");
+						sender.sendMessage(
+								ConfigProperties.PREFIX + ChatColor.GOLD + "Set " + p.getName() + " on probation.");
 						return true;
 					} else {
 						org.bukkit.entity.Player pp = (org.bukkit.entity.Player) sender;
 						dbc.setProbation(p.getUniqueId().toString(), pp.getUniqueId().toString(),
 								Utils.makeString(args, 2));
-						sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Set " + p.getName() + " on probation.");
+						sender.sendMessage(
+								ConfigProperties.PREFIX + ChatColor.GOLD + "Set " + p.getName() + " on probation.");
 						return true;
 					}
 
