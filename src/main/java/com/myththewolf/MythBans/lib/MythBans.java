@@ -20,17 +20,21 @@ import com.myththewolf.MythBans.commands.TempBan;
 import com.myththewolf.MythBans.commands.createUI;
 import com.myththewolf.MythBans.commands.getFam;
 import com.myththewolf.MythBans.commands.importJSON;
+import com.myththewolf.MythBans.commands.mythapi;
+import com.myththewolf.MythBans.commands.user;
 import com.myththewolf.MythBans.commands.ticket.CloseTicket;
 import com.myththewolf.MythBans.commands.ticket.MyTickets;
 import com.myththewolf.MythBans.commands.ticket.ReportGrief;
 import com.myththewolf.MythBans.commands.ticket.Ticket;
 import com.myththewolf.MythBans.commands.ticket.Tickets;
+import com.myththewolf.MythBans.commands.ticket.closedtickets;
 import com.myththewolf.MythBans.commands.ticket.tickettp;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.events.player.PlayerChat;
 import com.myththewolf.MythBans.lib.events.player.PlayerJoin;
 import com.myththewolf.MythBans.lib.events.player.PlayerQuit;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.threads.AlerResolved;
 import com.myththewolf.MythBans.threads.WarnUnsolvedTickets;
 
 public class MythBans {
@@ -99,6 +103,9 @@ public class MythBans {
 		MythPlugin.getCommand("mytickets").setExecutor(new MyTickets());
 		MythPlugin.getCommand("ticket").setExecutor(new Ticket());
 		MythPlugin.getCommand("close").setExecutor(new CloseTicket());
+		MythPlugin.getCommand("mythbans").setExecutor(new mythapi());
+		MythPlugin.getCommand("closedtickets").setExecutor(new closedtickets());
+		MythPlugin.getCommand("player").setExecutor(new user());
 	}
 
 	public void buildCommandMap() {
@@ -107,5 +114,6 @@ public class MythBans {
 
 	public void startDaemon() {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(MythPlugin, new WarnUnsolvedTickets(MythPlugin), 20, 6000);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(MythPlugin, new AlerResolved(), 20, 3000);
 	}
 }

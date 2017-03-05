@@ -55,6 +55,11 @@ VIEW-PROBATIONS-PERMISSION: 'mythbans.viewprobate'
 #Tickets permissions
 VIEW-SERVER-TICKETS-PERMISSION: "mythbans.tickets.other"
 CLOSE-TICKET-PERMISSION: "mythbans.closeticket"
+#Staff chat things
+STAFF-CHAT-SEND: "mythbans.staffchat.send"
+STAFF-CHAT-GET: "mythbans.staffchat.get"
+#Important messages
+IMPORTANT-SEND: "mythbans.important.send"
 #              **********Messages Config********
 
 #Message to display on the user's screen when banned/tempbanned

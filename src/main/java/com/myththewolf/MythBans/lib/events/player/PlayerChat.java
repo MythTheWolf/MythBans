@@ -4,6 +4,8 @@ import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -30,7 +32,34 @@ public class PlayerChat implements Listener {
 					+ "Your voice has been silenced!");
 			e.setCancelled(true);
 			return;
-		} else if (playerClass.getStatus(e.getPlayer().getUniqueId().toString()).equals("trial")) {
+		}
+		String m = e.getMessage();
+
+		if (m.charAt(0) == '#' && e.getPlayer().hasPermission(ConfigProperties.STAFF_CHAT_SEND)) {
+			for (org.bukkit.entity.Player pp : Bukkit.getOnlinePlayers()) {
+				String orig = e.getMessage();
+				if (pp.hasPermission(ConfigProperties.STAFF_CHAT_GET)) {
+					m = e.getPlayer().getDisplayName() + ": " + orig.replaceAll("#", "");
+					pp.sendMessage(ChatColor.translateAlternateColorCodes('&',
+							"&8[&4#!STAFF&8]&6" + ChatColor.GOLD + ChatColor.ITALIC + m));
+					Location location = pp.getLocation();
+					pp.getWorld().playSound(location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0);
+				}
+			}
+			e.setCancelled(true);
+			return;
+		}
+		if (m.charAt(0) == '!' && e.getPlayer().hasPermission(ConfigProperties.IMPORTANT_SEND)) {
+			for (org.bukkit.entity.Player pp : Bukkit.getOnlinePlayers()) {
+				m = e.getPlayer().getDisplayName() + ": " + m.replaceAll("!", "");
+				pp.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&b#!IMPORTANT&8]&6" + m));
+				Location location = pp.getLocation();
+				pp.getWorld().playSound(location, Sound.BLOCK_PISTON_EXTEND, 1, 1);
+			}
+			e.setCancelled(true);
+			return;
+		}
+		if (playerClass.getStatus(e.getPlayer().getUniqueId().toString()).equals("trial")) {
 			e.setCancelled(true);
 			String message = e.getMessage();
 			for (org.bukkit.entity.Player i : Bukkit.getOnlinePlayers()) {

@@ -33,6 +33,7 @@ public class Ticket implements CommandExecutor {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Ticket with that ID was not found.");
 				return true;
 			}
+		
 			sender.sendMessage(ChatColor.YELLOW + "-----------------------------------");
 			sender.sendMessage("ID: " + args[0]);
 			sender.sendMessage("Status: " + PT.getStatus(args[0]));
@@ -41,7 +42,7 @@ public class Ticket implements CommandExecutor {
 			sender.sendMessage("Message: " + PT.getMessage(args[0]));
 			if (PT.getStatus(args[0]).equals("CLOSED")) {
 				sender.sendMessage("Closed by: " + PC.getName(PT.getHandler(args[0])));
-				sender.sendMessage("Close message: " + PC.getName(PT.getClose(args[0])));
+				sender.sendMessage("Close message: " + PT.getClose(args[0]));
 			}
 			sender.sendMessage(ChatColor.YELLOW + "-----------------------------------");
 		} catch (SQLException e) {

@@ -62,3 +62,12 @@ commands:
  ticket:
      description: Get info from ticket ID
      aliases: []
+ mythbans:
+     description: Shows API and plugin version
+     aliases: []
+ closedtickets:
+     description: Shows closed tickets
+     aliases: [closed,cts]
+ player:
+     description: View info on player
+     aliases: [info]

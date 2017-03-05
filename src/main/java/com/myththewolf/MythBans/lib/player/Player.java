@@ -1,9 +1,7 @@
 package com.myththewolf.MythBans.lib.player;
 
 import java.sql.PreparedStatement;
-
 import java.sql.ResultSet;
-
 import java.sql.SQLException;
 import java.util.Date;
 
@@ -72,6 +70,10 @@ public class Player {
 		ps.setString(1, UUID);
 		rs = ps.executeQuery();
 		while (rs.next()) {
+			if(rs.getString("expires") == null || rs.getString("expires").equals("") )
+			{
+				return null;
+			}
 			return MythDate.parseDate(rs.getString("expires"));
 		}
 		return MythDate.parseDate(rs.getString("expire"));

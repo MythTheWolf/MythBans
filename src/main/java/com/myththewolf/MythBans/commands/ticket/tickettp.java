@@ -19,6 +19,11 @@ public class tickettp implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
+		if(args.length < 1)
+		{
+			sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /tickettp <id>");
+			return true;
+		}
 		if (sender instanceof ConsoleCommandSender) {
 			sender.sendMessage(ConfigProperties.PREFIX + "*Magically teleports your server box*");
 			return true;

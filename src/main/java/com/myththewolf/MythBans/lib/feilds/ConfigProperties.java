@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import net.md_5.bungee.api.ChatColor;
 
 public class ConfigProperties {
+	public static final String VERSION = "2.3.2";
 	public static String SERVER_UNMUTE_FORMAT;
 	public static String SQL_HOST;
 	public static String SQL_PORT;
@@ -55,7 +56,9 @@ public class ConfigProperties {
 	private static Logger MythLog;
 	public static String SERVER_PARDON_FORMAT;
 	public static String USER_UNMUTE_FORMAT;
-
+	public static String STAFF_CHAT_SEND;
+	public static String STAFF_CHAT_GET;
+	public static String IMPORTANT_SEND;
 	public static void dumpProperties(JavaPlugin i) {
 		MythLog = i.getLogger();
 		try {
@@ -109,6 +112,9 @@ public class ConfigProperties {
 			PARDON_PERMISSION = cfg.getString("PARDON-PERMISSION");
 			CLOSETICKET_PERMISSION = cfg.getString("CLOSE-TICKET-PERMISSION");
 			TICKETS_OTHER_PERMISSION = cfg.getString("VIEW-SERVER-TICKETS-PERMISSION");
+			IMPORTANT_SEND = cfg.getString("IMPORTANT-SEND");
+			STAFF_CHAT_GET = cfg.getString("STAFF-CHAT-GET");
+			STAFF_CHAT_SEND = cfg.getString("STAFF-CHAT-SEND");
 		} catch (Exception e) {
 			MythLog.severe("Could not load MythBans... Malformed Config!");
 			e.printStackTrace();

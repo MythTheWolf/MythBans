@@ -37,11 +37,15 @@ public class Probate implements CommandExecutor {
 				return true;
 			} else {
 				String stat = playerClass
-						.getStatus(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString().toLowerCase());
-				if (!stat.equals("ok") || !stat.equals("muted")) {
+						.getStatus(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
+				if (!stat.equals("OK") && !stat.equals("trial")) {
+					sender.sendMessage(stat);
 					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED
-							+ " Can't override status; User is not currently set to \"OK\"");
+							+ "Can't override status; User is not currently set to \"OK\"");
 					return true;
+					
+				}else{
+					
 				}
 				p = pCache.getOfflinePlayerExact(args[0]);
 				if (playerClass.getStatus(p.getUniqueId().toString()).equals("trial")) {

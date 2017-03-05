@@ -21,10 +21,10 @@ public class PlayerTicket {
 	private Connection con = MythSQLConnect.getConnection();
 	private ResultSet rs;
 
-	public void recordGreif(String UUID, String timestamp, String location, String text) throws SQLException {
+	public void recordTicket(String UUID, String timestamp, String location, String text,String pri) throws SQLException {
 		ps = (PreparedStatement) con.prepareStatement(
 				"INSERT INTO MythBans_Tickets (`PRIORITY`,`SENDER_UUID`,`status`,`message`,`location`) VALUES (?,?,?,?,?)");
-		ps.setString(1, "HIGH");
+		ps.setString(1, pri);
 		ps.setString(2, UUID);
 		ps.setString(3, "OPEN");
 		ps.setString(4, text);
@@ -91,7 +91,19 @@ public class PlayerTicket {
 		ps.setString(1, "OPEN");
 		rs = ps.executeQuery();
 		while (rs.next()) {
-			map.put(rs.getInt("ID"), rs.getString("message"));
+			String KEY = "";
+			switch (this.getPriority(rs.getString("ID"))) {
+			case "HIGH":
+				KEY = ChatColor.DARK_RED + rs.getString("message");
+				break;
+			case "MEDIUM":
+				KEY = ChatColor.YELLOW + rs.getString("message");
+				break;
+			case "LOW":
+				KEY = ChatColor.GREEN + rs.getString("message");
+				break;
+			}
+			map.put(rs.getInt("ID"), KEY);
 		}
 		paginate(sender, map, page, 4);
 	}
@@ -146,7 +158,7 @@ public class PlayerTicket {
 		return null;
 	}
 
-	public String getHandler(String ID)  throws SQLException {
+	public String getHandler(String ID) throws SQLException {
 		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Tickets WHERE ID = ?");
 		ps.setString(1, ID);
 		rs = ps.executeQuery();
@@ -155,7 +167,8 @@ public class PlayerTicket {
 		}
 		return null;
 	}
-	public String getClose(String ID)  throws SQLException {
+
+	public String getClose(String ID) throws SQLException {
 		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Tickets WHERE ID = ?");
 		ps.setString(1, ID);
 		rs = ps.executeQuery();
@@ -171,6 +184,40 @@ public class PlayerTicket {
 		rs = ps.executeQuery();
 		while (rs.next()) {
 			return rs.getString("message");
+		}
+		return null;
+	}
+
+	public void getClosedTickets(CommandSender sender, int page, int pageLength) throws SQLException {
+		SortedMap<Integer, String> map = new TreeMap<Integer, String>(Collections.reverseOrder());
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Tickets WHERE status = ?");
+		ps.setString(1, "CLOSED");
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			map.put(rs.getInt("ID"), rs.getString("message"));
+		}
+		paginate(sender, map, page, 4);
+	}
+
+	public void getMyClosedTickets(CommandSender sender, int page, int max) throws SQLException {
+		SortedMap<Integer, String> map = new TreeMap<Integer, String>(Collections.reverseOrder());
+		ps = (PreparedStatement) con
+				.prepareStatement("SELECT * FROM MythBans_Tickets WHERE status = ? AND SENDER_UUID = ?");
+		ps.setString(1, "CLOSED");
+		ps.setString(2, ((Player) sender).getUniqueId().toString());
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			map.put(rs.getInt("ID"), rs.getString("message"));
+		}
+		paginate(sender, map, page, 4);
+	}
+
+	public String getPriority(String ID) throws SQLException {
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Tickets WHERE ID = ?");
+		ps.setString(1, ID);
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			return rs.getString("PRIORITY");
 		}
 		return null;
 	}

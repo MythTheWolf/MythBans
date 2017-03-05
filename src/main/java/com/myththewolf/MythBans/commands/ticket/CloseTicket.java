@@ -24,8 +24,7 @@ public class CloseTicket implements CommandExecutor {
 			sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "You can't use this command in the console!");
 			return true;
 		}
-		if(!sender.hasPermission(ConfigProperties.CLOSETICKET_PERMISSION))
-		{
+		if (!sender.hasPermission(ConfigProperties.CLOSETICKET_PERMISSION)) {
 			sender.sendMessage(ConfigProperties.PREFIX + "You don't have permission to execute this command.");
 			return true;
 		}
@@ -45,6 +44,9 @@ public class CloseTicket implements CommandExecutor {
 				if (p.getUniqueId().toString().equals(PT.getSender(args[0]))) {
 					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + ((Player) sender).getDisplayName()
 							+ " has closed your ticket, #" + args[0]);
+				} else if (p.hasPermission(ConfigProperties.TICKETS_OTHER_PERMISSION)) {
+					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + ((Player) sender).getDisplayName()
+							+ " has closed ticket, #" + args[0]);
 				}
 			}
 			return true;

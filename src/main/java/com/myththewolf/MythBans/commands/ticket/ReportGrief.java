@@ -20,16 +20,16 @@ public class ReportGrief implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private Date mythDate = new Date();
 	private PlayerTicket PT = new PlayerTicket();
-	@Override	
+
+	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		String UUID = "";
 		try {
-			if(sender instanceof ConsoleCommandSender)
-			{
+			if (sender instanceof ConsoleCommandSender) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Must be a player!");
 				return true;
-			}else{
-				UUID =((Player) sender).getUniqueId().toString();
+			} else {
+				UUID = ((Player) sender).getUniqueId().toString();
 			}
 			if (args.length < 2) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /reportgreif <user> <message>");
@@ -42,7 +42,7 @@ public class ReportGrief implements CommandExecutor {
 			String seralizedLocation = Utils.serializeLocation(((Player) sender).getLocation());
 			String timestamp = mythDate.formatDate(mythDate.getNewDate());
 			String text = Utils.makeString(args, 1);
-			PT.recordGreif(UUID, timestamp,  seralizedLocation, text);
+			PT.recordTicket(UUID, timestamp, seralizedLocation, text, "HIGH");
 			sender.sendMessage(ConfigProperties.PREFIX + "Reported Greif!");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -51,5 +51,3 @@ public class ReportGrief implements CommandExecutor {
 	}
 
 }
-
-

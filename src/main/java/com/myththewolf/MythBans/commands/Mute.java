@@ -41,8 +41,8 @@ public class Mute implements CommandExecutor {
 				return true;
 			}
 			String stat = PlayerClass
-					.getStatus(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString().toLowerCase());
-			if (!stat.equals("ok") || !stat.equals("muted")) {
+					.getStatus(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
+			if (!stat.equals("OK") || !stat.equals("muted")) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + " Can't override status; User is not currently set to \"OK\"");
 				return true;
 			}

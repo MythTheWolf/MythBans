@@ -28,10 +28,11 @@ public class PardonIP implements CommandExecutor {
 	private String[] packet;
 	private JavaPlugin MythPlugin;
 	private String byUUID;
-	
-	public PardonIP(JavaPlugin pl){
+
+	public PardonIP(JavaPlugin pl) {
 		MythPlugin = pl;
 	}
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
@@ -96,11 +97,11 @@ public class PardonIP implements CommandExecutor {
 					dbc.cleanIP(IP);
 					byUUID = p.getUniqueId().toString();
 				}
-				
+
 				for (Player i : Bukkit.getOnlinePlayers()) {
-					
-					  if (i.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-						String dump = this.formatMessage(IP, ConfigProperties.SERVER_IPBAN_FORMAT,byUUID);
+
+					if (i.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
+						String dump = this.formatMessage(IP, ConfigProperties.SERVER_IPBAN_FORMAT, byUUID);
 						dump = dump.replaceAll("\\{culprit\\}", IP);
 						i.sendMessage(dump);
 					} else {
@@ -109,12 +110,13 @@ public class PardonIP implements CommandExecutor {
 				}
 			}
 			return true;
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return true;
 	}
-	private String formatMessage(String IP, String format,String byUUID) throws SQLException {
+
+	private String formatMessage(String IP, String format, String byUUID) throws SQLException {
 		String toFormat = format;
 
 		if (byUUID.equals("CONSOLE")) {
