@@ -71,3 +71,6 @@ commands:
  player:
      description: View info on player
      aliases: [info]
+ link:
+     description: Links your MC account with the discord server
+     aliases: [discordlink]

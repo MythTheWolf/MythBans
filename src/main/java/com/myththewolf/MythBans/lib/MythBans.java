@@ -1,7 +1,12 @@
 package com.myththewolf.MythBans.lib;
 
 import java.io.File;
+
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,6 +16,7 @@ import com.myththewolf.MythBans.commands.Compare;
 import com.myththewolf.MythBans.commands.IPBan;
 import com.myththewolf.MythBans.commands.IPKick;
 import com.myththewolf.MythBans.commands.Kick;
+import com.myththewolf.MythBans.commands.Link;
 import com.myththewolf.MythBans.commands.Mute;
 import com.myththewolf.MythBans.commands.PardonIP;
 import com.myththewolf.MythBans.commands.PardonUser;
@@ -44,6 +50,54 @@ public class MythBans {
 		this.MythPlugin = inst;
 	}
 
+	public void startDiscordBot() {
+		Connection con = MythSQLConnect.getConnection();
+		PreparedStatement ps;
+		try {
+			// Discord table
+			if (ConfigProperties.DEBUG) {
+				Bukkit.getLogger().info("Loading MySQL Table: Discord");
+			}
+			DatabaseMetaData dbm = con.getMetaData();
+			// check if "employee" table is there
+			ResultSet tables = dbm.getTables(null, null, "Mythbans_Discord", null);
+			if (tables.next()) {
+				// Table exists
+			} else {
+				ps = (PreparedStatement) con.prepareStatement(
+						"CREATE TABLE `MythBans_Discord` ( `ID` INT NOT NULL AUTO_INCREMENT, `key` VARCHAR(255) NULL DEFAULT NULL , `value` VARCHAR(255) NULL DEFAULT NULL , PRIMARY KEY (`ID`) ) ENGINE = InnoDB;");
+				ps.executeUpdate();
+				ps = null;
+				ps = (PreparedStatement) con
+						.prepareStatement("INSERT INTO MythBans_Discord (`key`,value) VALUES ( ? , ? )");
+				ps.setString(1, "SERVER-SETUP");
+				ps.setString(2, "false");
+				ps.executeUpdate();
+				ps.setString(1, "SERVER-ID");
+				ps.setString(2, "");
+				ps.executeUpdate();
+				ps.setString(1, "MINECRAFT-CHANNEL-ID");
+				ps.setString(2, "");
+				ps.executeUpdate();
+				ps.setString(1, "LOG-CHANNEL-ID");
+				ps.setString(2, "");
+				ps.executeUpdate();
+				ps.setString(1, "SERVER-CHAT-MESSAGE-ID");
+				ps.setString(2, "");
+				ps.executeUpdate();
+				
+			}
+			DiscordConnection.connect();
+			if (ConfigProperties.DEBUG) {
+				Bukkit.getLogger().info("All MySQL tables generated.");
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
 	public void loadConfig() {
 
 		try {
@@ -71,6 +125,7 @@ public class MythBans {
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerChat(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerQuit(), MythPlugin);
+
 	}
 
 	public Connection loadMySQL() {
@@ -106,6 +161,7 @@ public class MythBans {
 		MythPlugin.getCommand("mythbans").setExecutor(new mythapi());
 		MythPlugin.getCommand("closedtickets").setExecutor(new closedtickets());
 		MythPlugin.getCommand("player").setExecutor(new user());
+		MythPlugin.getCommand("link").setExecutor(new Link());
 	}
 
 	public void buildCommandMap() {

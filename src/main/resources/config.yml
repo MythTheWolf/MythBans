@@ -32,6 +32,9 @@ CRON-UPDATE-TIME: '40'
 API-STARTPOINT: 'localhost/API.php'
 #xenAPI Secret key to use
 API-KEY: 'somesecretcode'
+#Discord bot
+USE-BOT: false
+DISCORD-BOT-KEY: 'mykey'
 #Should the console spit out a lot of information?
 DEBUG-MODE: false
 # ******************Permission Config*************************
@@ -89,3 +92,7 @@ DEFAULT-BAN-REASON: 'Being a naughty child'
 #Chat Prefix to use for In game messages
 #You can leave it to it's default if you want to support me :-)
 PREFIX: '&8[&aMythBans&8]&6'
+#Don't change these, like ever
+DISCORD-SERVER-ID: ''
+DISCORD-MINECRAFT-CHANNEL: ''
+SYSTEM-SETUP: false

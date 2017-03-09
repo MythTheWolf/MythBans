@@ -1,14 +1,15 @@
 package com.myththewolf.MythBans.lib.SQL;
 
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
 
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-
-import java.sql.Connection;
 
 public class MythSQLConnect {
 	private static Connection con;
@@ -69,7 +70,7 @@ public class MythSQLConnect {
 				Bukkit.getLogger().info("Loading MySQL Table: NameCache");
 			}
 			ps = (PreparedStatement) con.prepareStatement(
-					"CREATE TABLE IF NOT EXISTS `MythBans_NameCache` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `Name` VARCHAR(255) NOT NULL, PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
+					"CREATE TABLE IF NOT EXISTS `MythBans_NameCache` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `Name` VARCHAR(255) NOT NULL, `discord_id` VARCHAR(255) NULL DEFAULT NULL, `discord_secret` VARCHAR(255) NULL DEFAULT NULL ,PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
 			ps.executeUpdate();
 			// IP Table
 			if (ConfigProperties.DEBUG) {
@@ -100,9 +101,10 @@ public class MythSQLConnect {
 			ps = (PreparedStatement) con.prepareStatement(
 					"CREATE TABLE IF NOT EXISTS `MythBans_Tickets` ( `ID` INT NOT NULL AUTO_INCREMENT, `SENDER_UUID` VARCHAR(255) NULL DEFAULT NULL , `priority` VARCHAR(255) NULL DEFAULT NULL ,`status` VARCHAR(255) NULL DEFAULT NULL,`message` VARCHAR(255) NULL DEFAULT NULL, `close_message` VARCHAR(255) NULL DEFAULT NULL ,`handler` VARCHAR(255) NULL DEFAULT NULL, `location` VARCHAR(255) NULL DEFAULT NULL, `user_seen` VARCHAR(255) NULL DEFAULT NULL ,PRIMARY KEY (`ID`) ) ENGINE = InnoDB;");
 			ps.executeUpdate();
-			if (ConfigProperties.DEBUG) {
-				Bukkit.getLogger().info("All MySQL tables generated.");
-			}
+			// Chat history
+			ps = (PreparedStatement) con.prepareStatement(
+					"CREATE TABLE IF NOT EXISTS `MythBans_GameChat` ( `ID` INT NOT NULL AUTO_INCREMENT, `text` VARCHAR(255) NULL DEFAULT NULL , `name` VARCHAR(255) NULL DEFAULT NULL , PRIMARY KEY (`ID`) ) ENGINE = InnoDB;");
+			ps.executeUpdate();
 		} catch (SQLException e) {
 			Bukkit.getConsoleSender().sendMessage("SERVERE: Fatal MySQL Error!");
 			e.printStackTrace();

@@ -1,13 +1,20 @@
 package com.myththewolf.MythBans.lib.feilds;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.logging.Logger;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 
 import net.md_5.bungee.api.ChatColor;
 
 public class ConfigProperties {
-	public static final String VERSION = "2.3.2";
+	public static final String VERSION = "2.3.3";
 	public static String SERVER_UNMUTE_FORMAT;
 	public static String SQL_HOST;
 	public static String SQL_PORT;
@@ -54,13 +61,25 @@ public class ConfigProperties {
 	public static String TICKETS_OTHER_PERMISSION;
 	private static FileConfiguration cfg;
 	private static Logger MythLog;
+	public static boolean use_bot;
 	public static String SERVER_PARDON_FORMAT;
 	public static String USER_UNMUTE_FORMAT;
 	public static String STAFF_CHAT_SEND;
 	public static String STAFF_CHAT_GET;
 	public static String IMPORTANT_SEND;
+	public static String BOT_API;
+	public static JavaPlugin pl;
+	public static boolean DISCORD_SETUP;
+	public static String TEMP_THREAD;
+	public static String DISCORD_SERVER_ID;
+	public static String DISCORD_MINECRAFT_CHANNEL_ID;
+	public static String DISCORD_LOGGER_ID;
+	public static String DISCORD_THREAD_ID;
+
 	public static void dumpProperties(JavaPlugin i) {
+
 		MythLog = i.getLogger();
+		pl = i;
 		try {
 			cfg = i.getConfig();
 			SQL_HOST = cfg.getString("SQL-HOST");
@@ -115,10 +134,91 @@ public class ConfigProperties {
 			IMPORTANT_SEND = cfg.getString("IMPORTANT-SEND");
 			STAFF_CHAT_GET = cfg.getString("STAFF-CHAT-GET");
 			STAFF_CHAT_SEND = cfg.getString("STAFF-CHAT-SEND");
+			BOT_API = cfg.getString("DISCORD-BOT-KEY");
+			use_bot = cfg.getBoolean("USE-BOT");
+
 		} catch (Exception e) {
 			MythLog.severe("Could not load MythBans... Malformed Config!");
 			e.printStackTrace();
 		}
 	}
 
+	public static void dumpDiscord() {
+		MythLog.info("Dumping..");
+		Connection c = MythSQLConnect.getConnection();
+		PreparedStatement ps;
+		ResultSet rs;
+		try {
+			ps = (PreparedStatement) c.prepareStatement("SELECT * FROM Mythbans_Discord WHERE `key` = ?");
+			ps.setString(1, "SERVER-SETUP");
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				DISCORD_SETUP = rs.getBoolean("value");
+			}
+			ps.setString(1, "SERVER-ID");
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				DISCORD_SERVER_ID = rs.getString("value");
+			}
+			ps.setString(1, "MINECRAFT-CHANNEL-ID");
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				DISCORD_MINECRAFT_CHANNEL_ID = rs.getString("value");
+				System.out.println(DISCORD_MINECRAFT_CHANNEL_ID);
+			}
+			ps.setString(1, "LOG-CHANNEL-ID");
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				DISCORD_LOGGER_ID = rs.getString("value");
+				System.out.println(DISCORD_LOGGER_ID);
+			}
+			ps.setString(1, "SERVER-CHAT-MESSAGE-ID");
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				DISCORD_THREAD_ID = rs.getString("value");
+				System.out.println(DISCORD_THREAD_ID);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void writeDiscordInfo(String serverID, String MCID, String logID) {
+		Connection c = MythSQLConnect.getConnection();
+		PreparedStatement ps;
+		try {
+			ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_Discord  SET `value` = ? WHERE  `key` = ?");
+			ps.setString(2, "SERVER-SETUP");
+			ps.setString(1, "true");
+			ps.executeUpdate();
+			ps.setString(2, "SERVER-ID");
+			ps.setString(1, serverID);
+			ps.executeUpdate();
+			ps.setString(2, "MINECRAFT-CHANNEL-ID");
+			ps.setString(1, MCID);
+			ps.executeUpdate();
+			ps.setString(2, "LOG-CHANNEL-ID");
+			ps.setString(1, logID);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void updateThread(String newID) {
+		Connection c = MythSQLConnect.getConnection();
+		PreparedStatement ps;
+		try {
+			ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_Discord  SET `value` = ? WHERE  `key` = ?");
+			ps.setString(2, "SERVER-CHAT-MESSAGE-ID");
+			ps.setString(1, newID);
+			ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+	}
 }

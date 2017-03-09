@@ -2,6 +2,8 @@ package com.myththewolf.MythBans.lib.events.player;
 
 import java.sql.SQLException;
 
+import java.util.concurrent.ExecutionException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -10,6 +12,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import com.myththewolf.MythBans.lib.Discord;
+import com.myththewolf.MythBans.lib.DiscordConnection;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.player.Player;
@@ -19,7 +23,8 @@ public class PlayerChat implements Listener {
 	private DatabaseCommands dbc = new DatabaseCommands();
 
 	@EventHandler
-	public void onPlayerChatEvent(AsyncPlayerChatEvent e) throws SQLException {
+	public void onPlayerChatEvent(AsyncPlayerChatEvent e)
+			throws SQLException, InterruptedException, ExecutionException {
 		org.bukkit.entity.Player p = e.getPlayer();
 		String UUID = p.getUniqueId().toString();
 		Player playerClass = new Player();
@@ -83,6 +88,9 @@ public class PlayerChat implements Listener {
 				}
 			}
 		}
+		dbc.writeMessageToHistory(e.getMessage(), e.getPlayer().getDisplayName());
+		Discord disc = new Discord(DiscordConnection.getConnection());
+		disc.appendToThread(e.getMessage(),e.getPlayer().getDisplayName());
 		return;
 	}
 }

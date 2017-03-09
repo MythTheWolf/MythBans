@@ -2,17 +2,15 @@ package com.myththewolf.MythBans.lib.SQL;
 
 import java.sql.Connection;
 
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import org.bukkit.entity.Player;
 
 public class DatabaseCommands {
 	private Connection c = MythSQLConnect.getConnection();
 	private PreparedStatement ps;
-
+	private ResultSet rs;
 	public void muteUser(String UUID, String byUUID) throws SQLException {
 		ps = (PreparedStatement) c
 				.prepareStatement("UPDATE MythBans_PlayerStats SET status = ?, byUUID = ? WHERE UUID = ?");
@@ -82,24 +80,24 @@ public class DatabaseCommands {
 		ps.setString(3, UUID);
 		ps.executeUpdate();
 	}
-	
-	public void pardonIP(String IP) throws SQLException
-	{
+
+	public void pardonIP(String IP) throws SQLException {
 		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_IPCache SET status = ? WHERE IP_ADDRESS = ?");
 		ps.setString(1, "OK");
 		ps.setString(2, IP);
 		ps.executeUpdate();
 	}
-	
-	public void cleanIP(String IP) throws SQLException
-	{
-		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_IPCache SET status = ?, reason = ?, byUUID = ? WHERE IP_ADDRESS = ?");
+
+	public void cleanIP(String IP) throws SQLException {
+		ps = (PreparedStatement) c.prepareStatement(
+				"UPDATE MythBans_IPCache SET status = ?, reason = ?, byUUID = ? WHERE IP_ADDRESS = ?");
 		ps.setString(1, "OK");
 		ps.setString(2, "");
 		ps.setString(3, "");
 		ps.setString(4, IP);
 		ps.executeUpdate();
 	}
+
 	public void setIP(Player p) throws SQLException {
 		ps = (PreparedStatement) c.prepareStatement("SELECT * FROM MythBans_IPCache WHERE IP_ADDRESS = ?");
 		ps.setString(1, p.getAddress().getAddress().toString());
@@ -140,7 +138,8 @@ public class DatabaseCommands {
 	}
 
 	public void setProbation(String UUID, String byUUID, String reason) throws SQLException {
-		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_PlayerStats SET status = ?, byUUID = ? WHERE UUID = ?");
+		ps = (PreparedStatement) c
+				.prepareStatement("UPDATE MythBans_PlayerStats SET status = ?, byUUID = ? WHERE UUID = ?");
 		ps.setString(1, "trial");
 		ps.setString(2, byUUID);
 		ps.setString(3, UUID);
@@ -155,7 +154,8 @@ public class DatabaseCommands {
 	}
 
 	public void banIP(String IP, String byUUID, String reason) throws SQLException {
-		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_IPCache SET status = ?, byUUID = ?, reason = ? WHERE IP_ADDRESS = ?");
+		ps = (PreparedStatement) c.prepareStatement(
+				"UPDATE MythBans_IPCache SET status = ?, byUUID = ?, reason = ? WHERE IP_ADDRESS = ?");
 		ps.setString(1, "banned");
 		ps.setString(2, byUUID);
 		ps.setString(3, reason);
@@ -184,15 +184,16 @@ public class DatabaseCommands {
 	}
 
 	public void cleanUser(String UUID) throws SQLException {
-		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_PlayerStats SET status = ?,byUUID = ?,reason = ? WHERE UUID = ?");
+		ps = (PreparedStatement) c
+				.prepareStatement("UPDATE MythBans_PlayerStats SET status = ?,byUUID = ?,reason = ? WHERE UUID = ?");
 		ps.setString(1, "OK");
 		ps.setString(2, "");
 		ps.setString(3, "");
 		ps.setString(4, UUID);
 		ps.executeUpdate();
 	}
-	
-	public void pardonUser(String UUID,String byUUID) throws SQLException {
+
+	public void pardonUser(String UUID, String byUUID) throws SQLException {
 		ps = (PreparedStatement) c.prepareStatement("UPDATE MythBans_PlayerStats SET status = ? WHERE UUID = ?");
 		ps.setString(1, "OK");
 		ps.setString(2, UUID);
@@ -215,6 +216,15 @@ public class DatabaseCommands {
 		ps.setString(1, UUID);
 		ps.setString(2, "userUnmute");
 		ps.setString(3, byUUID);
-		ps.executeUpdate();		
+		ps.executeUpdate();
 	}
+
+	public void writeMessageToHistory(String text, String user) throws SQLException {
+		ps = (PreparedStatement) c.prepareStatement("INSERT INTO MythBans_GameChat (`text`,`name`) VALUES (?,?)");
+		ps.setString(1, text);
+		ps.setString(2, user);
+		ps.executeUpdate();
+	}
+	
+	
 }
