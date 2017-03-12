@@ -54,12 +54,34 @@ public class PlayerChat implements Listener {
 			e.setCancelled(true);
 			return;
 		}
+
 		if (m.charAt(0) == '!' && e.getPlayer().hasPermission(ConfigProperties.IMPORTANT_SEND)) {
 			for (org.bukkit.entity.Player pp : Bukkit.getOnlinePlayers()) {
-				m = e.getPlayer().getDisplayName() + ": " + m.replaceAll("!", "");
+				String orig = e.getMessage();
+				m = e.getPlayer().getDisplayName() + ": " + orig.replaceAll("!", "");
 				pp.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8[&b#!IMPORTANT&8]&6" + m));
 				Location location = pp.getLocation();
 				pp.getWorld().playSound(location, Sound.BLOCK_PISTON_EXTEND, 1, 1);
+			}
+			e.setCancelled(true);
+			return;
+		}
+		if (playerClass.getStatus(e.getPlayer().getUniqueId().toString()).equals("softmuted")) {
+			org.bukkit.entity.Player PP = e.getPlayer();
+			String who = PP.getDisplayName();
+			String message = e.getMessage();
+			if (e.getPlayer().hasPermission("essentials.chat.color")) {
+				PP.sendMessage(ChatColor.WHITE + "<" + who + ChatColor.WHITE + "> "
+						+ ChatColor.translateAlternateColorCodes('&', message));
+			} else {
+				PP.sendMessage(ChatColor.WHITE + "<" + who + ChatColor.WHITE + "> " + message);
+			}
+			for (org.bukkit.entity.Player I : Bukkit.getOnlinePlayers()) {
+				if (I.hasPermission(ConfigProperties.STAFF_CHAT_GET)) {
+					String message1 = ChatColor.stripColor(e.getMessage());
+					String who1 = PP.getName();
+					I.sendMessage(ChatColor.GRAY + "[SOFTMUTED: " + who1 + "] " + message);
+				}
 			}
 			e.setCancelled(true);
 			return;
@@ -90,7 +112,7 @@ public class PlayerChat implements Listener {
 		}
 		dbc.writeMessageToHistory(e.getMessage(), e.getPlayer().getDisplayName());
 		Discord disc = new Discord(DiscordConnection.getConnection());
-		disc.appendToThread(e.getMessage(),e.getPlayer().getDisplayName());
+		disc.appendToThread(e.getMessage(), e.getPlayer().getDisplayName());
 		return;
 	}
 }

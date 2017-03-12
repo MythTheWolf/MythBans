@@ -55,7 +55,7 @@ public class Player {
 		ps = (PreparedStatement) MythSQLConnect.getConnection().prepareStatement(
 				"INSERT INTO MythBans_PlayerStats (`UUID`,`status`,`group`,`last_name`,`timestamp`,`playtime`) VALUES (?,?,?,?,?,?);");
 		ps.setString(1, UUID);
-		ps.setString(2, "OK");
+		ps.setString(2, "softmuted");
 		ps.setString(3, "DEFAULT");
 		ps.setString(4, name);
 		ps.setString(5, MythDate.formatDate(date));
@@ -163,5 +163,14 @@ public class Player {
 		ps.setString(2, UUID);
 		ps.setString(1, Long.toString(timeDifference));
 		ps.executeUpdate();
+	}
+
+	public void setStatus(String UUID, String stat)throws SQLException {
+		ps = (PreparedStatement) MythSQLConnect.getConnection()
+				.prepareStatement("UPDATE MythBans_PlayerStats SET status = ?  WHERE UUID = ?");
+		ps.setString(2, UUID);
+		ps.setString(1, stat);
+		ps.executeUpdate();
+		
 	}
 }

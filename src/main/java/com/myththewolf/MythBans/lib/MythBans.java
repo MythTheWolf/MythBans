@@ -21,12 +21,14 @@ import com.myththewolf.MythBans.commands.Mute;
 import com.myththewolf.MythBans.commands.PardonIP;
 import com.myththewolf.MythBans.commands.PardonUser;
 import com.myththewolf.MythBans.commands.PlayerTime;
+import com.myththewolf.MythBans.commands.Potato;
 import com.myththewolf.MythBans.commands.Probate;
 import com.myththewolf.MythBans.commands.TempBan;
 import com.myththewolf.MythBans.commands.createUI;
 import com.myththewolf.MythBans.commands.getFam;
 import com.myththewolf.MythBans.commands.importJSON;
 import com.myththewolf.MythBans.commands.mythapi;
+import com.myththewolf.MythBans.commands.softmute;
 import com.myththewolf.MythBans.commands.user;
 import com.myththewolf.MythBans.commands.ticket.CloseTicket;
 import com.myththewolf.MythBans.commands.ticket.MyTickets;
@@ -37,6 +39,7 @@ import com.myththewolf.MythBans.commands.ticket.closedtickets;
 import com.myththewolf.MythBans.commands.ticket.tickettp;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.events.player.PlayerChat;
+import com.myththewolf.MythBans.lib.events.player.PlayerEatEvent;
 import com.myththewolf.MythBans.lib.events.player.PlayerJoin;
 import com.myththewolf.MythBans.lib.events.player.PlayerQuit;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
@@ -85,7 +88,7 @@ public class MythBans {
 				ps.setString(1, "SERVER-CHAT-MESSAGE-ID");
 				ps.setString(2, "");
 				ps.executeUpdate();
-				
+
 			}
 			DiscordConnection.connect();
 			if (ConfigProperties.DEBUG) {
@@ -125,7 +128,7 @@ public class MythBans {
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerChat(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerQuit(), MythPlugin);
-
+		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerEatEvent(), MythPlugin);
 	}
 
 	public Connection loadMySQL() {
@@ -162,6 +165,8 @@ public class MythBans {
 		MythPlugin.getCommand("closedtickets").setExecutor(new closedtickets());
 		MythPlugin.getCommand("player").setExecutor(new user());
 		MythPlugin.getCommand("link").setExecutor(new Link());
+		MythPlugin.getCommand("potato").setExecutor(new Potato());
+		MythPlugin.getCommand("softmute").setExecutor(new softmute());
 	}
 
 	public void buildCommandMap() {

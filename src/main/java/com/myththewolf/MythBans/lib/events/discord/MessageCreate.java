@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
 import com.myththewolf.MythBans.lib.Discord;
@@ -96,7 +97,9 @@ public class MessageCreate implements MessageCreateListener {
 				ImplPermissionsBuilder IM = new ImplPermissionsBuilder();
 				IM.setState(PermissionType.SEND_MESSAGES, PermissionState.DENIED);
 				Permissions PERMS = IM.build();
-				for (Role R : DiscordConnection.getConnection().getServerById(ConfigProperties.DISCORD_SERVER_ID).getRoles()) {
+
+				for (Role R : DiscordConnection.getConnection().getServerById(ConfigProperties.DISCORD_SERVER_ID)
+						.getRoles()) {
 					try {
 						DiscordConnection.getConnection().getChannelById(ConfigProperties.DISCORD_MINECRAFT_CHANNEL_ID)
 								.updateOverwrittenPermissions(R, PERMS).get();

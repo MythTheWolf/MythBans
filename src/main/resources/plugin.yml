@@ -74,3 +74,9 @@ commands:
  link:
      description: Links your MC account with the discord server
      aliases: [discordlink]
+ potato:
+     description: Turns a player into a potato
+     aliases: [pot]
+ softmute:
+     description: Softmutes a player
+     aliases: [smute]

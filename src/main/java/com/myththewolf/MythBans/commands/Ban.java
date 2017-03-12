@@ -39,6 +39,7 @@ public class Ban implements CommandExecutor {
 				return true;
 			} else {
 				toBan = pCache.getOfflinePlayerExact(args[0]);
+				
 				if (sender instanceof ConsoleCommandSender) {
 					System.out.println(ConfigProperties.PREFIX + "Banned " + toBan.getName());
 					String reason = Utils.makeString(args, 1);
