@@ -26,60 +26,59 @@ import com.myththewolf.MythBans.lib.tool.Utils;
 public class Potato implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private JavaPlugin PL;
+
 	public Potato(JavaPlugin pl) {
 		PL = pl;
 	}
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
 			if (args.length < 1) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /potato <user> [reason]");
 				return true;
-			} else if (pCache.getOfflinePlayerExact(args[0]) == null) {
+			}
+			if (pCache.getOfflinePlayerExact(args[0]) == null) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has not been on this server.");
 				return true;
-			} else if (!sender.hasPermission(ConfigProperties.POTATO_PERM)) {
+			}
+			if (!sender.hasPermission(ConfigProperties.POTATO_PERM)) {
 				sender.sendMessage(
 						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
 			} else {
-				if(!pCache.getOfflinePlayerExact(args[0]).isOnline()){
+				if (!pCache.getOfflinePlayerExact(args[0]).isOnline()) {
 					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player must be online");
-				}else{
-					Location l = new Location(Bukkit.getServer()
-							.getWorld("world"), -9999.0, -5000.0, -9999.0);
+				} else {
+					Location l = new Location(Bukkit.getServer().getWorld("world"), -9999.0, -5000.0, -9999.0);
 					Player thePlayer = pCache.getOfflinePlayerExact(args[0]).getPlayer();
 					thePlayer.setInvulnerable(false);
 					Location ORG = thePlayer.getLocation();
 					ItemStack pot = new ItemStack(Material.POTATO_ITEM);
 					ItemMeta m = pot.getItemMeta();
-					List<String> lore= new ArrayList<String>();
+					List<String> lore = new ArrayList<String>();
 					lore.add("Edible " + thePlayer.getName());
 					lore.add("PotatoPlayer");
 					lore.add(thePlayer.getUniqueId().toString());
 					lore.add(Utils.serializeLocation(ORG));
 					m.setDisplayName(thePlayer.getName());
 					m.setLore(lore);
-					
+
 					pot.setItemMeta(m);
 					thePlayer.getWorld().dropItem(ORG, pot);
-		
-					thePlayer.sendMessage(ConfigProperties.PREFIX+ "To clarify, you have been turned into a potato.");
-					
-					
+
+					thePlayer.sendMessage(ConfigProperties.PREFIX + "To clarify, you have been turned into a potato.");
+
 					Player send = (Player) sender;
 					send.setGameMode(GameMode.SURVIVAL);
-					send.setExhaustion(3);
+					send.setExhaustion(9);
 					send.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Hint: Eat the potato");
 					thePlayer.setMetadata("is_potato", new FixedMetadataValue(PL, 0));
 					thePlayer.teleport(l);
-					
-					
-					
+
 				}
 			}
-				
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

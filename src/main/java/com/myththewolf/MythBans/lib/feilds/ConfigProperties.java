@@ -138,6 +138,10 @@ public class ConfigProperties {
 			BOT_API = cfg.getString("DISCORD-BOT-KEY");
 			use_bot = cfg.getBoolean("USE-BOT");
 			POTATO_PERM = cfg.getString("POTATO-PERMISSION");
+			if(cfg.getBoolean("use_bot") == false)
+			{
+				DISCORD_SETUP = false;
+			}
 		} catch (Exception e) {
 			MythLog.severe("Could not load MythBans... Malformed Config!");
 			e.printStackTrace();

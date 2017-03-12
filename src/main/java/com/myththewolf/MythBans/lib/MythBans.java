@@ -38,6 +38,7 @@ import com.myththewolf.MythBans.commands.ticket.Tickets;
 import com.myththewolf.MythBans.commands.ticket.closedtickets;
 import com.myththewolf.MythBans.commands.ticket.tickettp;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
+import com.myththewolf.MythBans.lib.events.player.CommandEvent;
 import com.myththewolf.MythBans.lib.events.player.PlayerChat;
 import com.myththewolf.MythBans.lib.events.player.PlayerDamageEvent;
 import com.myththewolf.MythBans.lib.events.player.PlayerEatEvent;
@@ -131,6 +132,7 @@ public class MythBans {
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerQuit(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerEatEvent(MythPlugin), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerDamageEvent(), MythPlugin);
+		MythPlugin.getServer().getPluginManager().registerEvents(new CommandEvent(), MythPlugin);
 	}
 
 	public Connection loadMySQL() {
