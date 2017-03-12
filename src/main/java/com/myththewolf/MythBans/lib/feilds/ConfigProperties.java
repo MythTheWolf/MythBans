@@ -14,7 +14,7 @@ import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import net.md_5.bungee.api.ChatColor;
 
 public class ConfigProperties {
-	public static final String VERSION = "2.3.3";
+	public static final String VERSION = "2.4.0";
 	public static String SERVER_UNMUTE_FORMAT;
 	public static String SQL_HOST;
 	public static String SQL_PORT;
