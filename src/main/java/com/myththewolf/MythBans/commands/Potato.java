@@ -38,7 +38,7 @@ public class Potato implements CommandExecutor {
 			} else if (pCache.getOfflinePlayerExact(args[0]) == null) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has not been on this server.");
 				return true;
-			} else if (!sender.hasPermission(ConfigProperties.BAN_PERMISSION)) {
+			} else if (!sender.hasPermission(ConfigProperties.POTATO_PERM)) {
 				sender.sendMessage(
 						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
