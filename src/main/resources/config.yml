@@ -49,6 +49,7 @@ MUTEIP-PERMISSION: 'mythbans.muteip'
 KICKIP-PERMISSION: 'mythbans.kickip'
 PROBATION-PERMISSION: 'mythbans.probate'
 PARDON-PERMISSION: 'mythbans.pardon'
+POTATO-PERMISSION: 'mythbans.potato'
 #Permission user must have in order to see In-Game messages
 BANMESSAGE-PERMISSION: 'mythbans.viewmessages'
 #Permission to create a web UI user, allowing them to manage bans/etc from the webUI

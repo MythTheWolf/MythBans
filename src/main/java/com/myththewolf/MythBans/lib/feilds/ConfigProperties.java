@@ -62,6 +62,7 @@ public class ConfigProperties {
 	private static FileConfiguration cfg;
 	private static Logger MythLog;
 	public static boolean use_bot;
+	public static String POTATO_PERM;
 	public static String SERVER_PARDON_FORMAT;
 	public static String USER_UNMUTE_FORMAT;
 	public static String STAFF_CHAT_SEND;
@@ -136,7 +137,7 @@ public class ConfigProperties {
 			STAFF_CHAT_SEND = cfg.getString("STAFF-CHAT-SEND");
 			BOT_API = cfg.getString("DISCORD-BOT-KEY");
 			use_bot = cfg.getBoolean("USE-BOT");
-
+			POTATO_PERM = cfg.getString("POTATO-PERMISSION");
 		} catch (Exception e) {
 			MythLog.severe("Could not load MythBans... Malformed Config!");
 			e.printStackTrace();

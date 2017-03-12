@@ -110,9 +110,11 @@ public class PlayerChat implements Listener {
 				}
 			}
 		}
-		dbc.writeMessageToHistory(e.getMessage(), e.getPlayer().getDisplayName());
-		Discord disc = new Discord(DiscordConnection.getConnection());
-		disc.appendToThread(e.getMessage(), e.getPlayer().getDisplayName());
-		return;
+		if (ConfigProperties.DISCORD_SETUP) {
+			dbc.writeMessageToHistory(e.getMessage(), e.getPlayer().getDisplayName());
+			Discord disc = new Discord(DiscordConnection.getConnection());
+			disc.appendToThread(e.getMessage(), e.getPlayer().getDisplayName());
+			return;
+		}
 	}
 }

@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
@@ -19,16 +20,21 @@ import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Date;
 
 import net.md_5.bungee.api.ChatColor;
-
+	
 public class PlayerJoin implements Listener {
 	private PlayerCache pc = new PlayerCache(MythSQLConnect.getConnection());
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
 	private final com.myththewolf.MythBans.lib.tool.Date d = new Date();
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private IP ipClass = new IP();
-
+	private JavaPlugin thePlugin;
+	public PlayerJoin(JavaPlugin pl) {
+		thePlugin = pl;
+	}
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException {
+		e.getPlayer().setInvulnerable(false);
+		e.getPlayer().removeMetadata("is_potato", thePlugin);
 		System.out.println("IMBOUND---->" + e.getPlayer().getName());
 		String message;
 		if (!pc.ipExist(e.getPlayer().getAddress().getAddress().toString())) {

@@ -15,14 +15,20 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
+import com.myththewolf.MythBans.lib.tool.Utils;
 
 public class Potato implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
-
+	private JavaPlugin PL;
+	public Potato(JavaPlugin pl) {
+		PL = pl;
+	}
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
@@ -41,9 +47,9 @@ public class Potato implements CommandExecutor {
 					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player must be online");
 				}else{
 					Location l = new Location(Bukkit.getServer()
-							.getWorld("world"), -9999.0, -9999.0, -9999.0);
+							.getWorld("world"), -9999.0, -5000.0, -9999.0);
 					Player thePlayer = pCache.getOfflinePlayerExact(args[0]).getPlayer();
-					thePlayer.setInvulnerable(true);
+					thePlayer.setInvulnerable(false);
 					Location ORG = thePlayer.getLocation();
 					ItemStack pot = new ItemStack(Material.POTATO_ITEM);
 					ItemMeta m = pot.getItemMeta();
@@ -51,18 +57,23 @@ public class Potato implements CommandExecutor {
 					lore.add("Edible " + thePlayer.getName());
 					lore.add("PotatoPlayer");
 					lore.add(thePlayer.getUniqueId().toString());
+					lore.add(Utils.serializeLocation(ORG));
 					m.setDisplayName(thePlayer.getName());
 					m.setLore(lore);
+					
 					pot.setItemMeta(m);
 					thePlayer.getWorld().dropItem(ORG, pot);
 		
 					thePlayer.sendMessage(ConfigProperties.PREFIX+ "To clarify, you have been turned into a potato.");
+					
+					
 					Player send = (Player) sender;
 					send.setGameMode(GameMode.SURVIVAL);
 					send.setExhaustion(3);
 					send.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Hint: Eat the potato");
+					thePlayer.setMetadata("is_potato", new FixedMetadataValue(PL, 0));
 					thePlayer.teleport(l);
-					thePlayer.setInvulnerable(false);
+					
 					
 					
 				}

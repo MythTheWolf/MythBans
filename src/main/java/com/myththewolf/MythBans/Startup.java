@@ -63,7 +63,9 @@ public class Startup extends JavaPlugin {
 				}
 			}
 		}
+		if(ConfigProperties.DISCORD_SETUP){
 		DiscordConnection.getConnection().disconnect();
+		}
 
 	}
 }

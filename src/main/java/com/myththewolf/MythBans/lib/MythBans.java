@@ -39,6 +39,7 @@ import com.myththewolf.MythBans.commands.ticket.closedtickets;
 import com.myththewolf.MythBans.commands.ticket.tickettp;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.events.player.PlayerChat;
+import com.myththewolf.MythBans.lib.events.player.PlayerDamageEvent;
 import com.myththewolf.MythBans.lib.events.player.PlayerEatEvent;
 import com.myththewolf.MythBans.lib.events.player.PlayerJoin;
 import com.myththewolf.MythBans.lib.events.player.PlayerQuit;
@@ -126,9 +127,10 @@ public class MythBans {
 	public void loadEvents() {
 
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerChat(), MythPlugin);
-		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(), MythPlugin);
+		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(MythPlugin), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerQuit(), MythPlugin);
-		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerEatEvent(), MythPlugin);
+		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerEatEvent(MythPlugin), MythPlugin);
+		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerDamageEvent(), MythPlugin);
 	}
 
 	public Connection loadMySQL() {
@@ -165,7 +167,7 @@ public class MythBans {
 		MythPlugin.getCommand("closedtickets").setExecutor(new closedtickets());
 		MythPlugin.getCommand("player").setExecutor(new user());
 		MythPlugin.getCommand("link").setExecutor(new Link());
-		MythPlugin.getCommand("potato").setExecutor(new Potato());
+		MythPlugin.getCommand("potato").setExecutor(new Potato(MythPlugin));
 		MythPlugin.getCommand("softmute").setExecutor(new softmute());
 	}
 

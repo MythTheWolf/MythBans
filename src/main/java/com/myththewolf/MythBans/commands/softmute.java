@@ -29,10 +29,10 @@ public class softmute implements CommandExecutor {
 			} else {
 				if(pClass.getStatus(pCache.getUUID(args[0])).equals("softmuted")){
 					pClass.setStatus(pCache.getUUID(args[0]),"OK");
-					sender.sendMessage(ConfigProperties.PREFIX + "Softmuted player.");
+					sender.sendMessage(ConfigProperties.PREFIX + "Unsoftmuted player.");
 				}else{
 					pClass.setStatus(pCache.getUUID(args[0]),"softmuted");
-					sender.sendMessage(ConfigProperties.PREFIX + "Unsoftmuted player.");
+					sender.sendMessage(ConfigProperties.PREFIX + "Softmuted player.");
 				}
 			}
 		} catch (Exception e) {
