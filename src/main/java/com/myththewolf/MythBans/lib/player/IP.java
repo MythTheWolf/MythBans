@@ -36,10 +36,23 @@ public class IP {
 		return "NO_REASON_FOUND";
 	}
 
+	public String[] getUUIDPack(String IP) throws SQLException {
+		List<String> list = new ArrayList<String>();
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE IP_ADDRESS = ?");
+		ps.setString(1, IP);
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			list.add(rs.getString("UUID"));
+		}
+		String[] arr = new String[list.size()];
+		arr = list.toArray(new String[list.size()]);
+		return arr;
+	}
+
 	public String[] getTheFam(String IP, String UUID) throws SQLException {
 		List<String> fam = new ArrayList<String>();
 		ps = (PreparedStatement) con
-				.prepareStatement("SELECT * FROM MythBans_IPCache WHERE IP_ADDRESS = ? AND UUID != ?");
+				.prepareStatement("SELECT * FROM MythBans_IPCache WHERE UUID != ?");
 		ps.setString(1, IP);
 		ps.setString(2, UUID);
 		rs = ps.executeQuery();

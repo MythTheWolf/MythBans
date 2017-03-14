@@ -14,7 +14,7 @@ import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import net.md_5.bungee.api.ChatColor;
 
 public class ConfigProperties {
-	public static final String VERSION = "2.4.0";
+	public static final String VERSION = "2.5.0";
 	public static String SERVER_UNMUTE_FORMAT;
 	public static String SQL_HOST;
 	public static String SQL_PORT;
@@ -76,6 +76,7 @@ public class ConfigProperties {
 	public static String DISCORD_MINECRAFT_CHANNEL_ID;
 	public static String DISCORD_LOGGER_ID;
 	public static String DISCORD_THREAD_ID;
+	public static String RELOAD;
 
 	public static void dumpProperties(JavaPlugin i) {
 
@@ -138,6 +139,7 @@ public class ConfigProperties {
 			BOT_API = cfg.getString("DISCORD-BOT-KEY");
 			use_bot = cfg.getBoolean("USE-BOT");
 			POTATO_PERM = cfg.getString("POTATO-PERMISSION");
+			RELOAD = cfg.getString("RELOAD-PERMISSION");
 			if(cfg.getBoolean("use_bot") == false)
 			{
 				DISCORD_SETUP = false;

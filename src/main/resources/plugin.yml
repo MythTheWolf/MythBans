@@ -80,3 +80,6 @@ commands:
  softmute:
      description: Softmutes a player
      aliases: [smute]
+ mbreload:
+     description: Reloads MythBans
+     aliases: [reloadmb,mbr]

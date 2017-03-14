@@ -1,15 +1,14 @@
 package com.myththewolf.MythBans.commands;
 
 import java.sql.SQLException;
-
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.UUID;
+import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.player.IP;
@@ -17,9 +16,10 @@ import com.myththewolf.MythBans.lib.player.PlayerCache;
 
 import net.md_5.bungee.api.ChatColor;
 
-public class getFam implements CommandExecutor{
+public class getFam implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private IP ipClass = new IP();
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
@@ -41,29 +41,28 @@ public class getFam implements CommandExecutor{
 				return true;
 			}
 			if (args[0].charAt(0) != '/') {
-				if(!pCache.getOfflinePlayerExact(args[0]).isOnline()){
-					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player not online");
-					return true;
-				}else{
-					Player p = Bukkit.getPlayer(UUID.fromString(pCache.getUUID(args[0])));
-					String[] fam = ipClass.getTheFam(p.getAddress().getAddress().toString(),"BOOOOOOOOOOOOOOOOOOOOOOGUUUUUUUSSSSS");
-					if(fam == null){
-						sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "No users sharing this ip.");
-						return true;
+				List<String> list = new ArrayList<String>();
+				for (String IP : ipClass.getIPPack(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString())) {
+					String[] values = ipClass.getTheFam(IP, pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
+					for(String v : values){
+						list.add(v);
 					}
-					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + " Users sharing this ip: " + Arrays.toString(fam));
-					return true;
 				}
-			}else{
-				String[] fam = ipClass.getTheFam(args[0],"BOOOOOOOOOOOOOOOOOOOOOOGUUUUUUUSSSSS");
-				if(fam == null){
+				String[] arr = new String[list.size()];
+				arr = list.toArray(new String[list.size()]);
+				sender.sendMessage(ConfigProperties.PREFIX+ChatColor.GOLD+"NOTE: This does a DEEP search, it looks through ALL of the user's IPs ");
+				sender.sendMessage(ConfigProperties.PREFIX+ChatColor.GOLD+"Mutual users: " + Arrays.toString(arr));
+			} else {
+				String[] fam = ipClass.getTheFam(args[0], "BOOOOOOOOOOOOOOOOOOOOOOGUUUUUUUSSSSS");
+				if (fam == null) {
 					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "No users sharing this ip.");
 					return true;
 				}
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + " Users sharing this ip: " + Arrays.toString(fam));
+				sender.sendMessage(
+						ConfigProperties.PREFIX + ChatColor.GOLD + " Users on this ip: " + Arrays.toString(fam));
 				return true;
 			}
-		}catch(SQLException e){
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return true;

@@ -3,6 +3,7 @@ package com.myththewolf.MythBans.commands;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -54,27 +56,30 @@ public class Potato implements CommandExecutor {
 					Player thePlayer = pCache.getOfflinePlayerExact(args[0]).getPlayer();
 					thePlayer.setInvulnerable(false);
 					Location ORG = thePlayer.getLocation();
-					ItemStack pot = new ItemStack(Material.POTATO_ITEM);
-					ItemMeta m = pot.getItemMeta();
-					List<String> lore = new ArrayList<String>();
-					lore.add("Edible " + thePlayer.getName());
-					lore.add("PotatoPlayer");
-					lore.add(thePlayer.getUniqueId().toString());
-					lore.add(Utils.serializeLocation(ORG));
-					m.setDisplayName(thePlayer.getName());
-					m.setLore(lore);
-
-					pot.setItemMeta(m);
-					thePlayer.getWorld().dropItem(ORG, pot);
 
 					thePlayer.sendMessage(ConfigProperties.PREFIX + "To clarify, you have been turned into a potato.");
-
-					Player send = (Player) sender;
-					send.setGameMode(GameMode.SURVIVAL);
-					send.setExhaustion(9);
-					send.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Hint: Eat the potato");
-					thePlayer.setMetadata("is_potato", new FixedMetadataValue(PL, 0));
-					thePlayer.teleport(l);
+					if (sender instanceof ConsoleCommandSender) {
+						sender.sendMessage("You must be a player to use this command");
+						return true;
+					} else {
+						ItemStack pot = new ItemStack(Material.POTATO_ITEM);
+						ItemMeta m = pot.getItemMeta();
+						List<String> lore = new ArrayList<String>();
+						lore.add("Edible " + thePlayer.getName());
+						lore.add("PotatoPlayer");
+						lore.add(thePlayer.getUniqueId().toString());
+						lore.add(Utils.serializeLocation(ORG));
+						m.setDisplayName(thePlayer.getName());
+						m.setLore(lore);
+						pot.setItemMeta(m);
+						thePlayer.teleport(l);
+						thePlayer.getWorld().dropItem(ORG, pot);
+						thePlayer.setMetadata("is_potato", new FixedMetadataValue(PL, 0));
+						Player send = (Player) sender;
+						send.setGameMode(GameMode.SURVIVAL);
+						send.setExhaustion(0);
+						send.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Hint: Eat the potato");
+					}
 
 				}
 			}

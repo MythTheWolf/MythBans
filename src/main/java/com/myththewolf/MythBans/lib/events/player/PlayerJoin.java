@@ -20,7 +20,7 @@ import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Date;
 
 import net.md_5.bungee.api.ChatColor;
-	
+
 public class PlayerJoin implements Listener {
 	private PlayerCache pc = new PlayerCache(MythSQLConnect.getConnection());
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
@@ -28,9 +28,11 @@ public class PlayerJoin implements Listener {
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private IP ipClass = new IP();
 	private JavaPlugin thePlugin;
+
 	public PlayerJoin(JavaPlugin pl) {
 		thePlugin = pl;
 	}
+
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException {
 		e.getPlayer().setInvulnerable(false);
@@ -95,15 +97,16 @@ public class PlayerJoin implements Listener {
 
 			}
 		}
-		if (ipClass.getTheFam(e.getPlayer().getAddress().getAddress().toString(),
-				e.getPlayer().getUniqueId().toString()) != null) {
-			for (Player p : Bukkit.getOnlinePlayers()) {
-				if (p.hasPermission(ConfigProperties.VIEW_PROBATION_PERMISSION)) {
-					p.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "WARNING: " + ChatColor.GOLD
-							+ e.getPlayer().getName() + " shares the same IPs as "
-							+ Arrays.toString(ipClass.getTheFam(e.getPlayer().getAddress().getAddress().toString(),
-									e.getPlayer().getUniqueId().toString()))
-							+ ChatColor.YELLOW + " IP : " + e.getPlayer().getAddress().getAddress().toString());
+		for (String IP : ipClass.getIPPack(e.getPlayer().getUniqueId().toString())) {
+			if (ipClass.getTheFam(IP, e.getPlayer().getUniqueId().toString()) != null) {
+				for (Player p : Bukkit.getOnlinePlayers()) {
+					if (p.hasPermission(ConfigProperties.VIEW_PROBATION_PERMISSION)) {
+						p.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "WARNING: " + ChatColor.GOLD
+								+ e.getPlayer().getName() + " shares the same IPs as "
+								+ Arrays.toString(ipClass.getTheFam(e.getPlayer().getAddress().getAddress().toString(),
+										e.getPlayer().getUniqueId().toString()))
+								+ ChatColor.YELLOW + " IP : " + e.getPlayer().getAddress().getAddress().toString());
+					}
 				}
 			}
 		}
