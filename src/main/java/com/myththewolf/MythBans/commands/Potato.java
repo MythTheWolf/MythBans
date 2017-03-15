@@ -73,12 +73,13 @@ public class Potato implements CommandExecutor {
 						m.setLore(lore);
 						pot.setItemMeta(m);
 						thePlayer.teleport(l);
-						thePlayer.getWorld().dropItem(ORG, pot);
 						thePlayer.setMetadata("is_potato", new FixedMetadataValue(PL, 0));
 						Player send = (Player) sender;
 						send.setGameMode(GameMode.SURVIVAL);
-						send.setExhaustion(0);
+						send.setFoodLevel(10);
+						send.getInventory().addItem(pot);
 						send.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Hint: Eat the potato");
+
 					}
 
 				}

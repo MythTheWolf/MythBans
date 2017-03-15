@@ -52,7 +52,7 @@ public class IP {
 	public String[] getTheFam(String IP, String UUID) throws SQLException {
 		List<String> fam = new ArrayList<String>();
 		ps = (PreparedStatement) con
-				.prepareStatement("SELECT * FROM MythBans_IPCache WHERE UUID != ?");
+				.prepareStatement("SELECT * FROM MythBans_IPCache WHERE IP_ADDRESS = ? AND UUID != ?");
 		ps.setString(1, IP);
 		ps.setString(2, UUID);
 		rs = ps.executeQuery();

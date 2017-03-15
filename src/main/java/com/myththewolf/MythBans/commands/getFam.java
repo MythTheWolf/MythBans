@@ -43,9 +43,12 @@ public class getFam implements CommandExecutor {
 			if (args[0].charAt(0) != '/') {
 				List<String> list = new ArrayList<String>();
 				for (String IP : ipClass.getIPPack(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString())) {
-					String[] values = ipClass.getTheFam(IP, pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
+					String[] values = ipClass.getTheFam(IP, "BOOOOOOOOOOOOOOOOOOGUS");
 					for(String v : values){
-						list.add(v);
+					;
+						if(!list.contains(v)){
+							list.add(v);
+						}
 					}
 				}
 				String[] arr = new String[list.size()];
