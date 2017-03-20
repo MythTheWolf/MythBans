@@ -32,5 +32,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/Users/nicagner/Documents/workspace/JARS/VPN_Detection.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

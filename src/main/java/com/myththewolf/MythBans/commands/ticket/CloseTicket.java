@@ -45,7 +45,7 @@ public class CloseTicket implements CommandExecutor {
 					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + ((Player) sender).getDisplayName()
 							+ " has closed your ticket, #" + args[0]);
 				} else if (p.hasPermission(ConfigProperties.TICKETS_OTHER_PERMISSION)) {
-					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + ((Player) sender).getDisplayName()
+					p.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + ((Player) sender).getDisplayName()
 							+ " has closed ticket, #" + args[0]);
 				}
 			}

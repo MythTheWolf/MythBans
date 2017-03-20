@@ -1,6 +1,7 @@
 package com.myththewolf.MythBans.commands;
 
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,6 +20,7 @@ import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.player.IP;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
+
 import net.md_5.bungee.api.ChatColor;
 
 public class PardonIP implements CommandExecutor {
@@ -28,6 +30,7 @@ public class PardonIP implements CommandExecutor {
 	private String[] packet;
 	private JavaPlugin MythPlugin;
 	private String byUUID;
+	private com.myththewolf.MythBans.lib.player.Player playerClass = new com.myththewolf.MythBans.lib.player.Player();
 
 	public PardonIP(JavaPlugin pl) {
 		MythPlugin = pl;
@@ -54,14 +57,18 @@ public class PardonIP implements CommandExecutor {
 				return true;
 			}
 			if (args[0].charAt(0) != '/') {
-				packet = pCache.getIPbyUUID(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
+				packet = ipClass.getIPPack(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
 				String IPs = Arrays.toString(packet);
 				if (ConfigProperties.DEBUG)
 					MythPlugin.getLogger().info("Handeling IP Packet--> " + IPs);
 
 				List<String> list = new ArrayList<String>();
+				List<String> users = new ArrayList<String>();
 				for (String IP : packet) {
-					list.add(IP);
+					if (!list.contains(IP)) {
+						list.add(IP);
+					}
+
 					if (sender instanceof ConsoleCommandSender) {
 						dbc.pardonIP(IP);
 						dbc.cleanIP(IP);
@@ -73,11 +80,20 @@ public class PardonIP implements CommandExecutor {
 						byUUID = p.getUniqueId().toString();
 					}
 				}
-
+				// Dumping users
+				for (String IP : list) {
+					for (String UUID : ipClass.getUUIDPack(IP)) {
+						if (!list.contains(pCache.getName(UUID))) {
+							users.add(pCache.getName(UUID));
+						}
+					}
+				}
 				for (Player i : Bukkit.getOnlinePlayers()) {
 					if (i.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
 						String dump = this.formatMessage(packet[0], ConfigProperties.SERVER_IPUNBAN_FORMAT, byUUID);
-						dump = dump.replaceAll("\\{culprit\\}", IPs);
+						dump = dump.replaceAll("\\{culprit\\}",
+								Arrays.toString(users.toArray(new String[users.size()])));
+						dump = dump.replaceAll("\\{IP\\}", IPs);
 						i.sendMessage(dump);
 					} else {
 						continue;

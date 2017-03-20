@@ -23,6 +23,7 @@ import com.myththewolf.MythBans.commands.PardonUser;
 import com.myththewolf.MythBans.commands.PlayerTime;
 import com.myththewolf.MythBans.commands.Potato;
 import com.myththewolf.MythBans.commands.Probate;
+import com.myththewolf.MythBans.commands.ReloadMythBans;
 import com.myththewolf.MythBans.commands.TempBan;
 import com.myththewolf.MythBans.commands.createUI;
 import com.myththewolf.MythBans.commands.getFam;
@@ -132,7 +133,7 @@ public class MythBans {
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerQuit(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerEatEvent(MythPlugin), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerDamageEvent(), MythPlugin);
-		MythPlugin.getServer().getPluginManager().registerEvents(new CommandEvent(), MythPlugin);
+		MythPlugin.getServer().getPluginManager().registerEvents(new CommandEvent(MythPlugin), MythPlugin);
 	}
 
 	public Connection loadMySQL() {
@@ -171,6 +172,7 @@ public class MythBans {
 		MythPlugin.getCommand("link").setExecutor(new Link());
 		MythPlugin.getCommand("potato").setExecutor(new Potato(MythPlugin));
 		MythPlugin.getCommand("softmute").setExecutor(new softmute());
+		MythPlugin.getCommand("mbreload").setExecutor(new ReloadMythBans(MythPlugin));
 	}
 
 	public void buildCommandMap() {

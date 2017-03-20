@@ -55,7 +55,7 @@ public class createUI implements CommandExecutor {
 			SU.insertUser(pc.getUUID(args[0]), Utils.sha1(pw));
 			sender.sendMessage("------------PAY ATTENTION------------");
 			sender.sendMessage("This is the generated password. Give this to the desired user.");
-			sender.sendMessage("This password is encrypted in the database. You will not again.");
+			sender.sendMessage("This password is encrypted in the database. You will not see it again.");
 			sender.sendMessage("The user will be required to change their password upon login");
 			sender.sendMessage("PASSWORD------> " + pw);
 			sender.sendMessage("sha1 Hash ---->" + Utils.sha1(pw));

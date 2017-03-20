@@ -43,13 +43,13 @@ public class user implements CommandExecutor {
 			sender.sendMessage(ChatColor.GOLD + "Status: " + ChatColor.RED + status);
 			sender.sendMessage(ChatColor.GOLD + "Join date: " + ChatColor.RED + join);
 			sender.sendMessage(ChatColor.GOLD + "Total play time: " + ChatColor.RED + playTime);
-			if (!bannedBy.equals("") && (bannedBy != null)) {
+			if ((bannedBy != null) && !bannedBy.equals("") ) {
 				sender.sendMessage(ChatColor.GOLD + "Action applied by: " + ChatColor.RED + pCache.getName(bannedBy));
 			}
-			if (!reason.equals("") && reason != null) {
+			if (reason != null && !reason.equals("") ) {
 				sender.sendMessage(ChatColor.GOLD + "Reason: " + ChatColor.RED + reason);
 			}
-			if (!(expire == null) && expire != null) {
+			if (!(expire == null) && !expire.equals("")) {
 				sender.sendMessage(ChatColor.GOLD + "Ban expires on: " + ChatColor.RED + MythDate.formatDate(expire));
 			}
 			sender.sendMessage(

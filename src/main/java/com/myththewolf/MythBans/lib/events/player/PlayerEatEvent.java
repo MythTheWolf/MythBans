@@ -32,7 +32,6 @@ public class PlayerEatEvent implements Listener {
 				Bukkit.getPlayer(UUID.fromString(UUID2)).teleport(Utils.parseLocation(theLore.get(3)));
 				Bukkit.getPlayer(UUID.fromString(UUID2)).setGameMode(GameMode.SURVIVAL);
 				Bukkit.getPlayer(UUID.fromString(UUID2)).removeMetadata("is_potato", thePlugin);
-				
 			}
 		}
 	}

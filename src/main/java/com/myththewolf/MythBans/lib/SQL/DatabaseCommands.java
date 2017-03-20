@@ -154,6 +154,7 @@ public class DatabaseCommands {
 	}
 
 	public void banIP(String IP, String byUUID, String reason) throws SQLException {
+		System.out.println("Banning IP -->" + IP);
 		ps = (PreparedStatement) c.prepareStatement(
 				"UPDATE MythBans_IPCache SET status = ?, byUUID = ?, reason = ? WHERE IP_ADDRESS = ?");
 		ps.setString(1, "banned");

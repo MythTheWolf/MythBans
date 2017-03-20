@@ -54,7 +54,7 @@ public class IPBan implements CommandExecutor {
 				return true;
 			}
 			if (args[0].charAt(0) != '/') {
-				packet = pCache.getIPbyUUID(pCache.getUUID(args[0]));
+				packet = ipClass.getIPPack(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
 				String IPs = Arrays.toString(packet);
 				if (ConfigProperties.DEBUG)
 					MythPlugin.getLogger().info("Handeling IP Packet--> " + IPs);
@@ -62,11 +62,14 @@ public class IPBan implements CommandExecutor {
 				List<String> list = new ArrayList<String>();
 				List<String> userPack = new ArrayList<String>();
 				for (String IP : packet) {
-					for(String UUID : pCache.getUUIDbyIP(IP))
-					{
-						userPack.add(pCache.getName(UUID));
+					for (String UUID : pCache.getUUIDbyIP(IP)) {
+						if (!userPack.contains(pCache.getName(UUID))) {
+							userPack.add(pCache.getName(UUID));
+						}
 					}
-					list.add(IP);
+					if (!list.contains(IP)) {
+						list.add(IP);
+					}
 					if (sender instanceof ConsoleCommandSender) {
 						dbc.banIP(IP, "CONSOLE", Utils.makeString(args, 1));
 					} else {
@@ -81,10 +84,10 @@ public class IPBan implements CommandExecutor {
 					if (list.contains(i.getAddress().getAddress().toString())) {
 						i.kickPlayer(this.formatMessage(packet[0], ConfigProperties.USER_IPBAN_FORMAT));
 					} else if (i.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-						
+
 						String dump = this.formatMessage(packet[0], ConfigProperties.SERVER_IPBAN_FORMAT);
 						dump = dump.replaceAll("\\{culprit\\}", users);
-						dump = dump.replaceAll("\\{IP\\}",  packet[0]);
+						dump = dump.replaceAll("\\{IP\\}", packet[0]);
 						i.sendMessage(dump);
 					} else {
 						continue;
@@ -107,7 +110,7 @@ public class IPBan implements CommandExecutor {
 					} else if (i.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
 						String dump = this.formatMessage(IP, ConfigProperties.SERVER_IPBAN_FORMAT);
 						dump = dump.replaceAll("\\{culprit\\}", users);
-						dump = dump.replaceAll("\\{IP\\}",  IP);
+						dump = dump.replaceAll("\\{IP\\}", IP);
 						i.sendMessage(dump);
 					} else {
 						continue;

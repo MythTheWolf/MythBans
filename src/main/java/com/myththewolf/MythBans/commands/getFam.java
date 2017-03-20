@@ -41,20 +41,21 @@ public class getFam implements CommandExecutor {
 				return true;
 			}
 			if (args[0].charAt(0) != '/') {
-				List<String> list = new ArrayList<String>();
-				for (String IP : ipClass.getIPPack(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString())) {
-					String[] values = ipClass.getTheFam(IP, "BOOOOOOOOOOOOOOOOOOGUS");
-					for(String v : values){
-					;
-						if(!list.contains(v)){
-							list.add(v);
+				List<String> commonUsers = new ArrayList<String>();
+				String theID = pCache.getUUID(args[0]);
+				String[] IPs = ipClass.getIPPack(theID);
+				for (String IP : IPs) {
+					for (String singleUser : ipClass.getTheFam(IP, theID)) {
+						if (!commonUsers.contains(singleUser)) {
+							commonUsers.add(singleUser);
 						}
 					}
 				}
-				String[] arr = new String[list.size()];
-				arr = list.toArray(new String[list.size()]);
-				sender.sendMessage(ConfigProperties.PREFIX+ChatColor.GOLD+"NOTE: This does a DEEP search, it looks through ALL of the user's IPs ");
-				sender.sendMessage(ConfigProperties.PREFIX+ChatColor.GOLD+"Mutual users: " + Arrays.toString(arr));
+				String[] arr = new String[commonUsers.size()];
+				arr = commonUsers.toArray(new String[commonUsers.size()]);
+				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD
+						+ "NOTE: This does a DEEP search, it looks through ALL of the user's IPs ");
+				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Mutual users: " + Arrays.toString(arr));
 			} else {
 				String[] fam = ipClass.getTheFam(args[0], "BOOOOOOOOOOOOOOOOOOOOOOGUUUUUUUSSSSS");
 				if (fam == null) {

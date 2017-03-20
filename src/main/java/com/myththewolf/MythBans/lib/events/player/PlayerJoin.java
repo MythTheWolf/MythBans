@@ -1,7 +1,9 @@
 package com.myththewolf.MythBans.lib.events.player;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -35,6 +37,7 @@ public class PlayerJoin implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException {
+
 		e.getPlayer().setInvulnerable(false);
 		e.getPlayer().removeMetadata("is_potato", thePlugin);
 		System.out.println("IMBOUND---->" + e.getPlayer().getName());
@@ -97,16 +100,26 @@ public class PlayerJoin implements Listener {
 
 			}
 		}
-		for (String IP : ipClass.getIPPack(e.getPlayer().getUniqueId().toString())) {
-			if (ipClass.getTheFam(IP, e.getPlayer().getUniqueId().toString()) != null) {
-				for (Player p : Bukkit.getOnlinePlayers()) {
-					if (p.hasPermission(ConfigProperties.VIEW_PROBATION_PERMISSION)) {
-						p.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "WARNING: " + ChatColor.GOLD
-								+ e.getPlayer().getName() + " shares the same IPs as "
-								+ Arrays.toString(ipClass.getTheFam(e.getPlayer().getAddress().getAddress().toString(),
-										e.getPlayer().getUniqueId().toString()))
-								+ ChatColor.YELLOW + " IP : " + e.getPlayer().getAddress().getAddress().toString());
+		List<String> commonUsers = new ArrayList<String>();
+		String theID = e.getPlayer().getUniqueId().toString();
+		String[] IPs = ipClass.getIPPack(theID);
+
+		for (String IP : IPs) {
+			if (ipClass.getTheFam(IP, theID) != null) {
+				for (String singleUser : ipClass.getTheFam(IP, theID)) {
+					if (!commonUsers.contains(singleUser)) {
+						commonUsers.add(singleUser);
 					}
+				}
+			}
+		}
+		String[] arr = new String[commonUsers.size()];
+		arr = commonUsers.toArray(new String[commonUsers.size()]);
+		if (arr.length > 0) {
+			for (Player p : Bukkit.getOnlinePlayers()) {
+				if (p.hasPermission(ConfigProperties.VIEW_PROBATION_PERMISSION)) {
+					p.sendMessage(ConfigProperties.PREFIX + ChatColor.DARK_RED + "WARNING:" + ChatColor.GOLD
+							+ e.getPlayer().getName() + " has the same IP(s) as " + Arrays.toString(arr));
 				}
 			}
 		}
