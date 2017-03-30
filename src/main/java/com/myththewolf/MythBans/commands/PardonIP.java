@@ -1,7 +1,6 @@
 package com.myththewolf.MythBans.commands;
 
 import java.sql.SQLException;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -30,8 +29,6 @@ public class PardonIP implements CommandExecutor {
 	private String[] packet;
 	private JavaPlugin MythPlugin;
 	private String byUUID;
-	private com.myththewolf.MythBans.lib.player.Player playerClass = new com.myththewolf.MythBans.lib.player.Player();
-
 	public PardonIP(JavaPlugin pl) {
 		MythPlugin = pl;
 	}

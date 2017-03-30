@@ -1,7 +1,6 @@
 package com.myththewolf.MythBans.lib.events.player;
 
 import java.sql.SQLException;
-
 import java.util.concurrent.ExecutionException;
 
 import org.bukkit.Bukkit;
@@ -28,6 +27,14 @@ public class PlayerChat implements Listener {
 		org.bukkit.entity.Player p = e.getPlayer();
 		String UUID = p.getUniqueId().toString();
 		Player playerClass = new Player();
+		if (e.getMessage().equals(ConfigProperties.SOFTMUTE_RELEASE_COMMAND)
+				&& !(playerClass.isOverride(p.getUniqueId().toString()))) {
+			playerClass.setOverride(p.getUniqueId().toString(), true);
+			playerClass.setStatus(p.getUniqueId().toString(), "OK");
+			dbc.cleanUser(p.getUniqueId().toString());
+			p.sendMessage(ConfigProperties.PREFIX + ChatColor.GREEN + "You may now speak!");
+			e.setCancelled(true);
+		}
 		if (playerClass.getStatus(UUID).equals("muted")) {
 			p.sendMessage(ChatColor.translateAlternateColorCodes('&', ConfigProperties.PREFIX)
 					+ "Your voice has been silenced!");
@@ -80,7 +87,7 @@ public class PlayerChat implements Listener {
 				if (I.hasPermission(ConfigProperties.STAFF_CHAT_GET)) {
 					String message1 = ChatColor.stripColor(e.getMessage());
 					String who1 = PP.getName();
-					I.sendMessage(ChatColor.GRAY + "[SOFTMUTED: " + who1 + "] " + message);
+					I.sendMessage(ChatColor.GRAY + "[SOFTMUTED: " + who1 + "] " + message1);
 				}
 			}
 			e.setCancelled(true);

@@ -1,10 +1,5 @@
 package com.myththewolf.MythBans.threads;
 
-import java.sql.SQLException;
-import java.util.concurrent.ExecutionException;
-
-import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
-
 public class ForceRePush implements Runnable {
 
 	@Override

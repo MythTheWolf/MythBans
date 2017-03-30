@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
 import com.myththewolf.MythBans.lib.Discord;
@@ -17,7 +16,6 @@ import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Utils;
 
 import de.btobastian.javacord.DiscordAPI;
-import de.btobastian.javacord.entities.User;
 import de.btobastian.javacord.entities.message.Message;
 import de.btobastian.javacord.entities.permissions.PermissionState;
 import de.btobastian.javacord.entities.permissions.PermissionType;

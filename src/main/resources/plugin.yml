@@ -83,3 +83,7 @@ commands:
  mbreload:
      description: Reloads MythBans
      aliases: [reloadmb,mbr]
+ testhings: 
+     description: Tests Inet
+     aliases: []
+     

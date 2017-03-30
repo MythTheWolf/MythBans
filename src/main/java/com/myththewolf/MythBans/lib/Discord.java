@@ -5,20 +5,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
 
-import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.tool.Utils;
 
 import de.btobastian.javacord.DiscordAPI;
 import de.btobastian.javacord.entities.Channel;
-import de.btobastian.javacord.entities.message.Message;
 import net.md_5.bungee.api.ChatColor;
 
 public class Discord {
 	private DiscordAPI con;
-	private DatabaseCommands dbc;
-
 	public Discord(DiscordAPI i) {
 		con = i;
 	}

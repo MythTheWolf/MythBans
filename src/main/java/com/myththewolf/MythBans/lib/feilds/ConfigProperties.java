@@ -59,7 +59,7 @@ public class ConfigProperties {
 	public static String PROBATION_PERMISSION;
 	public static String CLOSETICKET_PERMISSION;
 	public static String TICKETS_OTHER_PERMISSION;
-	private static FileConfiguration cfg;
+	public static String SOCIALSPY_PERMISSION;
 	private static Logger MythLog;
 	public static boolean use_bot;
 	public static String POTATO_PERM;
@@ -77,13 +77,14 @@ public class ConfigProperties {
 	public static String DISCORD_LOGGER_ID;
 	public static String DISCORD_THREAD_ID;
 	public static String RELOAD;
+	public static String SOFTMUTE_RELEASE_COMMAND;
+	public static boolean AUTO_MUTE = false;
 
-	public static void dumpProperties(JavaPlugin i) {
+	public static void dumpProperties(FileConfiguration cfg) {
 
-		MythLog = i.getLogger();
-		pl = i;
+		
 		try {
-			cfg = i.getConfig();
+		
 			SQL_HOST = cfg.getString("SQL-HOST");
 			SQL_PORT = cfg.getString("SQL-PORT");
 			SQL_DATABASE = cfg.getString("SQL-DATABASE");
@@ -140,8 +141,10 @@ public class ConfigProperties {
 			use_bot = cfg.getBoolean("USE-BOT");
 			POTATO_PERM = cfg.getString("POTATO-PERMISSION");
 			RELOAD = cfg.getString("RELOAD-PERMISSION");
-			if(cfg.getBoolean("use_bot") == false)
-			{
+			SOFTMUTE_RELEASE_COMMAND = cfg.getString("SOFTMUTE-RELEASE");
+			SOCIALSPY_PERMISSION = cfg.getString("SOCIALSPY-PERMISSION");
+			AUTO_MUTE = cfg.getBoolean("AUTO-MUTE");
+			if (cfg.getBoolean("use_bot") == false) {
 				DISCORD_SETUP = false;
 			}
 		} catch (Exception e) {
@@ -226,6 +229,6 @@ public class ConfigProperties {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
+
 	}
 }

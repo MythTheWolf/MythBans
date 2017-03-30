@@ -1,16 +1,15 @@
 package com.myththewolf.MythBans.lib.SQL;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import org.bukkit.entity.Player;
 
 public class DatabaseCommands {
 	private Connection c = MythSQLConnect.getConnection();
 	private PreparedStatement ps;
-	private ResultSet rs;
 	public void muteUser(String UUID, String byUUID) throws SQLException {
 		ps = (PreparedStatement) c
 				.prepareStatement("UPDATE MythBans_PlayerStats SET status = ?, byUUID = ? WHERE UUID = ?");

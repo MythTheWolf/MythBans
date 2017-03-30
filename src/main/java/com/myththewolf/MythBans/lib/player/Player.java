@@ -55,13 +55,34 @@ public class Player {
 		ps = (PreparedStatement) MythSQLConnect.getConnection().prepareStatement(
 				"INSERT INTO MythBans_PlayerStats (`UUID`,`status`,`group`,`last_name`,`timestamp`,`playtime`) VALUES (?,?,?,?,?,?);");
 		ps.setString(1, UUID);
-		ps.setString(2, "softmuted");
+		if (ConfigProperties.AUTO_MUTE) {
+			ps.setString(2, "softmuted");
+		} else {
+			ps.setString(2, "OK");
+		}
 		ps.setString(3, "DEFAULT");
 		ps.setString(4, name);
 		ps.setString(5, MythDate.formatDate(date));
 		ps.setString(6, "0");
 		ps.executeUpdate();
+		setOverride(UUID, false);
 		ps.close();
+	}
+
+	public boolean isOverride(String UUID) throws SQLException {
+		this.ps = MythSQLConnect.getConnection().prepareStatement("SELECT * FROM MythBans_PlayerStats WHERE UUID = ?");
+		this.ps.setString(1, UUID);
+		this.rs = this.ps.executeQuery();
+		this.rs.next();
+		return this.rs.getBoolean("override");
+	}
+
+	public void setOverride(String UUID, boolean over) throws SQLException {
+		this.ps = MythSQLConnect.getConnection()
+				.prepareStatement("UPDATE MythBans_PlayerStats SET `override` = ? where UUID = ?");
+		this.ps.setString(1, Boolean.toString(over));
+		this.ps.setString(2, UUID);
+		this.ps.executeUpdate();
 	}
 
 	public Date getExpireDate(String UUID) throws SQLException {
@@ -70,8 +91,7 @@ public class Player {
 		ps.setString(1, UUID);
 		rs = ps.executeQuery();
 		while (rs.next()) {
-			if(rs.getString("expires") == null || rs.getString("expires").equals("") )
-			{
+			if (rs.getString("expires") == null || rs.getString("expires").equals("")) {
 				return null;
 			}
 			return MythDate.parseDate(rs.getString("expires"));
@@ -165,12 +185,12 @@ public class Player {
 		ps.executeUpdate();
 	}
 
-	public void setStatus(String UUID, String stat)throws SQLException {
+	public void setStatus(String UUID, String stat) throws SQLException {
 		ps = (PreparedStatement) MythSQLConnect.getConnection()
 				.prepareStatement("UPDATE MythBans_PlayerStats SET status = ?  WHERE UUID = ?");
 		ps.setString(2, UUID);
 		ps.setString(1, stat);
 		ps.executeUpdate();
-		
+
 	}
 }

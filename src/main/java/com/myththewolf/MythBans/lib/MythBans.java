@@ -1,7 +1,6 @@
 package com.myththewolf.MythBans.lib;
 
 import java.io.File;
-
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -114,10 +113,10 @@ public class MythBans {
 			if (!file.exists()) {
 				MythPlugin.getLogger().info("Config.yml not found, creating!");
 				MythPlugin.saveDefaultConfig();
-				ConfigProperties.dumpProperties(MythPlugin);
+				ConfigProperties.dumpProperties(MythPlugin.getConfig());
 			} else {
 				MythPlugin.getLogger().info("Config.yml found, loading!");
-				ConfigProperties.dumpProperties(MythPlugin);
+				ConfigProperties.dumpProperties(MythPlugin.getConfig());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -173,6 +172,7 @@ public class MythBans {
 		MythPlugin.getCommand("potato").setExecutor(new Potato(MythPlugin));
 		MythPlugin.getCommand("softmute").setExecutor(new softmute());
 		MythPlugin.getCommand("mbreload").setExecutor(new ReloadMythBans(MythPlugin));
+		
 	}
 
 	public void buildCommandMap() {

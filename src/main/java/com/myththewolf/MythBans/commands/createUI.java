@@ -1,17 +1,15 @@
 package com.myththewolf.MythBans.commands;
 
 import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.util.Random;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.player.Group;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.SiteUser;
 import com.myththewolf.MythBans.lib.tool.Utils;
@@ -19,7 +17,6 @@ import com.myththewolf.MythBans.lib.tool.Utils;
 import net.md_5.bungee.api.ChatColor;
 
 public class createUI implements CommandExecutor {
-	private Group group = new Group();
 	private SiteUser SU = new SiteUser();
 	private PlayerCache pc = new PlayerCache(MythSQLConnect.getConnection());
 

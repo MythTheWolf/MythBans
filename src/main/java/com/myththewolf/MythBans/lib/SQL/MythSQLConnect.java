@@ -1,10 +1,8 @@
 package com.myththewolf.MythBans.lib.SQL;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
@@ -63,7 +61,7 @@ public class MythSQLConnect {
 				Bukkit.getLogger().info("Loading MySQL Table: PlayerStats");
 			}
 			ps = (PreparedStatement) con.prepareStatement(
-					"CREATE TABLE IF NOT EXISTS `MythBans_PlayerStats` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `status` VARCHAR(255) NOT NULL , `group` VARCHAR(255) NOT NULL ,`expires` VARCHAR(255) NULL DEFAULT NULL , `reason` VARCHAR(255) NULL DEFAULT NULL , `timestamp` VARCHAR(255) NOT NULL, `byUUID` VARCHAR(255) NULL DEFAULT NULL , `last_quit_date` VARCHAR(255) NULL DEFAULT NULL, `last_name` VARCHAR(255) NOT NULL, `playtime` LONGTEXT NULL DEFAULT NULL, `session_start` VARCHAR(255) NULL DEFAULT NULL,PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
+					"CREATE TABLE IF NOT EXISTS `MythBans_PlayerStats` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `override` VARCHAR(255) NULL DEFAULT NULL, `status` VARCHAR(255) NOT NULL , `group` VARCHAR(255) NOT NULL ,`expires` VARCHAR(255) NULL DEFAULT NULL , `reason` VARCHAR(255) NULL DEFAULT NULL , `timestamp` VARCHAR(255) NOT NULL, `byUUID` VARCHAR(255) NULL DEFAULT NULL , `last_quit_date` VARCHAR(255) NULL DEFAULT NULL, `last_name` VARCHAR(255) NOT NULL, `playtime` LONGTEXT NULL DEFAULT NULL, `session_start` VARCHAR(255) NULL DEFAULT NULL,PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
 			ps.executeUpdate();
 			// Player Caches
 			if (ConfigProperties.DEBUG) {
@@ -104,6 +102,13 @@ public class MythSQLConnect {
 			// Chat history
 			ps = (PreparedStatement) con.prepareStatement(
 					"CREATE TABLE IF NOT EXISTS `MythBans_GameChat` ( `ID` INT NOT NULL AUTO_INCREMENT, `text` VARCHAR(255) NULL DEFAULT NULL , `name` VARCHAR(255) NULL DEFAULT NULL , PRIMARY KEY (`ID`) ) ENGINE = InnoDB;");
+			ps.executeUpdate();
+			// Other data
+			if (ConfigProperties.DEBUG) {
+				Bukkit.getLogger().info("Loading MySQL Table: AbstractData");
+			}
+			ps = (PreparedStatement) con.prepareStatement(
+					"CREATE TABLE IF NOT EXISTS `MythBans_AbstractData` ( `ID` INT NOT NULL AUTO_INCREMENT , `key` VARCHAR(255) NOT NULL , `value` VARCHAR(255) NOT NULL , PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			Bukkit.getConsoleSender().sendMessage("SERVERE: Fatal MySQL Error!");

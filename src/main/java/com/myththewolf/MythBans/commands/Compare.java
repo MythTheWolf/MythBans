@@ -42,47 +42,29 @@ public class Compare implements CommandExecutor {
 			String UUID2 = pCache.getOfflinePlayerExact(args[1]).getUniqueId().toString();
 			packet1 = mythPlayer.getHistoryPack(UUID1);
 			packet2 = mythPlayer.getHistoryPack(UUID2);
-			int banCount_1 = 0;
-			int muteCount_1 = 0;
-			int kickCount_1 = 0;
-			int probateCount_1 = 0;
-			int tempBanCount_1 = 0;
 			while (packet1.next()) {
 				switch (packet1.getString("action")) {
 				case "userBan":
-					banCount_1++;
 					break;
 				case "userKick":
-					kickCount_1++;
 					break;
 				case "userProbate":
-					probateCount_1++;
 					break;
 				case "userTempBan":
-					tempBanCount_1++;
 					break;
 				default:
 					break;
 				}
 			}
-			int banCount_2 = 0;
-			int muteCount_2 = 0;
-			int kickCount_2 = 0;
-			int probateCount_2 = 0;
-			int tempBanCount_2 = 0;
 			while (packet2.next()) {
 				switch (packet2.getString("action")) {
 				case "userBan":
-					banCount_2++;
 					break;
 				case "userKick":
-					kickCount_2++;
 					break;
 				case "userProbate":
-					probateCount_2++;
 					break;
 				case "userTempBan":
-					tempBanCount_2++;
 					break;
 				default:
 					break;

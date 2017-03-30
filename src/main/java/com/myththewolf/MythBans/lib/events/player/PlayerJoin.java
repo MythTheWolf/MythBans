@@ -64,13 +64,14 @@ public class PlayerJoin implements Listener {
 					false);
 
 			e.getPlayer().kickPlayer(message);
-			break;
+			return;
 		case "tempBanned":
 			message = this.formatMessage(e.getPlayer().getUniqueId().toString(), ConfigProperties.USER_TEMPBAN_FORMAT,
 					false);
 			e.getPlayer().getName();
 			if (d.getNewDate().before(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
 				e.getPlayer().kickPlayer(message);
+				return;
 			} else if (d.getNewDate().after(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
 				PlayerClass.clearExpire(e.getPlayer().getUniqueId().toString());
 			}
@@ -84,13 +85,14 @@ public class PlayerJoin implements Listener {
 				message = this.formatMessage(e.getPlayer().getAddress().getAddress().toString(),
 						ConfigProperties.USER_IPBAN_FORMAT, true);
 				e.getPlayer().kickPlayer(message);
-				break;
+				return;
 			case "tempBanned":
 				message = this.formatMessage(e.getPlayer().getUniqueId().toString(),
 						ConfigProperties.USER_IPTEMPBAN_FORMAT, true);
 				e.getPlayer().getName();
 				if (d.getNewDate().before(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
 					e.getPlayer().kickPlayer(message);
+					return;
 				} else if (d.getNewDate().after(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
 					PlayerClass.clearExpire(e.getPlayer().getUniqueId().toString());
 				}

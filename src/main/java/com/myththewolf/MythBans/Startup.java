@@ -1,14 +1,17 @@
 package com.myththewolf.MythBans;
 
+import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.lib.DiscordConnection;
 import com.myththewolf.MythBans.lib.MythBans;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.tool.Date;
 
 import ch.qos.logback.classic.Level;
 import de.btobastian.javacord.entities.permissions.PermissionState;
@@ -42,6 +45,18 @@ public class Startup extends JavaPlugin {
 	}
 
 	public void onDisable() {
+		com.myththewolf.MythBans.lib.player.Player pClass = new com.myththewolf.MythBans.lib.player.Player();
+		Date date = new Date();
+		try{
+		for (Player p : Bukkit.getOnlinePlayers()) {
+			String UUID = p.getUniqueId().toString();
+			pClass.setQuitTime(date.formatDate(date.getNewDate()), UUID);
+			pClass.setPlayTime(UUID, date.getTimeDifference(pClass.getSessionJoinDate(UUID), date.getNewDate())
+					+ pClass.getPlayTime(UUID));
+		}
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
 		if (ConfigProperties.DISCORD_SETUP) {
 			DiscordConnection.getConnection().getChannelById(ConfigProperties.DISCORD_MINECRAFT_CHANNEL_ID)
 					.updateTopic("Minecraft server is offline..");
@@ -49,7 +64,8 @@ public class Startup extends JavaPlugin {
 			ImplPermissionsBuilder IM = new ImplPermissionsBuilder();
 			IM.setState(PermissionType.SEND_MESSAGES, PermissionState.DENIED);
 			Permissions PERMS = IM.build();
-			for (Role R : DiscordConnection.getConnection().getServerById(ConfigProperties.DISCORD_SERVER_ID).getRoles()) {
+			for (Role R : DiscordConnection.getConnection().getServerById(ConfigProperties.DISCORD_SERVER_ID)
+					.getRoles()) {
 
 				try {
 					DiscordConnection.getConnection().getChannelById(ConfigProperties.DISCORD_MINECRAFT_CHANNEL_ID)
@@ -63,8 +79,8 @@ public class Startup extends JavaPlugin {
 				}
 			}
 		}
-		if(ConfigProperties.DISCORD_SETUP){
-		DiscordConnection.getConnection().disconnect();
+		if (ConfigProperties.DISCORD_SETUP) {
+			DiscordConnection.getConnection().disconnect();
 		}
 
 	}
