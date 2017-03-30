@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.commands.Ban;
@@ -108,6 +110,19 @@ public class MythBans {
 		try {
 			if (!MythPlugin.getDataFolder().exists()) {
 				MythPlugin.getDataFolder().mkdirs();
+
+			}
+			File FF = new File(MythPlugin.getDataFolder() + File.separator + "lang");
+			if (!FF.exists()) {
+				FF.mkdirs();
+			}
+			for (String theLanguage : ConfigProperties.LANGS) {
+				File specialf = new File(MythPlugin.getDataFolder() + File.separator + "lang", theLanguage + ".yml");
+				if (!specialf.exists()) {
+					specialf.getParentFile().mkdirs();
+					MythPlugin.saveResource("lang/" + theLanguage + ".yml", false);
+				}
+				ConfigProperties.langMap.put(theLanguage, YamlConfiguration.loadConfiguration(specialf));
 			}
 			File file = new File(MythPlugin.getDataFolder(), "config.yml");
 			if (!file.exists()) {
@@ -172,7 +187,7 @@ public class MythBans {
 		MythPlugin.getCommand("potato").setExecutor(new Potato(MythPlugin));
 		MythPlugin.getCommand("softmute").setExecutor(new softmute());
 		MythPlugin.getCommand("mbreload").setExecutor(new ReloadMythBans(MythPlugin));
-		
+
 	}
 
 	public void buildCommandMap() {

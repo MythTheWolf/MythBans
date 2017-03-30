@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
@@ -15,6 +17,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class ConfigProperties {
 	public static final String VERSION = "2.5.1";
+	public static final String[] LANGS = { "en_US" };
 	public static String SERVER_UNMUTE_FORMAT;
 	public static String SQL_HOST;
 	public static String SQL_PORT;
@@ -79,12 +82,11 @@ public class ConfigProperties {
 	public static String RELOAD;
 	public static String SOFTMUTE_RELEASE_COMMAND;
 	public static boolean AUTO_MUTE = false;
-
+	public static FileConfiguration lang;
+	public static HashMap<String,YamlConfiguration> langMap;
 	public static void dumpProperties(FileConfiguration cfg) {
-
-		
 		try {
-		
+
 			SQL_HOST = cfg.getString("SQL-HOST");
 			SQL_PORT = cfg.getString("SQL-PORT");
 			SQL_DATABASE = cfg.getString("SQL-DATABASE");
@@ -231,4 +233,6 @@ public class ConfigProperties {
 		}
 
 	}
+
+	
 }
