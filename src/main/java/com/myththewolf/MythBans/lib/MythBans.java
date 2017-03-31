@@ -13,7 +13,6 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.commands.Ban;
-import com.myththewolf.MythBans.commands.Compare;
 import com.myththewolf.MythBans.commands.IPBan;
 import com.myththewolf.MythBans.commands.IPKick;
 import com.myththewolf.MythBans.commands.Kick;
@@ -120,9 +119,11 @@ public class MythBans {
 				File specialf = new File(MythPlugin.getDataFolder() + File.separator + "lang", theLanguage + ".yml");
 				if (!specialf.exists()) {
 					specialf.getParentFile().mkdirs();
-					MythPlugin.saveResource("lang/" + theLanguage + ".yml", false);
+					MythPlugin.saveResource("lang"+File.separator + theLanguage + ".yml", false);
 				}
-				ConfigProperties.langMap.put(theLanguage, YamlConfiguration.loadConfiguration(specialf));
+			
+				FileConfiguration daFonts = YamlConfiguration.loadConfiguration(specialf);
+				ConfigProperties.langMap.put(theLanguage, daFonts);
 			}
 			File file = new File(MythPlugin.getDataFolder(), "config.yml");
 			if (!file.exists()) {
@@ -172,7 +173,6 @@ public class MythBans {
 		MythPlugin.getCommand("pardonIP").setExecutor(new PardonIP(MythPlugin));
 		MythPlugin.getCommand("getFam").setExecutor(new getFam());
 		MythPlugin.getCommand("kickip").setExecutor(new IPKick(MythPlugin));
-		MythPlugin.getCommand("compare").setExecutor(new Compare());
 		MythPlugin.getCommand("reportGreif").setExecutor(new ReportGrief());
 		MythPlugin.getCommand("playertime").setExecutor(new PlayerTime());
 		MythPlugin.getCommand("tickettp").setExecutor(new tickettp());

@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
@@ -16,6 +15,7 @@ import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import net.md_5.bungee.api.ChatColor;
 
 public class ConfigProperties {
+	public static String SYSTEM_LOCALE = "en_US";
 	public static final String VERSION = "2.5.1";
 	public static final String[] LANGS = { "en_US" };
 	public static String SERVER_UNMUTE_FORMAT;
@@ -83,7 +83,7 @@ public class ConfigProperties {
 	public static String SOFTMUTE_RELEASE_COMMAND;
 	public static boolean AUTO_MUTE = false;
 	public static FileConfiguration lang;
-	public static HashMap<String,YamlConfiguration> langMap;
+	public static HashMap<String,FileConfiguration> langMap = new HashMap<String,FileConfiguration>();
 	public static void dumpProperties(FileConfiguration cfg) {
 		try {
 

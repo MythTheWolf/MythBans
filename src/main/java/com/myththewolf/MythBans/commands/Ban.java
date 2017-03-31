@@ -10,10 +10,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Utils;
 
@@ -23,25 +25,34 @@ public class Ban implements CommandExecutor {
 	private OfflinePlayer toBan;
 	private String toUUID;
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
+	private PlayerLanguage PL;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
+
 		try {
+			if (!(sender instanceof Player)) {
+				PL = new PlayerLanguage();
+				sender.sendMessage(PL.languageList.get("ERR_NON_PLAYER"));
+				return true;
+			} else {
+				Player tmp = (Player) sender;
+				PL = new PlayerLanguage(PlayerClass.getLang(tmp.getUniqueId().toString()));
+
+			}
 			if (args.length < 1) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /ban <user> [reason]");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("COMMAND_BAN_USAGE"));
 				return true;
 			} else if (pCache.getOfflinePlayerExact(args[0]) == null) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has not been on this server.");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NULL_PLAYER"));
 				return true;
 			} else if (!sender.hasPermission(ConfigProperties.BAN_PERMISSION)) {
-				sender.sendMessage(
-						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NO_PERMISSION"));
 				return true;
 			} else {
 				toBan = pCache.getOfflinePlayerExact(args[0]);
-				
+
 				if (sender instanceof ConsoleCommandSender) {
-					System.out.println(ConfigProperties.PREFIX + "Banned " + toBan.getName());
 					String reason = Utils.makeString(args, 1);
 					dbc.banUser(toBan.getUniqueId().toString(), "CONSOLE", reason);
 
@@ -55,13 +66,15 @@ public class Ban implements CommandExecutor {
 				}
 			}
 			for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
+				PL = new PlayerLanguage(PlayerClass.getLang(player.getUniqueId().toString()));
 				if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
 					player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-							this.formatMessage(toUUID, ConfigProperties.SERVER_BAN_FORMAT)));
+							this.formatMessage(toUUID, PL.languageList.get("PUNISHMENT_BAN_INFORM"))));
 				}
-			}			
+			}
 			if (toBan.isOnline()) {
-				toBan.getPlayer().kickPlayer(this.formatMessage(toUUID, ConfigProperties.USER_BAN_FORMAT));
+				PL = new PlayerLanguage(toBan.getUniqueId().toString());
+				toBan.getPlayer().kickPlayer(this.formatMessage(toUUID, PL.languageList.get("PUNISHMENT_BAN_KICK")));
 			}
 		} catch (
 
@@ -76,14 +89,14 @@ public class Ban implements CommandExecutor {
 		String toFormat = format;
 
 		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
-			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
+			toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 		} else {
-			toFormat = toFormat.replaceAll("\\{staffMember\\}",
+			toFormat = toFormat.replaceAll("\\{0\\}",
 					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
 		}
 
-		toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
-		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID2));
+		toFormat = toFormat.replaceAll("\\{1\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
+		toFormat = toFormat.replaceAll("\\{2\\}", PlayerClass.getReason(UUID2));
 
 		return toFormat;
 	}

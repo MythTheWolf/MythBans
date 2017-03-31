@@ -1,15 +1,18 @@
 package com.myththewolf.MythBans.commands;
 
 import java.io.UnsupportedEncodingException;
+
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.SiteUser;
 import com.myththewolf.MythBans.lib.tool.Utils;
@@ -19,19 +22,34 @@ import net.md_5.bungee.api.ChatColor;
 public class createUI implements CommandExecutor {
 	private SiteUser SU = new SiteUser();
 	private PlayerCache pc = new PlayerCache(MythSQLConnect.getConnection());
-
+	private PlayerLanguage PL;
+	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
+		if (!(sender instanceof Player)) {
+			PL = new PlayerLanguage();
+			sender.sendMessage(PL.languageList.get("ERR_NON_PLAYER"));
+			return true;
+		} else {
+			Player tmp = (Player) sender;
+			try {
+				PL = new PlayerLanguage(PlayerClass.getLang(tmp.getUniqueId().toString()));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
 		if (args.length < 1) {
-			sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /createUI <player>");
+			sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("COMMAND_CREATEUI_USAGE"));
 			return true;
 		}
 		if (!sender.hasPermission(ConfigProperties.CREATE_UI_PERMISSION)) {
-			sender.sendMessage(ConfigProperties.PREFIX + "You do not have permission for that command.");
+			sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NO_PERMISSION"));
 			return true;
 		}
 		try {
 			if (pc.getUUID(args[0]) == null) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player not found!");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NULL_PLAYER"));
 				return true;
 			}
 		} catch (SQLException e1) {
@@ -40,8 +58,8 @@ public class createUI implements CommandExecutor {
 		}
 		try {
 			if (SU.isExistant(args[0])) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "User already exists!");
-				return false;
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_DUPLICATE_USER"));
+				return true;
 			}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block

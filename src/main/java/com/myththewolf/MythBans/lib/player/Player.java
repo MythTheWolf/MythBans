@@ -193,4 +193,15 @@ public class Player {
 		ps.executeUpdate();
 
 	}
+
+	public String getLang(String UUID) throws SQLException {
+		ps = (PreparedStatement) MythSQLConnect.getConnection()
+				.prepareStatement("SELECT * FROM MythBans_PlayerStats WHERE UUID = ?");
+		ps.setString(1, UUID);
+		rs = ps.executeQuery();
+		while (rs.next()) {
+			return rs.getString("lang_file");
+		}
+		return ConfigProperties.SYSTEM_LOCALE;
+	}
 }
