@@ -17,8 +17,6 @@ import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.SiteUser;
 import com.myththewolf.MythBans.lib.tool.Utils;
 
-import net.md_5.bungee.api.ChatColor;
-
 public class createUI implements CommandExecutor {
 	private SiteUser SU = new SiteUser();
 	private PlayerCache pc = new PlayerCache(MythSQLConnect.getConnection());

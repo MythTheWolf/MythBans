@@ -22,27 +22,42 @@ public class MythPlayerMetaData {
 	}
 
 	public boolean isSpying() throws SQLException {
-		rs = this.getPair(theUUID + "_spying");
-		if (!rs.next()) {
-			return false;
-		} else {
-			return rs.getBoolean("value");
-		}
+		String bool = this.getPair(theUUID + "_spying");
+		return Boolean.parseBoolean(bool);
 	}
 
-	public ResultSet getPair(String key) throws SQLException {
-		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_AbstractData WHERE key = ?");
+	public String getPair(String key) throws SQLException {
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_AbstractData WHERE `key` = ?");
 		ps.setString(1, key);
-		return ps.executeQuery();
+		rs = ps.executeQuery();
+		while(rs.next()){
+			return rs.getString("value");
+		}
+		return null;
 	}
 
 	public void putPair(String key, String val) throws SQLException {
 		ps = (PreparedStatement) con.prepareStatement("INSERT INTO MythBans_AbstractData (`key`,`value`) VALUES (?,?)");
 		ps.setString(1, key);
 		ps.setString(2, val);
+		ps.executeUpdate();
 	}
 
 	public void setSpy(boolean spy) throws SQLException {
-		this.putPair(theUUID + "_spying", Boolean.toString(spy));
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_AbstractData WHERE `key` = ?");
+		ps.setString(1, theUUID + "_spying");
+		rs = ps.executeQuery();
+		if (!rs.next()) {
+			this.putPair(theUUID + "_spying", Boolean.toString(spy));
+		} else {
+			this.updatePair(theUUID + "_spying", Boolean.toString(spy));
+		}
+	}
+
+	public void updatePair(String key, String value) throws SQLException {
+		ps = (PreparedStatement) con.prepareStatement("UPDATE MythBans_AbstractData SET `value` = ?  WHERE `key` = ?");
+		ps.setString(1, value);
+		ps.setString(2, key);
+		ps.executeUpdate();
 	}
 }

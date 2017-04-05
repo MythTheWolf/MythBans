@@ -86,4 +86,6 @@ commands:
  testhings: 
      description: Tests Inet
      aliases: []
-     
+ socialspy:
+     description: Toggles socialspy
+     alaises: [ss]

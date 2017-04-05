@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Utils;
 
@@ -24,26 +25,33 @@ public class Kick implements CommandExecutor {
 	private final DatabaseCommands dbc = new DatabaseCommands();
 	private final com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
 	private Player toKick;
+	private PlayerLanguage PL;
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
+
 		try {
+			if (sender instanceof ConsoleCommandSender) {
+				PL = new PlayerLanguage();
+			} else {
+				PL = new PlayerLanguage(PlayerClass.getLang(((Player) sender).getUniqueId().toString()));
+			}
 			if (args.length < 1) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /kick <user> [reason]");
 				return true;
 			} else if (pc.getPlayerExact(args[0]) == null) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player not online.");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_OFFLINE_PLAYER"));
 				return true;
 			} else {
 				toKick = pc.getPlayerExact(args[0]);
 			}
+			new PlayerLanguage(toKick.getUniqueId().toString());
 			if (sender instanceof ConsoleCommandSender) {
 				dbc.kickUser(toKick.getUniqueId().toString(), "CONSOLE", Utils.makeString(args, 1));
 				pc.getPlayerExact(args[0]).kickPlayer(
-						this.formatMessage(toKick.getUniqueId().toString(), ConfigProperties.USER_KICK_FORMAT));
+						this.formatMessage(toKick.getUniqueId().toString(), PL.languageList.get("PUNISHMENT-KICK")));
 				return true;
 			} else if (!sender.hasPermission(ConfigProperties.KICK_PERMISSION)) {
-				sender.sendMessage(
-						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NO_PERMISSION"));
 				return true;
 			} else {
 
@@ -56,12 +64,12 @@ public class Kick implements CommandExecutor {
 
 				}
 			}
-			pc.getPlayerExact(args[0])
-					.kickPlayer(this.formatMessage(toKick.getUniqueId().toString(), ConfigProperties.USER_KICK_FORMAT));
+			pc.getPlayerExact(args[0]).kickPlayer(
+					this.formatMessage(toKick.getUniqueId().toString(), PL.languageList.get("PUNISHMENT-KICK")));
 			for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
+				PL = new PlayerLanguage(player.getUniqueId().toString());
 				if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-					player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-							this.formatMessage(toKick.getUniqueId().toString(), ConfigProperties.SERVER_KICK_FORMAT)));
+					player.sendMessage(this.formatMessage(toKick.getUniqueId().toString(), PL.languageList.get("PUNISHMENT_KICK")));
 				}
 			}
 			return true;
@@ -75,15 +83,16 @@ public class Kick implements CommandExecutor {
 
 	private String formatMessage(String UUID2, String format) throws SQLException {
 		String toFormat = format;
+
 		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
-			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
+			toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 		} else {
-			toFormat = toFormat.replaceAll("\\{staffMember\\}",
+			toFormat = toFormat.replaceAll("\\{0\\}",
 					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
 		}
 
-		toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
-		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID2));
+		toFormat = toFormat.replaceAll("\\{1\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
+		toFormat = toFormat.replaceAll("\\{2\\}", PlayerClass.getReason(UUID2));
 
 		return toFormat;
 	}

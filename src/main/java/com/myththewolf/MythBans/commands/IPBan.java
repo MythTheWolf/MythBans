@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
 import com.myththewolf.MythBans.lib.player.IP;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Utils;
@@ -27,37 +27,45 @@ public class IPBan implements CommandExecutor {
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private IP ipClass = new IP();
 	private String[] packet;
-	private JavaPlugin MythPlugin;
+	private PlayerLanguage PL;
+	private com.myththewolf.MythBans.lib.player.Player pClass = new com.myththewolf.MythBans.lib.player.Player();
 
 	public IPBan(JavaPlugin pl) {
-		MythPlugin = pl;
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
+		if (sender instanceof ConsoleCommandSender) {
+			PL = new PlayerLanguage();
+		} else {
+			try {
+				PL = new PlayerLanguage(pClass.getLang(((Player) sender).getUniqueId().toString()));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		try {
 			if (!sender.hasPermission(ConfigProperties.BANIP_PERMISSION)) {
-				sender.sendMessage(
-						ConfigProperties.PREFIX + ChatColor.RED + "You don't have permission to execute this command.");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NO_PERMISSION"));
 				return true;
 			}
 			if (args.length < 1) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /banip <user|ip> [reason]");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("COMMAND_IPBAN_USAGE"));
 				return true;
 			}
 			if (args[0].charAt(0) == '/' && pCache.ipExist(args[0]) == false) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "IP Not found.");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NULL_IP"));
 				return true;
 			}
 			if (args[0].charAt(0) != '/' && pCache.getOfflinePlayerExact(args[0]) == null) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player Not found.");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NULL_PLAYER"));
 				return true;
+
 			}
 			if (args[0].charAt(0) != '/') {
 				packet = ipClass.getIPPack(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
-				String IPs = Arrays.toString(packet);
-				if (ConfigProperties.DEBUG)
-					MythPlugin.getLogger().info("Handeling IP Packet--> " + IPs);
+				Arrays.toString(packet);
 
 				List<String> list = new ArrayList<String>();
 				List<String> userPack = new ArrayList<String>();
@@ -81,13 +89,16 @@ public class IPBan implements CommandExecutor {
 				dumpUsers = userPack.toArray(new String[userPack.size()]);
 				String users = Arrays.toString(dumpUsers);
 				for (Player i : Bukkit.getOnlinePlayers()) {
+					PL = new PlayerLanguage(i.getUniqueId().toString());
+					
 					if (list.contains(i.getAddress().getAddress().toString())) {
-						i.kickPlayer(this.formatMessage(packet[0], ConfigProperties.USER_IPBAN_FORMAT));
+						
+						i.kickPlayer(this.formatMessage(packet[0], PL.languageList.get("PUNISHMENT_IPBAN_KICK")));
 					} else if (i.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-
-						String dump = this.formatMessage(packet[0], ConfigProperties.SERVER_IPBAN_FORMAT);
-						dump = dump.replaceAll("\\{culprit\\}", users);
-						dump = dump.replaceAll("\\{IP\\}", packet[0]);
+						
+						String dump = this.formatMessage(packet[0], PL.languageList.get("PUNISHMENT_IPBAN_INFORM"));
+						dump = dump.replaceAll("\\{1\\}", users);
+						dump = dump.replaceAll("\\{2\\}", packet[0]);
 						i.sendMessage(dump);
 					} else {
 						continue;
@@ -104,13 +115,14 @@ public class IPBan implements CommandExecutor {
 				}
 				String users = Arrays.toString(pCache.getUUIDbyIP(IP));
 				for (Player i : Bukkit.getOnlinePlayers()) {
+					PL =new PlayerLanguage(i.getUniqueId().toString());
 					if (i.getAddress().getAddress().toString().equals(IP)) {
 						i.kickPlayer(this.formatMessage(i.getAddress().getAddress().toString(),
-								ConfigProperties.USER_IPBAN_FORMAT));
+								PL.languageList.get("PUNISHMENT_IPBAN_KICK")));
 					} else if (i.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-						String dump = this.formatMessage(IP, ConfigProperties.SERVER_IPBAN_FORMAT);
-						dump = dump.replaceAll("\\{culprit\\}", users);
-						dump = dump.replaceAll("\\{IP\\}", IP);
+						String dump = this.formatMessage(IP, PL.languageList.get("PUNISHMENT_IPBAN_INFORM"));
+						dump = dump.replaceAll("\\{1\\}", users);
+						dump = dump.replaceAll("\\{2\\}", IP);
 						i.sendMessage(dump);
 					} else {
 						continue;
@@ -129,12 +141,12 @@ public class IPBan implements CommandExecutor {
 		String toFormat = format;
 
 		if (ipClass.getWhoBanned(IP).equals("CONSOLE")) {
-			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
+			toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 		} else {
-			toFormat = toFormat.replaceAll("\\{staffMember\\}",
+			toFormat = toFormat.replaceAll("\\{0\\}",
 					Bukkit.getOfflinePlayer(UUID.fromString(ipClass.getWhoBanned(IP))).getName());
 		}
-		toFormat = toFormat.replaceAll("\\{reason\\}", ipClass.getReason(IP));
+		toFormat = toFormat.replaceAll("\\{3\\}", ipClass.getReason(IP));
 
 		return toFormat;
 
