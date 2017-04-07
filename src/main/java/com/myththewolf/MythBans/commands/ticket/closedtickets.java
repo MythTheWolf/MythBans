@@ -22,7 +22,7 @@ public class closedtickets implements CommandExecutor {
 		}
 		return true;
 	}
-
+//does this build OK?
 	@Override
 	public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] args) {
 		if(!arg0.hasPermission(ConfigProperties.CLOSETICKET_PERMISSION))
