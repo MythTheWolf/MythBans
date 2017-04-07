@@ -2,6 +2,8 @@
 
 Powerfull Craftbukkit plugin that allows you to manage bans VIA SQL in-game and through a web UI.
 
+## Updates
+* Translators needed. Check out [this page](https://github.com/MythTheWolf/MythBans-JavaPlugin/blob/master/TRANSLATE.md) for details.
 ## Features
 
 * SQL Storage of all bans, logs, and users
