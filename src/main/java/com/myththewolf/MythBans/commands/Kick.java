@@ -18,14 +18,13 @@ import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Utils;
 
-import net.md_5.bungee.api.ChatColor;
-
 public class Kick implements CommandExecutor {
 	private final PlayerCache pc = new PlayerCache(MythSQLConnect.getConnection());
 	private final DatabaseCommands dbc = new DatabaseCommands();
 	private final com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
 	private Player toKick;
 	private PlayerLanguage PL;
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 
@@ -36,7 +35,7 @@ public class Kick implements CommandExecutor {
 				PL = new PlayerLanguage(PlayerClass.getLang(((Player) sender).getUniqueId().toString()));
 			}
 			if (args.length < 1) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /kick <user> [reason]");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("COMMAND_KICK_USAGE"));
 				return true;
 			} else if (pc.getPlayerExact(args[0]) == null) {
 				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_OFFLINE_PLAYER"));
@@ -69,7 +68,8 @@ public class Kick implements CommandExecutor {
 			for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 				PL = new PlayerLanguage(player.getUniqueId().toString());
 				if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-					player.sendMessage(this.formatMessage(toKick.getUniqueId().toString(), PL.languageList.get("PUNISHMENT_KICK")));
+					player.sendMessage(this.formatMessage(toKick.getUniqueId().toString(),
+							PL.languageList.get("PUNISHMENT_KICK")));
 				}
 			}
 			return true;

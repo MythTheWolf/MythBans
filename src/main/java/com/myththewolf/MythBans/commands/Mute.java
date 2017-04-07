@@ -1,7 +1,6 @@
 package com.myththewolf.MythBans.commands;
 
 import java.sql.SQLException;
-
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -15,34 +14,39 @@ import org.bukkit.command.ConsoleCommandSender;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.player.Player;
+import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
+import org.bukkit.entity.Player;
 
 public class Mute implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 
 	private DatabaseCommands dbc = new DatabaseCommands();
-	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new Player();
-
+	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
+	private PlayerLanguage PL;
 	private OfflinePlayer toMute;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
+			if(sender instanceof ConsoleCommandSender){
+				PL = new PlayerLanguage();
+			}else{
+				PL = new PlayerLanguage(  ((Player) sender).getUniqueId().toString());
+			}
 			if (args.length < 1) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /ban <user> [reason]");
 				return true;
 			} else if (pCache.getOfflinePlayerExact(args[0]) == null) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has not been on this server.");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NULL_PLAYER"));
 				return true;
 			} else if (!sender.hasPermission(ConfigProperties.BAN_PERMISSION)) {
-				sender.sendMessage(
-						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NO_PERMISSION"));
 				return true;
 			}
 			String stat = PlayerClass
 					.getStatus(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
-			if (!stat.equals("OK") || !stat.equals("muted")) {
+			if (!stat.equals("OK") && !stat.equals("muted")) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + " Can't override status; User is not currently set to \"OK\"");
 				return true;
 			}

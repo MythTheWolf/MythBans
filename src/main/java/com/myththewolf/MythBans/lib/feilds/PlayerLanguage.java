@@ -20,6 +20,10 @@ public class PlayerLanguage {
 		languageList.put("ERR_NULL_IP", ChatColor.translateAlternateColorCodes('&', file.getString("ERR-NULL-IP")));
 		languageList.put("ERR_NON_PLAYER",
 				ChatColor.translateAlternateColorCodes('&', file.getString("ERR-NON-PLAYER")));
+		languageList.put("ERR_INVALID_KEY",
+				ChatColor.translateAlternateColorCodes('&', file.getString("ERR-INVALID-KEY")));
+
+		
 		languageList.put("ERR_DUPLICATE_USER",
 				ChatColor.translateAlternateColorCodes('&', file.getString("ERR-DUPLICATE-USER")));
 		languageList.put("ERR_OFFLINE_PLAYER",
@@ -35,17 +39,27 @@ public class PlayerLanguage {
 				ChatColor.translateAlternateColorCodes('&', file.getString("COMMAND-GETFAM-USAGE")));
 		languageList.put("COMMAND_IPBAN_USAGE",
 				ChatColor.translateAlternateColorCodes('&', file.getString("COMMAND-IPBAN-USAGE")));
+
+		languageList.put("COMMAND_KICK_USAGE",
+				ChatColor.translateAlternateColorCodes('&', file.getString("COMMAND-KICK-USAGE")));
+
+		languageList.put("COMMAND_LINK_USAGE",
+				ChatColor.translateAlternateColorCodes('&', file.getString("COMMAND-LINK-USAGE")));
+		
+		languageList.put("COMMAND_LINK_SUCCESS",
+				ChatColor.translateAlternateColorCodes('&', file.getString("COMMAND-LINK-SUCCESS")));
+		
 		// Punishment messages
 		languageList.put("PUNISHMENT_BAN_INFORM",
 				ChatColor.translateAlternateColorCodes('&', file.getString("PUNISHMENT-BAN-INFORM")));
 		languageList.put("PUNISHMENT_BAN_KICK",
 				ChatColor.translateAlternateColorCodes('&', file.getString("PUNISHMENT-BAN-KICK")));
-		
+
 		languageList.put("PUNISHMENT_IPBAN_INFORM",
 				ChatColor.translateAlternateColorCodes('&', file.getString("PUNISHMENT-IPBAN-INFORM")));
 		languageList.put("PUNISHMENT_IPBAN_KICK",
 				ChatColor.translateAlternateColorCodes('&', file.getString("PUNISHMENT-IPBAN-KICK")));
-		
+
 		languageList.put("PUNISHMENT_KICK_INFORM",
 				ChatColor.translateAlternateColorCodes('&', file.getString("PUNISHMENT-KICK-INFORM")));
 		languageList.put("PUNISHMENT_KICK",
