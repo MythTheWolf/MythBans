@@ -12,14 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.myththewolf.MythBans.lib.Discord;
-import com.myththewolf.MythBans.lib.DiscordConnection;
-
-import de.btobastian.javacord.entities.permissions.PermissionState;
-import de.btobastian.javacord.entities.permissions.PermissionType;
-import de.btobastian.javacord.entities.permissions.Permissions;
-import de.btobastian.javacord.entities.permissions.impl.ImplPermissionsBuilder;
-
 public class PlayerCache {
 	private ResultSet rs;
 	private PreparedStatement ps;
@@ -185,7 +177,7 @@ public class PlayerCache {
 	}
 
 	public void linkDiscord(String secret, String UUID) throws SQLException {
-		Discord disc = new Discord(DiscordConnection.getConnection());
+	
 		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Discord WHERE `key` = ?");
 		ps.setString(1, secret);
 		rs = ps.executeQuery();
@@ -201,10 +193,6 @@ public class PlayerCache {
 		ps = (PreparedStatement) con.prepareStatement("DELETE FROM MythBans_Discord WHERE `value` = ?");
 		ps.setString(1, ID);
 		ps.executeUpdate();
-		ImplPermissionsBuilder IM = new ImplPermissionsBuilder();
-		IM.setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED);
-		Permissions PERMS = IM.build();
-		disc.getMinecraft().updateOverwrittenPermissions(DiscordConnection.getConnection().getCachedUserById(ID),
-				PERMS);
+	
 	}
 }

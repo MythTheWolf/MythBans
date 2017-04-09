@@ -8,19 +8,8 @@ import java.util.Random;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.json.JSONObject;
 
-import com.mashape.unirest.http.HttpResponse;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.http.exceptions.UnirestException;
-import com.myththewolf.MythBans.lib.DiscordConnection;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-
-import de.btobastian.javacord.ImplDiscordAPI;
-import de.btobastian.javacord.Javacord;
-import de.btobastian.javacord.entities.message.Message;
-import de.btobastian.javacord.entities.message.impl.ImplMessage;
 
 public class Utils {
 	public static String makeString(String[] args, int index) {
@@ -103,22 +92,5 @@ public class Utils {
 		}
 		return sb.toString();
 	}
-    public static Message getMessageById(String channelId, String messageId) {
-        Message message = null;
-        HttpResponse<JsonNode> response = null;
-        try {
-            response = Unirest.get("https://discordapp.com/api/channels/" + channelId + "/messages/" + messageId)
-                    .header("authorization", DiscordConnection.getConnection().getToken()).asJson();
-        } catch (UnirestException e) {
-            e.printStackTrace();
-        }
-        try {
-            ((ImplDiscordAPI) Javacord.getApi()).checkResponse(response);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        JSONObject messageResponse = response.getBody().getObject();
-        message = new ImplMessage(messageResponse, (ImplDiscordAPI) Javacord.getApi(), null);
-        return message;
-    }
+
 }

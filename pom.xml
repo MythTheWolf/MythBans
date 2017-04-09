@@ -125,7 +125,7 @@
 					<exclude>plugin.yml</exclude>
 				</excludes>
 			</resource>
-				<resource>
+			<resource>
 				<directory>src/main/resources/lang</directory>
 				<!-- Keep filtering at false for other resources to prevent bad magic -->
 				<filtering>false</filtering>

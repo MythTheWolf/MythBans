@@ -94,7 +94,7 @@ public class MythBans {
 				ps.executeUpdate();
 
 			}
-			DiscordConnection.connect();
+
 			if (ConfigProperties.DEBUG) {
 				Bukkit.getLogger().info("All MySQL tables generated.");
 			}

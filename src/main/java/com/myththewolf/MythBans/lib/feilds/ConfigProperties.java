@@ -156,7 +156,7 @@ public class ConfigProperties {
 	}
 
 	public static void dumpDiscord() {
-		MythLog.info("Dumping..");
+		
 		Connection c = MythSQLConnect.getConnection();
 		PreparedStatement ps;
 		ResultSet rs;
