@@ -31,7 +31,7 @@ public class MessageCreate implements MessageCreateListener {
 			if (theMessage.getAuthor().isBot()) {
 				return;
 			}
-
+			
 			String[] theSplit = theMessage.getContent().split(" ");
 			if (theSplit[0].equals("mclink")) {
 				if (pCache.isLinked(theMessage.getAuthor().getId())) {
