@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import com.myththewolf.MythBans.lib.MythDiscordBot;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.player.Player;
@@ -18,6 +19,11 @@ import com.myththewolf.MythBans.lib.player.Player;
 public class PlayerChat implements Listener {
 
 	private DatabaseCommands dbc = new DatabaseCommands();
+	private MythDiscordBot MDB;
+
+	public PlayerChat(MythDiscordBot mBD2) {
+		MDB = mBD2;
+	}
 
 	@EventHandler
 	public void onPlayerChatEvent(AsyncPlayerChatEvent e)
@@ -115,8 +121,9 @@ public class PlayerChat implements Listener {
 				}
 			}
 		}
-		if (ConfigProperties.DISCORD_SETUP) {
-		
+		if (ConfigProperties.use_bot && MDB.isSetup()) {
+			String message = ChatColor.stripColor(e.getMessage());
+			MDB.appendThread(e.getPlayer().getName() + " " + message);
 		}
 	}
 }

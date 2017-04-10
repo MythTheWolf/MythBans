@@ -32,7 +32,8 @@ public class Mute implements CommandExecutor {
 			if(sender instanceof ConsoleCommandSender){
 				PL = new PlayerLanguage();
 			}else{
-				PL = new PlayerLanguage(  ((Player) sender).getUniqueId().toString());
+				
+				PL = new PlayerLanguage( PlayerClass.getLang(((Player) sender).getUniqueId().toString()) );
 			}
 			if (args.length < 1) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /ban <user> [reason]");

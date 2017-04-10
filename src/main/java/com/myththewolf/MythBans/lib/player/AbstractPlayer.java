@@ -38,9 +38,10 @@ public class AbstractPlayer {
 		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_NameCache WHERE `discord_id` = ?");
 		ps.setString(1, discordID);
 		rs = ps.executeQuery();
-		rs.next();
-		return Bukkit.getOfflinePlayer(UUID.fromString(rs.getString("UUID")));
-		
+		while (rs.next()) {
+			return Bukkit.getOfflinePlayer(UUID.fromString(rs.getString("UUID")));
+		}
+		return null;
 	}
 
 }

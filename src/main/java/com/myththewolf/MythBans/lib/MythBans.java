@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.commands.Ban;
+import com.myththewolf.MythBans.commands.ClearChat;
 import com.myththewolf.MythBans.commands.IPBan;
 import com.myththewolf.MythBans.commands.IPKick;
 import com.myththewolf.MythBans.commands.Kick;
@@ -52,12 +53,14 @@ import com.myththewolf.MythBans.threads.WarnUnsolvedTickets;
 
 public class MythBans {
 	private JavaPlugin MythPlugin;
+	private MythDiscordBot MBD;
 
 	public MythBans(JavaPlugin inst) {
 		this.MythPlugin = inst;
 	}
 
 	public void startDiscordBot() {
+		MBD = new MythDiscordBot();
 		Connection con = MythSQLConnect.getConnection();
 		PreparedStatement ps;
 		try {
@@ -120,9 +123,9 @@ public class MythBans {
 				File specialf = new File(MythPlugin.getDataFolder() + File.separator + "lang", theLanguage + ".yml");
 				if (!specialf.exists()) {
 					specialf.getParentFile().mkdirs();
-					MythPlugin.saveResource("lang"+File.separator + theLanguage + ".yml", false);
+					MythPlugin.saveResource("lang" + File.separator + theLanguage + ".yml", false);
 				}
-			
+
 				FileConfiguration daFonts = YamlConfiguration.loadConfiguration(specialf);
 				ConfigProperties.langMap.put(theLanguage, daFonts);
 			}
@@ -144,7 +147,7 @@ public class MythBans {
 
 	public void loadEvents() {
 
-		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerChat(), MythPlugin);
+		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerChat(MBD), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(MythPlugin), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerQuit(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerEatEvent(MythPlugin), MythPlugin);
@@ -189,7 +192,7 @@ public class MythBans {
 		MythPlugin.getCommand("softmute").setExecutor(new softmute());
 		MythPlugin.getCommand("mbreload").setExecutor(new ReloadMythBans(MythPlugin));
 		MythPlugin.getCommand("socialspy").setExecutor(new SocialSpy());
-
+		MythPlugin.getCommand("clearchat").setExecutor(new ClearChat());
 	}
 
 	public void buildCommandMap() {
@@ -199,5 +202,13 @@ public class MythBans {
 	public void startDaemon() {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(MythPlugin, new WarnUnsolvedTickets(MythPlugin), 20, 6000);
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(MythPlugin, new AlerResolved(), 20, 3000);
+	}
+
+	public void shutdown() {
+
+		Bukkit.getScheduler().cancelAllTasks();
+		if (ConfigProperties.use_bot) {
+			MBD.disconnect();
+		}
 	}
 }
