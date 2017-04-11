@@ -1,6 +1,8 @@
 package com.myththewolf.MythBans.lib;
 
 import java.io.File;
+
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -48,6 +50,7 @@ import com.myththewolf.MythBans.lib.events.player.PlayerEatEvent;
 import com.myththewolf.MythBans.lib.events.player.PlayerJoin;
 import com.myththewolf.MythBans.lib.events.player.PlayerQuit;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.tool.LanguageGoverner;
 import com.myththewolf.MythBans.threads.AlerResolved;
 import com.myththewolf.MythBans.threads.WarnUnsolvedTickets;
 
@@ -197,6 +200,15 @@ public class MythBans {
 
 	public void buildCommandMap() {
 
+	}
+
+	public boolean runTests() throws IOException {
+		File specialf = new File(MythPlugin.getDataFolder() + File.separator + "lang" + File.separator+ "expected_codes.txt");
+
+		specialf.getParentFile().mkdirs();
+		MythPlugin.saveResource("lang" + File.separator + "expected_codes.txt", true);
+		LanguageGoverner LG = new LanguageGoverner(specialf);
+		return LG.run();
 	}
 
 	public void startDaemon() {

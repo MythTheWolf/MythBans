@@ -83,7 +83,8 @@ public class ConfigProperties {
 	public static String SOFTMUTE_RELEASE_COMMAND;
 	public static boolean AUTO_MUTE = false;
 	public static FileConfiguration lang;
-	public static HashMap<String,FileConfiguration> langMap = new HashMap<String,FileConfiguration>();
+	public static HashMap<String, FileConfiguration> langMap = new HashMap<String, FileConfiguration>();
+
 	public static void dumpProperties(FileConfiguration cfg) {
 		try {
 
@@ -156,7 +157,7 @@ public class ConfigProperties {
 	}
 
 	public static void dumpDiscord() {
-		
+
 		Connection c = MythSQLConnect.getConnection();
 		PreparedStatement ps;
 		ResultSet rs;
@@ -234,5 +235,4 @@ public class ConfigProperties {
 
 	}
 
-	
 }

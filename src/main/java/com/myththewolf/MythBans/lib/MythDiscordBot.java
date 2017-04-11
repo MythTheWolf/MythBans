@@ -50,6 +50,7 @@ public class MythDiscordBot {
 						mcChannel = getChannel();
 						thread = getThread();
 						updateRoles();
+						
 						mcChannel.updateTopic("PM MythBot with \"mclink\" to use this channel");
 						return;
 					} else {

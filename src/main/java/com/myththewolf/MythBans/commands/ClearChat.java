@@ -12,11 +12,10 @@ import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
 
 public class ClearChat implements CommandExecutor {
-	
 
-	
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
 	private PlayerLanguage PL;
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		if (!(sender instanceof Player)) {
@@ -32,20 +31,19 @@ public class ClearChat implements CommandExecutor {
 				e.printStackTrace();
 				return false;
 			}
-			if(!sender.hasPermission("mythbans.clearchat")){
+			if (!sender.hasPermission("mythbans.clearchat")) {
 				sender.sendMessage(PL.languageList.get("ERR_NO_PERMISSION"));
 				return false;
 			}
-			for(Player P : Bukkit.getOnlinePlayers()){
-				for(int i =0; i<100; i++){
+			for (Player P : Bukkit.getOnlinePlayers()) {
+				PL = new PlayerLanguage(P);
+				for (int i = 0; i < 100; i++) {
 					P.sendMessage("");
 				}
-				P.sendMessage(ConfigProperties.PREFIX+"Chat has been cleared");
+				P.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("COMMAND_CHATCLEAR_SUCCESS"));
 			}
 		}
 		return true;
 	}
-
-
 
 }

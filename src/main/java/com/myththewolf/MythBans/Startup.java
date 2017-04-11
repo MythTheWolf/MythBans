@@ -1,6 +1,9 @@
 package com.myththewolf.MythBans;
 
+import java.io.IOException;
 import java.sql.SQLException;
+
+
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -12,6 +15,8 @@ import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.tool.Date;
 
 import ch.qos.logback.classic.Level;
+
+
 
 public class Startup extends JavaPlugin {
 	private Logger MythLogger = this.getLogger();
@@ -36,6 +41,17 @@ public class Startup extends JavaPlugin {
 			mb.startDiscordBot();
 			ConfigProperties.dumpDiscord();
 		}
+		try {
+			System.out.println("****** RUNNING TESTS ******");
+			if(!mb.runTests()){
+				this.getPluginLoader().disablePlugin(this);
+				System.out.println("****** Disabling Plugin due to test failure ******");
+			}
+		} catch (IOException e) {
+			this.getPluginLoader().disablePlugin(this);
+			System.out.println("****** Disabling Plugin due to test failure ******");
+		}
+		
 	}
 
 	public void onDisable() {

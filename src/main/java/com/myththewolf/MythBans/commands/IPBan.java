@@ -28,23 +28,12 @@ public class IPBan implements CommandExecutor {
 	private IP ipClass = new IP();
 	private String[] packet;
 	private PlayerLanguage PL;
-	private com.myththewolf.MythBans.lib.player.Player pClass = new com.myththewolf.MythBans.lib.player.Player();
-
 	public IPBan(JavaPlugin pl) {
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
-		if (sender instanceof ConsoleCommandSender) {
-			PL = new PlayerLanguage();
-		} else {
-			try {
-				PL = new PlayerLanguage(pClass.getLang(((Player) sender).getUniqueId().toString()));
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		PL = new PlayerLanguage(sender);
 		try {
 			if (!sender.hasPermission(ConfigProperties.BANIP_PERMISSION)) {
 				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NO_PERMISSION"));
@@ -89,13 +78,13 @@ public class IPBan implements CommandExecutor {
 				dumpUsers = userPack.toArray(new String[userPack.size()]);
 				String users = Arrays.toString(dumpUsers);
 				for (Player i : Bukkit.getOnlinePlayers()) {
-					PL = new PlayerLanguage(i.getUniqueId().toString());
-					
+					PL = new PlayerLanguage(i);
+
 					if (list.contains(i.getAddress().getAddress().toString())) {
-						
+
 						i.kickPlayer(this.formatMessage(packet[0], PL.languageList.get("PUNISHMENT_IPBAN_KICK")));
 					} else if (i.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-						
+
 						String dump = this.formatMessage(packet[0], PL.languageList.get("PUNISHMENT_IPBAN_INFORM"));
 						dump = dump.replaceAll("\\{1\\}", users);
 						dump = dump.replaceAll("\\{2\\}", packet[0]);
@@ -115,7 +104,7 @@ public class IPBan implements CommandExecutor {
 				}
 				String users = Arrays.toString(pCache.getUUIDbyIP(IP));
 				for (Player i : Bukkit.getOnlinePlayers()) {
-					PL =new PlayerLanguage(i.getUniqueId().toString());
+					PL = new PlayerLanguage(i);
 					if (i.getAddress().getAddress().toString().equals(IP)) {
 						i.kickPlayer(this.formatMessage(i.getAddress().getAddress().toString(),
 								PL.languageList.get("PUNISHMENT_IPBAN_KICK")));
