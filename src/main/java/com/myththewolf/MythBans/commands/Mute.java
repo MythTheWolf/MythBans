@@ -16,7 +16,6 @@ import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
-import org.bukkit.entity.Player;
 
 public class Mute implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
@@ -29,12 +28,7 @@ public class Mute implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
-			if(sender instanceof ConsoleCommandSender){
-				PL = new PlayerLanguage();
-			}else{
-				
-				PL = new PlayerLanguage( PlayerClass.getLang(((Player) sender).getUniqueId().toString()) );
-			}
+			PL = new PlayerLanguage(sender);
 			if (args.length < 1) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /ban <user> [reason]");
 				return true;
@@ -45,10 +39,10 @@ public class Mute implements CommandExecutor {
 				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NO_PERMISSION"));
 				return true;
 			}
-			String stat = PlayerClass
-					.getStatus(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
+			String stat = PlayerClass.getStatus(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
 			if (!stat.equals("OK") && !stat.equals("muted")) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + " Can't override status; User is not currently set to \"OK\"");
+				sender.sendMessage(
+						ConfigProperties.PREFIX + ChatColor.RED + PL.languageList.get("ERR_OVERRIDE_CONFLICT"));
 				return true;
 			}
 			// System.out.println(PlayerClass.getStatus(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString()));
@@ -65,13 +59,15 @@ public class Mute implements CommandExecutor {
 
 				for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 					if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-						player.sendMessage(ChatColor.translateAlternateColorCodes('&', this
-								.formatMessage(toMute.getUniqueId().toString(), ConfigProperties.SERVER_MUTE_FORMAT)));
+						PL = new PlayerLanguage(player);
+						player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.formatMessage(
+								toMute.getUniqueId().toString(), PL.languageList.get("PUNISHMENT_MUTE_INFORM"))));
 					}
 				}
 				if (toMute.isOnline()) {
-					toMute.getPlayer().sendMessage(
-							this.formatMessage(toMute.getUniqueId().toString(), ConfigProperties.USER_MUTE_FORMAT));
+					PL = new PlayerLanguage(toMute);
+					toMute.getPlayer().sendMessage(this.formatMessage(toMute.getUniqueId().toString(),
+							PL.languageList.get("PUNISHMENT_MUTE_PLAYER")));
 				}
 			} else {
 				toMute = pCache.getOfflinePlayerExact(args[0]);
@@ -87,13 +83,15 @@ public class Mute implements CommandExecutor {
 
 				for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 					if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
+						PL = new PlayerLanguage(player);
 						player.sendMessage(ChatColor.translateAlternateColorCodes('&', this.formatMessage(
-								toMute.getUniqueId().toString(), ConfigProperties.SERVER_UNMUTE_FORMAT)));
+								toMute.getUniqueId().toString(), PL.languageList.get("PUNISHMENT_UNMUTE_INFORM"))));
 					}
 				}
 				if (toMute.isOnline()) {
-					toMute.getPlayer().sendMessage(
-							this.formatMessage(toMute.getUniqueId().toString(), ConfigProperties.USER_UNMUTE_FORMAT));
+					PL = new PlayerLanguage(toMute);
+					toMute.getPlayer().sendMessage(this.formatMessage(toMute.getUniqueId().toString(),
+							PL.languageList.get("PUNISHMENT_UNMUTE_PLAYER")));
 				}
 				dbc.cleanUser(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
 
@@ -109,14 +107,14 @@ public class Mute implements CommandExecutor {
 		String toFormat = format;
 
 		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
-			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
+			toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 		} else {
-			toFormat = toFormat.replaceAll("\\{staffMember\\}",
+			toFormat = toFormat.replaceAll("\\{0\\}",
 					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
 		}
 
-		toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
-		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID2));
+		toFormat = toFormat.replaceAll("\\{1\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
+	
 
 		return toFormat;
 	}

@@ -61,9 +61,11 @@ public class IP {
 			fam.add(pc.getName(rs.getString("UUID")));
 			theAmount++;
 		}
-		if (theAmount < 1) {
-			return null;
+		System.out.println(theAmount);
+		if (theAmount <= 0) {
+			return new String[0];
 		} else {
+			
 			String[] arr = new String[fam.size()];
 			arr = fam.toArray(new String[fam.size()]);
 			return arr;

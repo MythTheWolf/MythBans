@@ -1,14 +1,12 @@
 package com.myththewolf.MythBans.commands;
 
 import java.io.UnsupportedEncodingException;
-
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
@@ -21,22 +19,8 @@ public class createUI implements CommandExecutor {
 	private SiteUser SU = new SiteUser();
 	private PlayerCache pc = new PlayerCache(MythSQLConnect.getConnection());
 	private PlayerLanguage PL;
-	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
-		if (!(sender instanceof Player)) {
-			PL = new PlayerLanguage();
-			sender.sendMessage(PL.languageList.get("ERR_NON_PLAYER"));
-			return true;
-		} else {
-			Player tmp = (Player) sender;
-			try {
-				PL = new PlayerLanguage(PlayerClass.getLang(tmp.getUniqueId().toString()));
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
+		PL = new PlayerLanguage(sender);
 		if (args.length < 1) {
 			sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("COMMAND_CREATEUI_USAGE"));
 			return true;

@@ -29,11 +29,7 @@ public class Kick implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 
 		try {
-			if (sender instanceof ConsoleCommandSender) {
-				PL = new PlayerLanguage();
-			} else {
-				PL = new PlayerLanguage(PlayerClass.getLang(((Player) sender).getUniqueId().toString()));
-			}
+			PL = new PlayerLanguage(sender);
 			if (args.length < 1) {
 				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("COMMAND_KICK_USAGE"));
 				return true;
@@ -43,7 +39,7 @@ public class Kick implements CommandExecutor {
 			} else {
 				toKick = pc.getPlayerExact(args[0]);
 			}
-			new PlayerLanguage(toKick.getUniqueId().toString());
+			PL = new PlayerLanguage(toKick.getUniqueId().toString());
 			if (sender instanceof ConsoleCommandSender) {
 				dbc.kickUser(toKick.getUniqueId().toString(), "CONSOLE", Utils.makeString(args, 1));
 				pc.getPlayerExact(args[0]).kickPlayer(
@@ -66,7 +62,7 @@ public class Kick implements CommandExecutor {
 			pc.getPlayerExact(args[0]).kickPlayer(
 					this.formatMessage(toKick.getUniqueId().toString(), PL.languageList.get("PUNISHMENT-KICK")));
 			for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
-				PL = new PlayerLanguage(player.getUniqueId().toString());
+				PL = new PlayerLanguage(player);
 				if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
 					player.sendMessage(this.formatMessage(toKick.getUniqueId().toString(),
 							PL.languageList.get("PUNISHMENT_KICK")));

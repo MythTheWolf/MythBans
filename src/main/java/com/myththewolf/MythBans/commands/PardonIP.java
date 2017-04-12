@@ -17,10 +17,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
 import com.myththewolf.MythBans.lib.player.IP;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
-
-import net.md_5.bungee.api.ChatColor;
 
 public class PardonIP implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
@@ -29,28 +28,29 @@ public class PardonIP implements CommandExecutor {
 	private String[] packet;
 	private JavaPlugin MythPlugin;
 	private String byUUID;
+	private PlayerLanguage PL;
 	public PardonIP(JavaPlugin pl) {
 		MythPlugin = pl;
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
+		PL = new PlayerLanguage(sender);
 		try {
 			if (!sender.hasPermission(ConfigProperties.PARDON_PERMISSION)) {
-				sender.sendMessage(
-						ConfigProperties.PREFIX + ChatColor.RED + "You don't have permission to execute this command.");
+				sender.sendMessage(PL.languageList.get("ERR_NO_PERMISSION"));
 				return true;
 			}
 			if (args.length < 1) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /pardonip <user|ip>");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("COMMAND-IPPARDON-USAGE"));
 				return true;
 			}
 			if (args[0].charAt(0) == '/' && pCache.ipExist(args[0]) == false) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "IP Not found.");
+				sender.sendMessage(PL.languageList.get("ERR_NULL_IP"));
 				return true;
 			}
 			if (args[0].charAt(0) != '/' && pCache.getOfflinePlayerExact(args[0]) == null) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player Not found.");
+				sender.sendMessage(PL.languageList.get("ERR_NO_PERMISSION"));
 				return true;
 			}
 			if (args[0].charAt(0) != '/') {
@@ -86,11 +86,13 @@ public class PardonIP implements CommandExecutor {
 					}
 				}
 				for (Player i : Bukkit.getOnlinePlayers()) {
+					PL = new PlayerLanguage(i);
 					if (i.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-						String dump = this.formatMessage(packet[0], ConfigProperties.SERVER_IPUNBAN_FORMAT, byUUID);
-						dump = dump.replaceAll("\\{culprit\\}",
+						PL = new PlayerLanguage(i);
+						String dump = this.formatMessage(packet[0], PL.languageList.get("PUNISHMENT_IPPARDON"), byUUID);
+						dump = dump.replaceAll("\\{1\\}",
 								Arrays.toString(users.toArray(new String[users.size()])));
-						dump = dump.replaceAll("\\{IP\\}", IPs);
+						dump = dump.replaceAll("\\{2\\}", IPs);
 						i.sendMessage(dump);
 					} else {
 						continue;
@@ -112,10 +114,10 @@ public class PardonIP implements CommandExecutor {
 				}
 
 				for (Player i : Bukkit.getOnlinePlayers()) {
-
+					PL = new PlayerLanguage(i);
 					if (i.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
-						String dump = this.formatMessage(IP, ConfigProperties.SERVER_IPBAN_FORMAT, byUUID);
-						dump = dump.replaceAll("\\{culprit\\}", IP);
+						String dump = this.formatMessage(IP, PL.languageList.get("PUNISHMENT_IPPARDON"), byUUID);
+						dump = dump.replaceAll("\\{2\\}", IP);
 						i.sendMessage(dump);
 					} else {
 						continue;
@@ -133,12 +135,12 @@ public class PardonIP implements CommandExecutor {
 		String toFormat = format;
 
 		if (byUUID.equals("CONSOLE")) {
-			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
+			toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 		} else {
-			toFormat = toFormat.replaceAll("\\{staffMember\\}",
+			toFormat = toFormat.replaceAll("\\{0\\}",
 					Bukkit.getOfflinePlayer(UUID.fromString(byUUID)).getName());
 		}
-		toFormat = toFormat.replaceAll("\\{reason\\}", ipClass.getReason(IP));
+	
 
 		return toFormat;
 

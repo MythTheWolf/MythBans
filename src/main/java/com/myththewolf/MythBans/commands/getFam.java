@@ -8,7 +8,6 @@ import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
@@ -19,17 +18,12 @@ import com.myththewolf.MythBans.lib.player.PlayerCache;
 public class getFam implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private IP ipClass = new IP();
-	private com.myththewolf.MythBans.lib.player.Player PClass = new com.myththewolf.MythBans.lib.player.Player();
 	private PlayerLanguage PL;
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
-			if (sender instanceof ConsoleCommandSender) {
-				PL = new PlayerLanguage(ConfigProperties.SYSTEM_LOCALE);
-			} else {
-				PL = new PlayerLanguage(PClass.getLang(((org.bukkit.entity.Player) sender).getUniqueId().toString()));
-			}
+			PL = new PlayerLanguage(sender);
 			if (!sender.hasPermission(ConfigProperties.BANIP_PERMISSION)) {
 				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NO_PERMISSION"));
 				return true;
@@ -51,6 +45,7 @@ public class getFam implements CommandExecutor {
 				String theID = pCache.getUUID(args[0]);
 				String[] IPs = ipClass.getIPPack(theID);
 				for (String IP : IPs) {
+					System.out.println(IP);
 					for (String singleUser : ipClass.getTheFam(IP, theID)) {
 						if (!commonUsers.contains(singleUser)) {
 							commonUsers.add(singleUser);

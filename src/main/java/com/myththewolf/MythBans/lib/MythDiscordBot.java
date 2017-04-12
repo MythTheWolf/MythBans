@@ -43,7 +43,7 @@ public class MythDiscordBot {
 			public void onSuccess(final DiscordAPI api) {
 				OK = true;
 				theConnection = api;
-				api.registerListener(new MessageCreate(tmp));
+			api.registerListener(new MessageCreate(tmp));
 				try {
 					if (isSetup()) {
 						connectedServer = api.getServerById(getServerID());
@@ -54,10 +54,13 @@ public class MythDiscordBot {
 						mcChannel.updateTopic("PM MythBot with \"mclink\" to use this channel");
 						return;
 					} else {
-						System.out.println(
-								"The system isn't setup, after running the setup method on your server, restart this MC server.");
 						OK = false;
+						if(api.getServers().size()<0){
+							System.out.println("The bot key and everythins is OK, but you need to join it to your server!");
 						return;
+						}else{
+							System.out.println("Bot is joined and everything is OK. But you need to run !setup on your server.");
+						}
 					}
 				} catch (SQLException | InterruptedException | ExecutionException e) {
 					// TODO Auto-generated catch block

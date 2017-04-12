@@ -20,7 +20,10 @@ public class LanguageGoverner {
 			BufferedReader BR = new BufferedReader(new FileReader(masterKey));
 			PlayerLanguage PL = new PlayerLanguage(ConfigProperties.langMap.get(LANG));
 			String line;
-			while ((line = BR.readLine()) != null) {
+			baseWhile : while ((line = BR.readLine()) != null) {
+				if(line.charAt(0) == '#'){
+					continue baseWhile;
+				}
 				String[] parsed = line.split(":");
 				if (!PL.languageList.containsKey(parsed[0])) {
 					System.out.println("While Parsing Langage: " + LANG + " ERROR: Missing key-->" + parsed[0]);

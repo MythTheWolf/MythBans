@@ -1,7 +1,6 @@
 package com.myththewolf.MythBans.lib;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -27,7 +26,6 @@ import com.myththewolf.MythBans.commands.PlayerTime;
 import com.myththewolf.MythBans.commands.Potato;
 import com.myththewolf.MythBans.commands.Probate;
 import com.myththewolf.MythBans.commands.ReloadMythBans;
-import com.myththewolf.MythBans.commands.SocialSpy;
 import com.myththewolf.MythBans.commands.TempBan;
 import com.myththewolf.MythBans.commands.createUI;
 import com.myththewolf.MythBans.commands.getFam;
@@ -194,7 +192,7 @@ public class MythBans {
 		MythPlugin.getCommand("potato").setExecutor(new Potato(MythPlugin));
 		MythPlugin.getCommand("softmute").setExecutor(new softmute());
 		MythPlugin.getCommand("mbreload").setExecutor(new ReloadMythBans(MythPlugin));
-		MythPlugin.getCommand("socialspy").setExecutor(new SocialSpy());
+		//MythPlugin.getCommand("socialspy").setExecutor(new SocialSpy());
 		MythPlugin.getCommand("clearchat").setExecutor(new ClearChat());
 	}
 

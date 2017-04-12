@@ -16,7 +16,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class ConfigProperties {
 	public static String SYSTEM_LOCALE = "en_US";
-	public static final String VERSION = "2.7.0";
+	public static final String VERSION = "2.7.4 Custom";
 	public static final String[] LANGS = { "en_US" };
 	public static String SERVER_UNMUTE_FORMAT;
 	public static String SQL_HOST;
@@ -63,6 +63,7 @@ public class ConfigProperties {
 	public static String CLOSETICKET_PERMISSION;
 	public static String TICKETS_OTHER_PERMISSION;
 	public static String SOCIALSPY_PERMISSION;
+	public static String CLEARCHAT_PERMISSION;
 	private static Logger MythLog;
 	public static boolean use_bot;
 	public static String POTATO_PERM;
@@ -147,6 +148,7 @@ public class ConfigProperties {
 			SOFTMUTE_RELEASE_COMMAND = cfg.getString("SOFTMUTE-RELEASE");
 			SOCIALSPY_PERMISSION = cfg.getString("SOCIALSPY-PERMISSION");
 			AUTO_MUTE = cfg.getBoolean("AUTO-MUTE");
+			CLEARCHAT_PERMISSION = cfg.getString("CLEARCHAT-PERMISSION");
 			if (cfg.getBoolean("use_bot") == false) {
 				DISCORD_SETUP = false;
 			}

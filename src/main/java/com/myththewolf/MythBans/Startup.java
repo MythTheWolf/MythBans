@@ -2,8 +2,6 @@ package com.myththewolf.MythBans;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
-
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -36,11 +34,15 @@ public class Startup extends JavaPlugin {
 		MythLogger.info("Loaded 6 tables.");
 		mb.startDaemon();
 
-		mb.loadEvents();
+		
 		if (ConfigProperties.use_bot) {
 			mb.startDiscordBot();
 			ConfigProperties.dumpDiscord();
+			
 		}
+		
+		
+		mb.loadEvents();
 		try {
 			System.out.println("****** RUNNING TESTS ******");
 			if(!mb.runTests()){
@@ -51,7 +53,7 @@ public class Startup extends JavaPlugin {
 			this.getPluginLoader().disablePlugin(this);
 			System.out.println("****** Disabling Plugin due to test failure ******");
 		}
-		
+		System.out.println("****** Tests Passed! ******");
 	}
 
 	public void onDisable() {

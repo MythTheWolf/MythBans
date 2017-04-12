@@ -31,7 +31,7 @@ public class ClearChat implements CommandExecutor {
 				e.printStackTrace();
 				return false;
 			}
-			if (!sender.hasPermission("mythbans.clearchat")) {
+			if (!sender.hasPermission(ConfigProperties.CLEARCHAT_PERMISSION)) {
 				sender.sendMessage(PL.languageList.get("ERR_NO_PERMISSION"));
 				return false;
 			}

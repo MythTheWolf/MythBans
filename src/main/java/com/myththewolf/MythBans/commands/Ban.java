@@ -10,7 +10,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.entity.Player;
 
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
@@ -31,15 +30,7 @@ public class Ban implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 
 		try {
-			if (!(sender instanceof Player)) {
-				PL = new PlayerLanguage();
-				sender.sendMessage(PL.languageList.get("ERR_NON_PLAYER"));
-				return true;
-			} else {
-				Player tmp = (Player) sender;
-				PL = new PlayerLanguage(PlayerClass.getLang(tmp.getUniqueId().toString()));
-
-			}
+			PL = new PlayerLanguage(sender);
 			if (args.length < 1) {
 				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("COMMAND_BAN_USAGE"));
 				return true;
@@ -66,14 +57,14 @@ public class Ban implements CommandExecutor {
 				}
 			}
 			for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
-				PL = new PlayerLanguage(PlayerClass.getLang(player.getUniqueId().toString()));
+				PL = new PlayerLanguage(player);
 				if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
 					player.sendMessage(ChatColor.translateAlternateColorCodes('&',
 							this.formatMessage(toUUID, PL.languageList.get("PUNISHMENT_BAN_INFORM"))));
 				}
 			}
 			if (toBan.isOnline()) {
-				PL = new PlayerLanguage(toBan.getUniqueId().toString());
+				PL = new PlayerLanguage(toBan);
 				toBan.getPlayer().kickPlayer(this.formatMessage(toUUID, PL.languageList.get("PUNISHMENT_BAN_KICK")));
 			}
 		} catch (
@@ -95,7 +86,7 @@ public class Ban implements CommandExecutor {
 					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
 		}
 
-		toFormat = toFormat.replaceAll("\\{1\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
+		toFormat = toFormat.replaceAll("\\{1\\}", pCache.getName(UUID2));
 		toFormat = toFormat.replaceAll("\\{2\\}", PlayerClass.getReason(UUID2));
 
 		return toFormat;

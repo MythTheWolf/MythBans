@@ -16,8 +16,6 @@ import com.myththewolf.MythBans.lib.player.PlayerCache;
 public class Link implements CommandExecutor {
 	private PlayerCache PC = new PlayerCache(MythSQLConnect.getConnection());
 	private PlayerLanguage PL;
-	private com.myththewolf.MythBans.lib.player.Player pClass = new com.myththewolf.MythBans.lib.player.Player();
-
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 
@@ -27,7 +25,7 @@ public class Link implements CommandExecutor {
 				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NON_PLAYER"));
 				return true;
 			} else {
-				PL = new PlayerLanguage(pClass.getLang(((Player) sender).getUniqueId().toString()));
+				PL = new PlayerLanguage(sender);
 			}
 			if (args.length < 1) {
 				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("COMMAND_LINK_USAGE"));

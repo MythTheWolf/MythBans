@@ -5,6 +5,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
 import com.myththewolf.MythBans.threads.ImportJSON;
 
 public class importJSON implements CommandExecutor {
@@ -17,7 +19,8 @@ public class importJSON implements CommandExecutor {
 	}
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
-		sender.sendMessage("Schedualing task..");
+		PlayerLanguage PL = new PlayerLanguage(sender);
+		sender.sendMessage(PL.languageList.get("COMMAND_IMPORTJSON_TASKSTART"));
 		new ImportJSON(pl,sender).runTaskAsynchronously(pl);
         return true;
 	}

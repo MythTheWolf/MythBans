@@ -10,7 +10,7 @@ public class IPKick implements CommandExecutor {
 	public IPKick(JavaPlugin pl) {
 	}
 
-	// I need to re-write this
+	// I need to re-write this :(
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		return false;

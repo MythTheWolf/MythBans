@@ -65,9 +65,12 @@ CLOSE-TICKET-PERMISSION: "mythbans.closeticket"
 STAFF-CHAT-SEND: "mythbans.staffchat.send"
 STAFF-CHAT-GET: "mythbans.staffchat.get"
 #Important messages
-IMPORTANT-SEND: "mythbans.important.send"
+IMPORTANT-SEND: 'mythbans.important.send'
+#Other pemissions
+CLEARCHAT-PERMISSION: 'mythbans.clearchat'
 #              **********Messages Config********
-
+AUTO-MUTE: true
+SOFTMUTE-RELEASE: '/accept'
 #Message to display on the user's screen when banned/tempbanned
 #You can use {staffMember},{culprit},{reason},{expire}, as keywords. 
 #Refer to the GitHub Wiki if you are still confused

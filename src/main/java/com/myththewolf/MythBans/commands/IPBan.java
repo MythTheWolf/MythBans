@@ -87,7 +87,7 @@ public class IPBan implements CommandExecutor {
 
 						String dump = this.formatMessage(packet[0], PL.languageList.get("PUNISHMENT_IPBAN_INFORM"));
 						dump = dump.replaceAll("\\{1\\}", users);
-						dump = dump.replaceAll("\\{2\\}", packet[0]);
+						dump = dump.replaceAll("\\{2\\}", Arrays.toString(packet));
 						i.sendMessage(dump);
 					} else {
 						continue;

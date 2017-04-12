@@ -28,9 +28,11 @@ public class PlayerChat implements Listener {
 	@EventHandler
 	public void onPlayerChatEvent(AsyncPlayerChatEvent e)
 			throws SQLException, InterruptedException, ExecutionException {
+		
 		org.bukkit.entity.Player p = e.getPlayer();
 		String UUID = p.getUniqueId().toString();
 		Player playerClass = new Player();
+		
 		if (e.getMessage().equals(ConfigProperties.SOFTMUTE_RELEASE_COMMAND)
 				&& !(playerClass.isOverride(p.getUniqueId().toString()))) {
 			playerClass.setOverride(p.getUniqueId().toString(), true);
@@ -55,7 +57,7 @@ public class PlayerChat implements Listener {
 			for (org.bukkit.entity.Player pp : Bukkit.getOnlinePlayers()) {
 				String orig = e.getMessage();
 				if (pp.hasPermission(ConfigProperties.STAFF_CHAT_GET)) {
-					m = e.getPlayer().getDisplayName() + ": " + orig.replaceAll("#", "");
+					m = e.getPlayer().getDisplayName() + ": " + orig.substring(1);
 					pp.sendMessage(ChatColor.translateAlternateColorCodes('&',
 							"&8[&4#!STAFF&8]&6" + ChatColor.GOLD + ChatColor.ITALIC + m));
 					Location location = pp.getLocation();
@@ -121,7 +123,7 @@ public class PlayerChat implements Listener {
 				}
 			}
 		}
-		if (ConfigProperties.use_bot && MDB.isSetup()) {
+		if (ConfigProperties.use_bot /*&& MDB.isSetup() */) {
 			String message = ChatColor.stripColor(e.getMessage());
 			MDB.appendThread(e.getPlayer().getName() + " " + message);
 		}
