@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
-import com.myththewolf.MythBans.threads.ImportJSON;
+import com.myththewolf.MythBans.tasks.ImportJSON;
 
 public class importJSON implements CommandExecutor {
 	private JavaPlugin pl;

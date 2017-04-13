@@ -1,8 +1,15 @@
 package com.myththewolf.MythBans.lib.tool;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -12,6 +19,8 @@ import org.bukkit.World;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 
 public class Utils {
+	public static List<File> tempFiles = new ArrayList<File>();
+
 	public static String makeString(String[] args, int index) {
 		String myString = ""; // we're going to store the arguments here
 
@@ -63,6 +72,7 @@ public class Utils {
 		}
 		return null;
 	}
+
 	public static String getSaltString() {
 		String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
 		StringBuilder salt = new StringBuilder();
@@ -93,4 +103,79 @@ public class Utils {
 		return sb.toString();
 	}
 
+	public static File convert2File(String tempName, InputStream IS) {
+		File tempFile = null;
+		try {
+			tempFile = File.createTempFile(tempName, ".mythBansTemp");
+			byte[] buffer = new byte[IS.available()];
+			IS.read(buffer);
+			OutputStream outStream = new FileOutputStream(tempFile);
+			outStream.write(buffer);
+			outStream.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(tempFile.getPath());
+		tempFiles.add(tempFile);
+		return tempFile;
+	}
+
+	/**
+	 * Pretty print the directory tree and its file names.
+	 * 
+	 * @param folder
+	 *            must be a folder.
+	 * @return
+	 */
+
+	public static String printDirectoryTree(File folder) {
+		if (!folder.isDirectory()) {
+			throw new IllegalArgumentException("folder is not a Directory");
+		}
+		int indent = 0;
+		StringBuilder sb = new StringBuilder();
+		printDirectoryTree(folder, indent, sb);
+		return sb.toString();
+	}
+
+	private static void printDirectoryTree(File folder, int indent, StringBuilder sb) {
+		if (!folder.isDirectory()) {
+			throw new IllegalArgumentException("folder is not a Directory");
+		}
+		sb.append(getIndentString(indent));
+		sb.append("+--");
+		sb.append(folder.getName());
+		sb.append("/");
+		sb.append("\n");
+		for (File file : folder.listFiles()) {
+			if (file.isDirectory()) {
+				printDirectoryTree(file, indent + 1, sb);
+			} else {
+				printFile(file, indent + 1, sb);
+			}
+		}
+
+	}
+
+	private static void printFile(File file, int indent, StringBuilder sb) {
+		sb.append(getIndentString(indent));
+		sb.append("+--");
+		sb.append(file.getName());
+		sb.append("\n");
+	}
+
+	private static String getIndentString(int indent) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < indent; i++) {
+			sb.append("|  ");
+		}
+		return sb.toString();
+	}
+
+	public static void deleteTempFiles() {
+		for (File I : tempFiles) {
+			I.delete();
+		}
+	}
 }

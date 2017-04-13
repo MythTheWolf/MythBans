@@ -70,7 +70,7 @@ IMPORTANT-SEND: 'mythbans.important.send'
 CLEARCHAT-PERMISSION: 'mythbans.clearchat'
 #              **********Messages Config********
 AUTO-MUTE: true
-SOFTMUTE-RELEASE: '/accept'
+SOFTMUTE-RELEASE: 'boguspenis'
 #Message to display on the user's screen when banned/tempbanned
 #You can use {staffMember},{culprit},{reason},{expire}, as keywords. 
 #Refer to the GitHub Wiki if you are still confused

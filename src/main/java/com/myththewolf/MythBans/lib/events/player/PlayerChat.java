@@ -33,7 +33,7 @@ public class PlayerChat implements Listener {
 		String UUID = p.getUniqueId().toString();
 		Player playerClass = new Player();
 		
-		if (e.getMessage().equals(ConfigProperties.SOFTMUTE_RELEASE_COMMAND)
+		if (e.getMessage().equalsIgnoreCase(ConfigProperties.SOFTMUTE_RELEASE_COMMAND)
 				&& !(playerClass.isOverride(p.getUniqueId().toString()))) {
 			playerClass.setOverride(p.getUniqueId().toString(), true);
 			playerClass.setStatus(p.getUniqueId().toString(), "OK");

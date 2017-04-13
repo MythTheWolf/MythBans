@@ -7,14 +7,14 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import com.myththewolf.MythBans.lib.MythBans;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.tool.Date;
+import com.myththewolf.MythBans.tasks.DisableDueToError;
 
 import ch.qos.logback.classic.Level;
-
-
 
 public class Startup extends JavaPlugin {
 	private Logger MythLogger = this.getLogger();
@@ -34,26 +34,34 @@ public class Startup extends JavaPlugin {
 		MythLogger.info("Loaded 6 tables.");
 		mb.startDaemon();
 
-		
 		if (ConfigProperties.use_bot) {
 			mb.startDiscordBot();
 			ConfigProperties.dumpDiscord();
-			
+
 		}
-		
-		
+
 		mb.loadEvents();
+		boolean RUN = false;
 		try {
 			System.out.println("****** RUNNING TESTS ******");
-			if(!mb.runTests()){
-				this.getPluginLoader().disablePlugin(this);
-				System.out.println("****** Disabling Plugin due to test failure ******");
+			RUN = mb.runTests();
+			if (!RUN) {
+				this.MythLogger.severe("Lang files are messed up! Run 'mbfix' to try to fix this issue.");
+				this.MythLogger
+						.severe("MythBans will disable istself in 1 minute, if you want to run fixes, do them now.");
+				BukkitTask ID = Bukkit.getScheduler().runTaskLater(this, new DisableDueToError(this), 1200L);
+				MB.setDisableTask(ID);
 			}
 		} catch (IOException e) {
-			this.getPluginLoader().disablePlugin(this);
-			System.out.println("****** Disabling Plugin due to test failure ******");
+			this.MythLogger.severe("Lang files are messed up! Run 'mbfix' to try to fix this issue.");
+			this.MythLogger.severe("MythBans will disable istself in 1 minute, if you want to run fixes, do them now.");
+			BukkitTask ID = Bukkit.getScheduler().runTaskLater(this, new DisableDueToError(this), 1200L);
+			MB.setDisableTask(ID);
 		}
-		System.out.println("****** Tests Passed! ******");
+		if (RUN) {
+			System.out.println("****** TEST RAN OK ******");
+		}
+
 	}
 
 	public void onDisable() {
@@ -72,5 +80,6 @@ public class Startup extends JavaPlugin {
 		if (ConfigProperties.use_bot) {
 			this.MB.shutdown();
 		}
+
 	}
 }

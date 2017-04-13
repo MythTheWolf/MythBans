@@ -12,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import com.myththewolf.MythBans.commands.Ban;
 import com.myththewolf.MythBans.commands.ClearChat;
@@ -30,6 +31,7 @@ import com.myththewolf.MythBans.commands.TempBan;
 import com.myththewolf.MythBans.commands.createUI;
 import com.myththewolf.MythBans.commands.getFam;
 import com.myththewolf.MythBans.commands.importJSON;
+import com.myththewolf.MythBans.commands.mbfix;
 import com.myththewolf.MythBans.commands.mythapi;
 import com.myththewolf.MythBans.commands.softmute;
 import com.myththewolf.MythBans.commands.user;
@@ -49,17 +51,26 @@ import com.myththewolf.MythBans.lib.events.player.PlayerJoin;
 import com.myththewolf.MythBans.lib.events.player.PlayerQuit;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.tool.LanguageGoverner;
-import com.myththewolf.MythBans.threads.AlerResolved;
-import com.myththewolf.MythBans.threads.WarnUnsolvedTickets;
+import com.myththewolf.MythBans.tasks.AlerResolved;
+import com.myththewolf.MythBans.tasks.WarnUnsolvedTickets;
 
 public class MythBans {
 	private JavaPlugin MythPlugin;
 	private MythDiscordBot MBD;
-
+	private LanguageGoverner LG;
+	private BukkitTask DISABLE_TASK;
 	public MythBans(JavaPlugin inst) {
 		this.MythPlugin = inst;
 	}
-
+	public JavaPlugin getJavaPlugin(){
+		return this.MythPlugin;
+	}
+	public void setDisableTask(BukkitTask BT){
+		DISABLE_TASK = BT;
+	}
+	public BukkitTask getDisableTask(){
+		return DISABLE_TASK;
+	}
 	public void startDiscordBot() {
 		MBD = new MythDiscordBot();
 		Connection con = MythSQLConnect.getConnection();
@@ -192,8 +203,9 @@ public class MythBans {
 		MythPlugin.getCommand("potato").setExecutor(new Potato(MythPlugin));
 		MythPlugin.getCommand("softmute").setExecutor(new softmute());
 		MythPlugin.getCommand("mbreload").setExecutor(new ReloadMythBans(MythPlugin));
-		//MythPlugin.getCommand("socialspy").setExecutor(new SocialSpy());
+		// MythPlugin.getCommand("socialspy").setExecutor(new SocialSpy());
 		MythPlugin.getCommand("clearchat").setExecutor(new ClearChat());
+		MythPlugin.getCommand("mbfix").setExecutor(new mbfix(this));
 	}
 
 	public void buildCommandMap() {
@@ -201,12 +213,17 @@ public class MythBans {
 	}
 
 	public boolean runTests() throws IOException {
-		File specialf = new File(MythPlugin.getDataFolder() + File.separator + "lang" + File.separator+ "expected_codes.txt");
+		File specialf = new File(
+				MythPlugin.getDataFolder() + File.separator + "lang" + File.separator + "expected_codes.txt");
 
 		specialf.getParentFile().mkdirs();
 		MythPlugin.saveResource("lang" + File.separator + "expected_codes.txt", true);
-		LanguageGoverner LG = new LanguageGoverner(specialf);
+		this.LG = new LanguageGoverner(specialf, MythPlugin);
 		return LG.run();
+	}
+
+	public LanguageGoverner getLangGoverner() {
+		return this.LG;
 	}
 
 	public void startDaemon() {
@@ -220,5 +237,9 @@ public class MythBans {
 		if (ConfigProperties.use_bot) {
 			MBD.disconnect();
 		}
+	}
+
+	public void disableSelf() {
+		Bukkit.getPluginManager().disablePlugin(MythPlugin);
 	}
 }

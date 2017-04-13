@@ -89,3 +89,6 @@ commands:
  socialspy:
      description: Toggles socialspy
      alaises: [ss]
+ mbfix:
+     description: Fixes Lang issues
+     aliases: []

@@ -1,4 +1,4 @@
-package com.myththewolf.MythBans.threads;
+package com.myththewolf.MythBans.tasks;
 
 public class ForceRePush implements Runnable {
 

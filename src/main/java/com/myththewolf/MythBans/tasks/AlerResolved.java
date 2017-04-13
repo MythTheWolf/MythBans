@@ -1,4 +1,4 @@
-package com.myththewolf.MythBans.threads;
+package com.myththewolf.MythBans.tasks;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
