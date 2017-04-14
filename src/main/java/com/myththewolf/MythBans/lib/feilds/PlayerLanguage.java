@@ -18,12 +18,12 @@ public class PlayerLanguage {
 	private FileConfiguration file;
 
 	public PlayerLanguage(String theLang) {
-		if(theLang == null || theLang.equals("")){
+		if (theLang == null || theLang.equals("")) {
 			file = ConfigProperties.langMap.get("en_US");
 			writeColor();
-		}else{
-		file = ConfigProperties.langMap.get(theLang);
-		writeColor();
+		} else {
+			file = ConfigProperties.langMap.get(theLang);
+			writeColor();
 		}
 	}
 
@@ -116,7 +116,11 @@ public class PlayerLanguage {
 	private static String UUIDThat(Player p) {
 		com.myththewolf.MythBans.lib.player.Player pClass = new com.myththewolf.MythBans.lib.player.Player();
 		try {
-			return pClass.getLang(p.getUniqueId().toString());
+			if (pClass.getLang(p.getUniqueId().toString()) == null) {
+				return ConfigProperties.SYSTEM_LOCALE;
+			} else {
+				return pClass.getLang(p.getUniqueId().toString());
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -125,9 +129,14 @@ public class PlayerLanguage {
 	}
 
 	private static String UUIDThat(OfflinePlayer p) {
+		
 		com.myththewolf.MythBans.lib.player.Player pClass = new com.myththewolf.MythBans.lib.player.Player();
 		try {
-			return pClass.getLang(p.getUniqueId().toString());
+			if (pClass.getLang(p.getUniqueId().toString()) == null) {
+				return ConfigProperties.SYSTEM_LOCALE;
+			} else {
+				return pClass.getLang(p.getUniqueId().toString());
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

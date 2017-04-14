@@ -27,9 +27,9 @@ public class Kick implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
-
+		PL = new PlayerLanguage(sender);
 		try {
-			PL = new PlayerLanguage(sender);
+
 			if (args.length < 1) {
 				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("COMMAND_KICK_USAGE"));
 				return true;

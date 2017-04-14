@@ -43,23 +43,25 @@ public class MythDiscordBot {
 			public void onSuccess(final DiscordAPI api) {
 				OK = true;
 				theConnection = api;
-			api.registerListener(new MessageCreate(tmp));
+				api.registerListener(new MessageCreate(tmp));
 				try {
 					if (isSetup()) {
 						connectedServer = api.getServerById(getServerID());
 						mcChannel = getChannel();
 						thread = getThread();
 						updateRoles();
-						
+
 						mcChannel.updateTopic("PM MythBot with \"mclink\" to use this channel");
 						return;
 					} else {
 						OK = false;
-						if(api.getServers().size()<0){
-							System.out.println("The bot key and everythins is OK, but you need to join it to your server!");
-						return;
-						}else{
-							System.out.println("Bot is joined and everything is OK. But you need to run !setup on your server.");
+						if (api.getServers().size() < 0) {
+							System.out.println(
+									"The bot key and everythins is OK, but you need to join it to your server!");
+							return;
+						} else {
+							System.out.println(
+									"Bot is joined and everything is OK. But you need to run !setup on your server.");
 						}
 					}
 				} catch (SQLException | InterruptedException | ExecutionException e) {
@@ -84,11 +86,14 @@ public class MythDiscordBot {
 		IMPL.setState(PermissionType.EMBED_LINKS, PermissionState.DENIED);
 		IMPL.setState(PermissionType.ATTACH_FILE, PermissionState.DENIED);
 		IMPL.setState(PermissionType.USE_EXTERNAL_EMOJIS, PermissionState.DENIED);
-		Permissions perms = IMPL.build();
 		for (User UU : theConnection.getUsers()) {
 			AbstractPlayer AB = new AbstractPlayer(UU.getId());
 			if (AB.isLinked()) {
-				this.mcChannel.updateOverwrittenPermissions(UU, perms);
+				this.mcChannel.updateOverwrittenPermissions(UU, IMPL.build());
+			} else {
+				IMPL.setState(PermissionType.READ_MESSAGES, PermissionState.DENIED);
+				IMPL.setState(PermissionType.READ_MESSAGE_HISTORY, PermissionState.DENIED);
+				this.mcChannel.updateOverwrittenPermissions(UU, IMPL.build());
 			}
 		}
 	}
