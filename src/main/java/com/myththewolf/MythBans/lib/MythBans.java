@@ -43,13 +43,14 @@ import com.myththewolf.MythBans.commands.ticket.Tickets;
 import com.myththewolf.MythBans.commands.ticket.closedtickets;
 import com.myththewolf.MythBans.commands.ticket.tickettp;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
-import com.myththewolf.MythBans.lib.events.player.CommandEvent;
-import com.myththewolf.MythBans.lib.events.player.PlayerChat;
-import com.myththewolf.MythBans.lib.events.player.PlayerDamageEvent;
-import com.myththewolf.MythBans.lib.events.player.PlayerEatEvent;
-import com.myththewolf.MythBans.lib.events.player.PlayerJoin;
-import com.myththewolf.MythBans.lib.events.player.PlayerQuit;
+import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.player.events.CommandEvent;
+import com.myththewolf.MythBans.lib.player.events.PlayerChat;
+import com.myththewolf.MythBans.lib.player.events.PlayerDamageEvent;
+import com.myththewolf.MythBans.lib.player.events.PlayerEatEvent;
+import com.myththewolf.MythBans.lib.player.events.PlayerJoin;
+import com.myththewolf.MythBans.lib.player.events.PlayerQuit;
 import com.myththewolf.MythBans.lib.tool.LanguageGoverner;
 import com.myththewolf.MythBans.tasks.AlerResolved;
 import com.myththewolf.MythBans.tasks.WarnUnsolvedTickets;
@@ -160,7 +161,7 @@ public class MythBans {
 	public void loadEvents() {
 
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerChat(MBD), MythPlugin);
-		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(MythPlugin), MythPlugin);
+		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(MythPlugin,MBD), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerQuit(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerEatEvent(MythPlugin), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerDamageEvent(), MythPlugin);

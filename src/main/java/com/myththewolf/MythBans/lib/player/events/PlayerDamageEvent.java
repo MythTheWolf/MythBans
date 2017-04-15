@@ -1,4 +1,4 @@
-package com.myththewolf.MythBans.lib.events.player;
+package com.myththewolf.MythBans.lib.player.events;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

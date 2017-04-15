@@ -1,14 +1,16 @@
-package com.myththewolf.MythBans.lib;
+package com.myththewolf.MythBans.lib.discord;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
 import com.google.common.util.concurrent.FutureCallback;
+import com.myththewolf.MythBans.commands.discord.PingPong;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
-import com.myththewolf.MythBans.lib.events.discord.MessageCreate;
+import com.myththewolf.MythBans.lib.discord.events.MessageCreate;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.player.AbstractPlayer;
 
@@ -21,7 +23,6 @@ import de.btobastian.javacord.entities.message.Message;
 import de.btobastian.javacord.entities.permissions.PermissionState;
 import de.btobastian.javacord.entities.permissions.PermissionType;
 import de.btobastian.javacord.entities.permissions.Permissions;
-import de.btobastian.javacord.entities.permissions.Role;
 import de.btobastian.javacord.entities.permissions.impl.ImplPermissionsBuilder;
 
 public class MythDiscordBot {
@@ -33,6 +34,7 @@ public class MythDiscordBot {
 	private Channel mcChannel;
 	private Server connectedServer;
 	private Message thread = null;
+	private static HashMap<String, MythCommandExecute> CommandMap = new HashMap<String, MythCommandExecute>();
 
 	public MythDiscordBot() {
 		final MythDiscordBot tmp = this;
@@ -50,7 +52,7 @@ public class MythDiscordBot {
 						mcChannel = getChannel();
 						thread = getThread();
 						updateRoles();
-
+						registerCommand("!ping", new PingPong());
 						mcChannel.updateTopic("PM MythBot with \"mclink\" to use this channel");
 						return;
 					} else {
@@ -82,19 +84,28 @@ public class MythDiscordBot {
 
 	private void updateRoles() throws SQLException {
 		ImplPermissionsBuilder IMPL = new ImplPermissionsBuilder();
-		IMPL.setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED);
-		IMPL.setState(PermissionType.EMBED_LINKS, PermissionState.DENIED);
-		IMPL.setState(PermissionType.ATTACH_FILE, PermissionState.DENIED);
-		IMPL.setState(PermissionType.USE_EXTERNAL_EMOJIS, PermissionState.DENIED);
-		for (User UU : theConnection.getUsers()) {
-			AbstractPlayer AB = new AbstractPlayer(UU.getId());
-			if (AB.isLinked()) {
-				this.mcChannel.updateOverwrittenPermissions(UU, IMPL.build());
-			} else {
-				IMPL.setState(PermissionType.READ_MESSAGES, PermissionState.DENIED);
-				IMPL.setState(PermissionType.READ_MESSAGE_HISTORY, PermissionState.DENIED);
-				this.mcChannel.updateOverwrittenPermissions(UU, IMPL.build());
+
+		iterateUser: for (User UU : theConnection.getUsers()) {
+			if (UU.isBot()) {
+				continue iterateUser;
 			}
+			AbstractPlayer AB = new AbstractPlayer(UU.getId());
+			System.out.println(AB.isLinked());
+			if (AB.isLinked()) {
+				IMPL.setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED);
+				IMPL.setState(PermissionType.EMBED_LINKS, PermissionState.DENIED);
+				IMPL.setState(PermissionType.ATTACH_FILE, PermissionState.DENIED);
+				IMPL.setState(PermissionType.USE_EXTERNAL_EMOJIS, PermissionState.DENIED);
+				System.out.println("IS_LINKED");
+				this.mcChannel.updateOverwrittenPermissions(UU, IMPL.build());
+				continue iterateUser;
+			}
+			System.out.println("IS_LINKED_NOT");
+			IMPL.setState(PermissionType.READ_MESSAGES, PermissionState.DENIED);
+			IMPL.setState(PermissionType.READ_MESSAGE_HISTORY, PermissionState.DENIED);
+			IMPL.setState(PermissionType.SEND_MESSAGES, PermissionState.DENIED);
+			this.mcChannel.updateOverwrittenPermissions(UU, IMPL.build());
+			continue iterateUser;
 		}
 	}
 
@@ -150,7 +161,7 @@ public class MythDiscordBot {
 
 	public Message getThread() throws InterruptedException, ExecutionException {
 		if (this.thread == null) {
-			return this.mcChannel.sendMessage("-----Bot online-----\n" + " \n ").get();
+			return this.mcChannel.sendMessage("-----Bot online-----\n").get();
 
 		} else {
 			return this.thread;
@@ -185,11 +196,20 @@ public class MythDiscordBot {
 			ImplPermissionsBuilder IM = new ImplPermissionsBuilder();
 			IM.setState(PermissionType.SEND_MESSAGES, PermissionState.DENIED);
 			Permissions PERMS = IM.build();
-			for (Role R : this.connectedServer.getRoles()) {
-
-				this.mcChannel.updateOverwrittenPermissions(R, PERMS);
+			iterateUser: for (User UU : theConnection.getUsers()) {
+				if (UU.isBot()) {
+					continue iterateUser;
+				}
+				this.mcChannel.updateOverwrittenPermissions(UU, PERMS);
 			}
 		}
 		theConnection.disconnect();
+	}
+
+	public static HashMap<String, MythCommandExecute> getCommandMap() {
+		return CommandMap;
+	}
+	public void registerCommand(String command, MythCommandExecute executor){
+		CommandMap.put(command, executor);
 	}
 }

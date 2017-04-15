@@ -1,4 +1,4 @@
-package com.myththewolf.MythBans.lib.events.player;
+package com.myththewolf.MythBans.lib.player.events;
 
 import java.util.List;
 import java.util.UUID;

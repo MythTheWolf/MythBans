@@ -1,4 +1,4 @@
-package com.myththewolf.MythBans.lib.events.player;
+package com.myththewolf.MythBans.lib.player.events;
 
 import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
@@ -11,8 +11,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.myththewolf.MythBans.lib.MythDiscordBot;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
+import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.player.Player;
 
@@ -28,11 +28,11 @@ public class PlayerChat implements Listener {
 	@EventHandler
 	public void onPlayerChatEvent(AsyncPlayerChatEvent e)
 			throws SQLException, InterruptedException, ExecutionException {
-		
+
 		org.bukkit.entity.Player p = e.getPlayer();
 		String UUID = p.getUniqueId().toString();
 		Player playerClass = new Player();
-		
+
 		if (e.getMessage().equalsIgnoreCase(ConfigProperties.SOFTMUTE_RELEASE_COMMAND)
 				&& !(playerClass.isOverride(p.getUniqueId().toString()))) {
 			playerClass.setOverride(p.getUniqueId().toString(), true);
@@ -123,9 +123,9 @@ public class PlayerChat implements Listener {
 				}
 			}
 		}
-		if (ConfigProperties.use_bot /*&& MDB.isSetup() */) {
+		if (ConfigProperties.use_bot && MDB.isSetup()) {
 			String message = ChatColor.stripColor(e.getMessage());
-			MDB.appendThread(e.getPlayer().getName() + " " + message);
+			MDB.appendThread("\n" + e.getPlayer().getName() + ": " + message);
 		}
 	}
 }

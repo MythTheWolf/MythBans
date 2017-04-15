@@ -1,4 +1,4 @@
-package com.myththewolf.MythBans.lib.events.player;
+package com.myththewolf.MythBans.lib.player.events;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
+import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.player.IP;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
@@ -30,9 +31,10 @@ public class PlayerJoin implements Listener {
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private IP ipClass = new IP();
 	private JavaPlugin thePlugin;
-
-	public PlayerJoin(JavaPlugin pl) {
+	private MythDiscordBot MDB;
+	public PlayerJoin(JavaPlugin pl,MythDiscordBot MDBI) {
 		thePlugin = pl;
+		MDB = MDBI;
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -124,6 +126,9 @@ public class PlayerJoin implements Listener {
 							+ e.getPlayer().getName() + " has the same IP(s) as " + Arrays.toString(arr));
 				}
 			}
+		}
+		if(ConfigProperties.use_bot){
+			MDB.appendThread("\n >>>"+e.getPlayer().getName()+" joined the server <<<");
 		}
 	}
 

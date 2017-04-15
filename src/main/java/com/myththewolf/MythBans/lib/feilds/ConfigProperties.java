@@ -149,6 +149,7 @@ public class ConfigProperties {
 			SOCIALSPY_PERMISSION = cfg.getString("SOCIALSPY-PERMISSION");
 			AUTO_MUTE = cfg.getBoolean("AUTO-MUTE");
 			CLEARCHAT_PERMISSION = cfg.getString("CLEARCHAT-PERMISSION");
+			
 			if (cfg.getBoolean("use_bot") == false) {
 				DISCORD_SETUP = false;
 			}

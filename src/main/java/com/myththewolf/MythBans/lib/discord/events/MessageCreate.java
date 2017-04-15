@@ -1,13 +1,13 @@
-package com.myththewolf.MythBans.lib.events.discord;
+package com.myththewolf.MythBans.lib.discord.events;
 
 import java.sql.SQLException;
 import java.util.concurrent.ExecutionException;
 
 import org.bukkit.Bukkit;
 
-import com.myththewolf.MythBans.lib.MythDiscordBot;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
-
+import com.myththewolf.MythBans.lib.discord.CommandDispatcher;
+import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.player.AbstractPlayer;
 import com.myththewolf.MythBans.lib.player.Player;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
@@ -22,10 +22,10 @@ import net.md_5.bungee.api.ChatColor;
 public class MessageCreate implements MessageCreateListener {
 	private MythDiscordBot myBot;
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
-	
+
 	public MessageCreate(MythDiscordBot MDB) {
 		myBot = MDB;
-		
+
 	}
 
 	@Override
@@ -34,15 +34,24 @@ public class MessageCreate implements MessageCreateListener {
 			if (theMessage.getAuthor().isBot()) {
 				return;
 			}
+
 			if (theMessage.getAttachments().size() > 0) {
 				for (MessageAttachment MA : theMessage.getAttachments()) {
 					if (MA.getFileName().indexOf("png") > 0) {
-					
+
 					}
 				}
-			
+
 			}
 			String[] theSplit = theMessage.getContent().split(" ");
+			for (String entry : theSplit) {
+				if (MythDiscordBot.getCommandMap().containsKey(entry)) {
+					new CommandDispatcher(theSplit[0], theMessage.getAuthor());
+					break;
+				} else {
+					continue;
+				}
+			}
 			if (theSplit[0].equals("mclink")) {
 				if (pCache.isLinked(theMessage.getAuthor().getId())) {
 					theMessage.getAuthor().sendMessage("You are already linked!");
@@ -66,9 +75,13 @@ public class MessageCreate implements MessageCreateListener {
 				myBot.disconnect();
 				return;
 			}
+			if (myBot.isSetup() && !theMessage.getChannelReceiver().equals(myBot.getChannel())) {
+				return;
+			}
 			AbstractPlayer AB = new AbstractPlayer(theMessage.getAuthor().getId());
 			String MC_ID = null;
 			Player thePlayer = new Player();
+
 			PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 			if (!theMessage.getChannelReceiver().getId().equals(myBot.getChannel().getId())) {
 				theMessage.getAuthor().sendMessage("Command not found");
@@ -82,6 +95,7 @@ public class MessageCreate implements MessageCreateListener {
 				return;
 			} else {
 				MC_ID = AB.getPlayer().getUniqueId().toString();
+
 			}
 			if (thePlayer.getStatus(MC_ID).equals("muted") || thePlayer.getStatus(MC_ID).equals("softmuted")) {
 				theMessage.delete();
@@ -89,7 +103,7 @@ public class MessageCreate implements MessageCreateListener {
 				return;
 			} else {
 				String theString = ChatColor.GREEN + "[DISCORD]" + ChatColor.GOLD + pCache.getName(MC_ID) + " >> "
-						+ theMessage.getContent() + "\n";
+						+ theMessage.getContent() + "";
 				theMessage.delete();
 				myBot.appendThread("\n" + ChatColor.stripColor(theString));
 				for (org.bukkit.entity.Player P : Bukkit.getOnlinePlayers()) {
