@@ -10,7 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
+import com.myththewolf.MythBans.lib.player.PlayerLanguage;
 
 public class LanguageGoverner {
 	private File masterKey;

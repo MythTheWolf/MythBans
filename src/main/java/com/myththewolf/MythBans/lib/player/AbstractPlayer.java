@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
+import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 
 public class AbstractPlayer {
 	private String discordID;
@@ -42,6 +43,16 @@ public class AbstractPlayer {
 			return Bukkit.getOfflinePlayer(UUID.fromString(rs.getString("UUID")));
 		}
 		return null;
+	}
+
+	public boolean isRootAccount() {
+		try {
+			return ConfigProperties.ROOT_ACCOUNTS.contains(this.getPlayer().getUniqueId().toString());
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 
 }

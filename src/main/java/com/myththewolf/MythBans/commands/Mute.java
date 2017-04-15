@@ -14,8 +14,8 @@ import org.bukkit.command.ConsoleCommandSender;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
+import com.myththewolf.MythBans.lib.player.PlayerLanguage;
 
 public class Mute implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());

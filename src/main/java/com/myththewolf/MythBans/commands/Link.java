@@ -10,8 +10,8 @@ import org.bukkit.entity.Player;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
+import com.myththewolf.MythBans.lib.player.PlayerLanguage;
 
 public class Link implements CommandExecutor {
 	private PlayerCache PC = new PlayerCache(MythSQLConnect.getConnection());

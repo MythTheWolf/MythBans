@@ -4,7 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,6 +20,7 @@ public class ConfigProperties {
 	public static String SYSTEM_LOCALE = "en_US";
 	public static final String VERSION = "2.7.5";
 	public static final String[] LANGS = { "en_US" };
+	public static List<String> ROOT_ACCOUNTS;
 	public static String SERVER_UNMUTE_FORMAT;
 	public static String SQL_HOST;
 	public static String SQL_PORT;
@@ -149,6 +152,7 @@ public class ConfigProperties {
 			SOCIALSPY_PERMISSION = cfg.getString("SOCIALSPY-PERMISSION");
 			AUTO_MUTE = cfg.getBoolean("AUTO-MUTE");
 			CLEARCHAT_PERMISSION = cfg.getString("CLEARCHAT-PERMISSION");
+			ROOT_ACCOUNTS = Arrays.asList(cfg.getString("ROOT-ACCOUNTS").split(","));
 			
 			if (cfg.getBoolean("use_bot") == false) {
 				DISCORD_SETUP = false;

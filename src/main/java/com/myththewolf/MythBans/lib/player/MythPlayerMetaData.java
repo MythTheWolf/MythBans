@@ -22,13 +22,13 @@ public class MythPlayerMetaData {
 	}
 
 	public boolean isSpying() throws SQLException {
-		String bool = this.getPair(theUUID + "_spying");
+		String bool = this.getPair("_spying");
 		return Boolean.parseBoolean(bool);
 	}
 
 	public String getPair(String key) throws SQLException {
 		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_AbstractData WHERE `key` = ?");
-		ps.setString(1, key);
+		ps.setString(1, theUUID + key);
 		rs = ps.executeQuery();
 		while(rs.next()){
 			return rs.getString("value");

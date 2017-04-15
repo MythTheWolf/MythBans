@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.Test;
 
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
+import com.myththewolf.MythBans.lib.player.PlayerLanguage;
 
 public class PlayerLangTest {
 

@@ -98,7 +98,6 @@ DEFAULT-BAN-REASON: 'Being a naughty child'
 #Chat Prefix to use for In game messages
 #You can leave it to it's default if you want to support me :-)
 PREFIX: '&8[&aMythBans&8]&6'
-#Don't change these, like ever
-DISCORD-SERVER-ID: ''
-DISCORD-MINECRAFT-CHANNEL: ''
-SYSTEM-SETUP: false
+#Any UUID in this list can use the discord minecraft channel as superuser (any server command)
+#Seperate by commas
+ROOT-ACCOUNTS: ""

@@ -79,23 +79,36 @@ public class MessageCreate implements MessageCreateListener {
 				return;
 			}
 			AbstractPlayer AB = new AbstractPlayer(theMessage.getAuthor().getId());
+
 			String MC_ID = null;
 			Player thePlayer = new Player();
-
-			PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
-			if (!theMessage.getChannelReceiver().getId().equals(myBot.getChannel().getId())) {
-				theMessage.getAuthor().sendMessage("Command not found");
-				return;
-			}
 			if (!AB.isLinked()) {
 
 				Thread.sleep(500);
 				theMessage.delete();
 				theMessage.getAuthor().sendMessage("I couldn't send your message because your MC account isn't linked");
 				return;
-			} else {
-				MC_ID = AB.getPlayer().getUniqueId().toString();
-
+			}
+			MC_ID = AB.getPlayer().getUniqueId().toString();
+			if (theSplit[0].charAt(0) == '$' && AB.isRootAccount()) {
+				String command = theMessage.getContent().substring(1);
+				boolean run = Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+				if(!run){
+					myBot.appendThread("\n " + theMessage.getAuthor().getName() +  ": Error occured while running command");
+				}else{
+				myBot.appendThread("\n " + theMessage.getAuthor().getName() +  ": Sent command to the console.");
+				theMessage.delete();
+				return;
+				}
+			} else if(theSplit[0].charAt(0) == '$' && !AB.isRootAccount()){
+				myBot.appendThread("\n " + theMessage.getAuthor().getName() +  ": You are not a root account!");
+				theMessage.delete();
+				return;
+			}
+			PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
+			if (!theMessage.getChannelReceiver().getId().equals(myBot.getChannel().getId())) {
+				theMessage.getAuthor().sendMessage("Command not found");
+				return;
 			}
 			if (thePlayer.getStatus(MC_ID).equals("muted") || thePlayer.getStatus(MC_ID).equals("softmuted")) {
 				theMessage.delete();

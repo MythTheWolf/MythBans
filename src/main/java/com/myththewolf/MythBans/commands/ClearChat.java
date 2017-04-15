@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.feilds.PlayerLanguage;
+import com.myththewolf.MythBans.lib.player.PlayerLanguage;
 
 public class ClearChat implements CommandExecutor {
 

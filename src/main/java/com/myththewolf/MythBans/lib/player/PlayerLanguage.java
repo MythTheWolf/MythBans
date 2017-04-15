@@ -1,4 +1,4 @@
-package com.myththewolf.MythBans.lib.feilds;
+package com.myththewolf.MythBans.lib.player;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -10,6 +10,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+
+import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 
 import net.md_5.bungee.api.ChatColor;
 
