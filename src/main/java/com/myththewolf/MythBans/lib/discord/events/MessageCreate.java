@@ -68,16 +68,15 @@ public class MessageCreate implements MessageCreateListener {
 			if (theSplit[0].equals("!setup") && !myBot.isSetup()) {
 				String SRV_ID = theMessage.getChannelReceiver().getServer().getId();
 				String CHAN_ID = theMessage.getChannelReceiver().getServer().createChannel("minecraft").get().getId();
-				myBot.writeData(SRV_ID, CHAN_ID);
+				String CON_ID = theMessage.getChannelReceiver().getServer().createChannel("console").get().getId();
+				myBot.writeData(SRV_ID, CHAN_ID, CON_ID);
 				theMessage.delete();
 				theMessage.getAuthor().sendMessage(
 						"Alright sparky, here's the deal: I have written down everythig I needed, and all you need to do is restart your server.\n I will remain disconnected until then.");
 				myBot.disconnect();
 				return;
 			}
-			if (myBot.isSetup() && !theMessage.getChannelReceiver().equals(myBot.getChannel())) {
-				return;
-			}
+			
 			AbstractPlayer AB = new AbstractPlayer(theMessage.getAuthor().getId());
 
 			String MC_ID = null;
@@ -90,21 +89,19 @@ public class MessageCreate implements MessageCreateListener {
 				return;
 			}
 			MC_ID = AB.getPlayer().getUniqueId().toString();
-			if (theSplit[0].charAt(0) == '$' && AB.isRootAccount()) {
-				String command = theMessage.getContent().substring(1);
-				boolean run = Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
-				if(!run){
-					myBot.appendThread("\n " + theMessage.getAuthor().getName() +  ": Error occured while running command");
+			if(myBot.isSetup() && theMessage.getChannelReceiver().equals(myBot.getConsole())){
+				if(!AB.isRootAccount()){
+					theMessage.getAuthor().sendMessage("You are not a root acount!");
+					return;
 				}else{
-				myBot.appendThread("\n " + theMessage.getAuthor().getName() +  ": Sent command to the console.");
-				theMessage.delete();
-				return;
+					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), theMessage.getContent());
+					myBot.appendConsole("\n" + theMessage.getAuthor().getName()+": " + theMessage.getContent());
 				}
-			} else if(theSplit[0].charAt(0) == '$' && !AB.isRootAccount()){
-				myBot.appendThread("\n " + theMessage.getAuthor().getName() +  ": You are not a root account!");
-				theMessage.delete();
+			}
+			if (myBot.isSetup() && !theMessage.getChannelReceiver().equals(myBot.getChannel())) {
 				return;
 			}
+			
 			PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 			if (!theMessage.getChannelReceiver().getId().equals(myBot.getChannel().getId())) {
 				theMessage.getAuthor().sendMessage("Command not found");

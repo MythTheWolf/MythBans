@@ -60,20 +60,25 @@ public class MythBans {
 	private MythDiscordBot MBD;
 	private LanguageGoverner LG;
 	private BukkitTask DISABLE_TASK;
+
 	public MythBans(JavaPlugin inst) {
 		this.MythPlugin = inst;
 	}
-	public JavaPlugin getJavaPlugin(){
+
+	public JavaPlugin getJavaPlugin() {
 		return this.MythPlugin;
 	}
-	public void setDisableTask(BukkitTask BT){
+
+	public void setDisableTask(BukkitTask BT) {
 		DISABLE_TASK = BT;
 	}
-	public BukkitTask getDisableTask(){
+
+	public BukkitTask getDisableTask() {
 		return DISABLE_TASK;
 	}
+
 	public void startDiscordBot() {
-		MBD = new MythDiscordBot();
+		MBD = new MythDiscordBot(MythPlugin);
 		Connection con = MythSQLConnect.getConnection();
 		PreparedStatement ps;
 		try {
@@ -161,7 +166,7 @@ public class MythBans {
 	public void loadEvents() {
 
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerChat(MBD), MythPlugin);
-		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(MythPlugin,MBD), MythPlugin);
+		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(MythPlugin, MBD), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerQuit(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerEatEvent(MythPlugin), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerDamageEvent(), MythPlugin);
@@ -227,9 +232,10 @@ public class MythBans {
 		return this.LG;
 	}
 
-	public void startDaemon() {
+	public void startDaemon() throws SQLException {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(MythPlugin, new WarnUnsolvedTickets(MythPlugin), 20, 6000);
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(MythPlugin, new AlerResolved(), 20, 3000);
+		
 	}
 
 	public void shutdown() {

@@ -21,6 +21,7 @@ public class Startup extends JavaPlugin {
 	private MythBans MB;
 
 	public void onEnable() {
+		
 		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory
 				.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 		root.setLevel(Level.INFO);
@@ -32,15 +33,20 @@ public class Startup extends JavaPlugin {
 		this.MB = mb;
 		mb.loadCommands();
 		MythLogger.info("Loaded 6 tables.");
-		mb.startDaemon();
+		
 
 		if (ConfigProperties.use_bot) {
 			mb.startDiscordBot();
 			ConfigProperties.dumpDiscord();
 
 		}
-
 		mb.loadEvents();
+		try {
+			mb.startDaemon();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		boolean RUN = false;
 		try {
 			System.out.println("****** RUNNING TESTS ******");

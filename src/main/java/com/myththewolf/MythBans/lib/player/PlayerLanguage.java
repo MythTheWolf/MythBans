@@ -13,19 +13,41 @@ import org.bukkit.entity.Player;
 
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 
+import de.btobastian.javacord.entities.User;
 import net.md_5.bungee.api.ChatColor;
 
 public class PlayerLanguage {
 	public HashMap<String, String> languageList = new HashMap<String, String>();
 	private FileConfiguration file;
+	static boolean CON_RUN;
+	private String[] codes = { "&4", "&c", "&6", "&e", "&2", "&a", "&b", "&3", "&1", "&9", "&d", "&5", "&f", "&7", "&8",
+			"&0", "&l", "&n", "&o", "&k", "&m", "&r" };
 
 	public PlayerLanguage(String theLang) {
 		if (theLang == null || theLang.equals("")) {
+
 			file = ConfigProperties.langMap.get("en_US");
-			writeColor();
+			if (CON_RUN) {
+				System.out.println("CR1");
+				writeStatic();
+				clearColor();
+				return;
+			} else {
+				System.out.println("WC");
+				writeColor();
+			}
 		} else {
+
 			file = ConfigProperties.langMap.get(theLang);
-			writeColor();
+			if (CON_RUN) {
+				System.out.println("CR2");
+				writeStatic();
+				clearColor();
+				return;
+			} else {
+				System.out.println("WC2");
+				writeColor();
+			}
 		}
 	}
 
@@ -51,7 +73,23 @@ public class PlayerLanguage {
 		this(UUIDThat(toBan));
 	}
 
+	public PlayerLanguage(User U) {
+		this(UUIDThat(U));
+	}
+
+	private static OfflinePlayer UUIDThat(User u) {
+		AbstractPlayer AB = new AbstractPlayer(u.getId());
+		try {
+			return AB.getPlayer();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public void writeColor() {
+
 		writeStatic();
 		HashMap<String, String> NEW = new HashMap<String, String>();
 		Iterator<Entry<String, String>> it = this.languageList.entrySet().iterator();
@@ -62,7 +100,27 @@ public class PlayerLanguage {
 			NEW.put(pair.getKey().toString(), ChatColor.translateAlternateColorCodes('&', pair.getValue().toString()));
 			it.remove(); // avoids a ConcurrentModificationException
 		}
-		languageList = NEW;
+		this.languageList = new HashMap<String,String>(NEW);	
+	}
+
+	public HashMap<String,String> clearColor() {
+		HashMap<String, String> NEW = new HashMap<String, String>();
+		Iterator<Entry<String, String>> it = this.languageList.entrySet().iterator();
+		while (it.hasNext()) {
+			Entry<String, String> pair = it.next();
+			String bad = pair.getValue();
+			for (String I : codes) {
+				bad = bad.replaceAll(I, "");
+				bad = bad.replaceAll(I.toUpperCase(), "");
+				bad = bad.replaceAll(I.toLowerCase(), "");
+				bad = ChatColor.stripColor(bad);
+			}
+			NEW.put(pair.getKey().toString(), bad);
+			
+		}
+		this.languageList = null;
+		this.languageList = new HashMap<String,String>(NEW);
+		return NEW;
 	}
 
 	public void writeStatic() {
@@ -131,7 +189,7 @@ public class PlayerLanguage {
 	}
 
 	private static String UUIDThat(OfflinePlayer p) {
-		
+
 		com.myththewolf.MythBans.lib.player.Player pClass = new com.myththewolf.MythBans.lib.player.Player();
 		try {
 			if (pClass.getLang(p.getUniqueId().toString()) == null) {
@@ -148,6 +206,7 @@ public class PlayerLanguage {
 
 	private static String convert(CommandSender sender) {
 		if (sender instanceof ConsoleCommandSender) {
+			CON_RUN = true;
 			return ConfigProperties.SYSTEM_LOCALE;
 		} else {
 			return UUIDThat((Player) sender);

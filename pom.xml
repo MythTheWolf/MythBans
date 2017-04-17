@@ -15,7 +15,10 @@
 
 	</properties>
 	<repositories>
-
+  <repository>
+       <id>dmulloy2-repo</id>
+    <url>http://repo.dmulloy2.net/content/groups/public/</url>
+  </repository>
 		<repository>
 			<id>Jahia</id>
 			<url>http://maven.jahia.org/maven2/</url>
@@ -52,12 +55,19 @@
 			<version>${powermock.version}</version>
 			<scope>test</scope>
 		</dependency>
+		
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20090211</version>
 		</dependency>
+
+ <dependency>
+    <groupId>com.comphenix.protocol</groupId>
+    <artifactId>ProtocolLib-API</artifactId>
+    <version>4.2.1</version>
+  </dependency>
 
 		<dependency>
 			<groupId>org.spigotmc</groupId>
@@ -99,7 +109,11 @@
 			<artifactId>junit</artifactId>
 			<version>4.12</version>
 		</dependency>
-
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.3</version>
+</dependency>
 	</dependencies>
 	<build>
 

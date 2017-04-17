@@ -31,6 +31,7 @@ public class Ban implements CommandExecutor {
 
 		try {
 			PL = new PlayerLanguage(sender);
+		
 			if (args.length < 1) {
 				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("COMMAND_BAN_USAGE"));
 				return true;
@@ -78,7 +79,6 @@ public class Ban implements CommandExecutor {
 
 	private String formatMessage(String UUID2, String format) throws SQLException {
 		String toFormat = format;
-
 		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
 			toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 		} else {

@@ -7,12 +7,15 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.google.common.util.concurrent.FutureCallback;
-import com.myththewolf.MythBans.commands.discord.PingPong;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.discord.events.MessageCreate;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.player.AbstractPlayer;
+import com.myththewolf.MythBans.tasks.LogWatcher;
 
 import de.btobastian.javacord.DiscordAPI;
 import de.btobastian.javacord.Javacord;
@@ -35,9 +38,12 @@ public class MythDiscordBot {
 	private Server connectedServer;
 	private Message thread = null;
 	private static HashMap<String, MythCommandExecute> CommandMap = new HashMap<String, MythCommandExecute>();
+	private Channel consoleChannel;
+	private Message conThread;
+	static MythDiscordBot tmp;
 
-	public MythDiscordBot() {
-		final MythDiscordBot tmp = this;
+	public MythDiscordBot(final JavaPlugin pl) {
+		tmp = this;
 		DiscordAPI api = Javacord.getApi(ConfigProperties.BOT_API, true);
 
 		api.connect(new FutureCallback<DiscordAPI>() {
@@ -52,8 +58,10 @@ public class MythDiscordBot {
 						mcChannel = getChannel();
 						thread = getThread();
 						updateRoles();
-						registerCommand("!ping", new PingPong());
+						consoleChannel = getConsole();
 						mcChannel.updateTopic("PM MythBot with \"mclink\" to use this channel");
+						Bukkit.getScheduler().runTaskAsynchronously(pl, new LogWatcher());
+
 						return;
 					} else {
 						OK = false;
@@ -80,6 +88,10 @@ public class MythDiscordBot {
 			}
 		});
 
+	}
+
+	public static MythDiscordBot getBot() {
+		return tmp;
 	}
 
 	private void updateRoles() throws SQLException {
@@ -128,7 +140,7 @@ public class MythDiscordBot {
 		return false;
 	}
 
-	public void writeData(String SRVID, String CHANID) throws SQLException {
+	public void writeData(String SRVID, String CHANID, String CON_ID) throws SQLException {
 		ps = (PreparedStatement) con.prepareStatement("INSERT INTO MythBans_Discord (`key`,`value`) VALUES (?,?)");
 		ps.setString(1, "SYSTEM-SETUP");
 		ps.setBoolean(2, true);
@@ -138,6 +150,9 @@ public class MythDiscordBot {
 		ps.executeUpdate();
 		ps.setString(1, "MINECRAFT-CHANNEL-ID");
 		ps.setString(2, CHANID);
+		ps.executeUpdate();
+		ps.setString(1, "CONSOLE-CHANNEL-ID");
+		ps.setString(2, CON_ID);
 		ps.executeUpdate();
 	}
 
@@ -169,6 +184,26 @@ public class MythDiscordBot {
 
 	}
 
+	public Message getConsoleThread() throws InterruptedException, ExecutionException {
+		if (this.conThread == null) {
+			this.conThread = this.consoleChannel.sendMessage("-----Bot online-----\n").get();
+			return this.conThread;
+		} else {
+			return this.conThread;
+		}
+
+	}
+
+	public void remakeConsoleThread(String input) {
+		try {
+			this.consoleChannel.sendMessage(input).get();
+			LogWatcher.clearLog();
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public void appendThread(String append) {
 		String old = this.thread.getContent();
 		this.thread.edit(old + append);
@@ -187,9 +222,21 @@ public class MythDiscordBot {
 		return MythDiscordBot.theConnection.getChannelById(rs.getString("value"));
 	}
 
+	public Channel getConsole() throws SQLException {
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Discord WHERE `key` = ?");
+		ps.setString(1, "CONSOLE-CHANNEL-ID");
+		rs = ps.executeQuery();
+		rs.next();
+
+		return MythDiscordBot.theConnection.getChannelById(rs.getString("value"));
+	}
+
 	public void disconnect() {
 		if (this.thread != null) {
 			this.thread.delete();
+		}
+		if(this.conThread != null){
+			this.conThread.delete();
 		}
 		if (this.mcChannel != null) {
 			this.mcChannel.updateTopic("MC Server offline.");
@@ -206,10 +253,25 @@ public class MythDiscordBot {
 		theConnection.disconnect();
 	}
 
+	public void appendConsole(String app) {
+
+		try {
+			if (getConsoleThread().getContent().length() > 2000) {
+				this.remakeConsoleThread(app);
+				return;
+			}
+			getConsoleThread().edit(getConsoleThread().getContent() + app);
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+		}
+	}
+
 	public static HashMap<String, MythCommandExecute> getCommandMap() {
 		return CommandMap;
 	}
-	public void registerCommand(String command, MythCommandExecute executor){
+
+	public void registerCommand(String command, MythCommandExecute executor) {
 		CommandMap.put(command, executor);
 	}
 }

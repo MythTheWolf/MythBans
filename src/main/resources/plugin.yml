@@ -1,6 +1,7 @@
 name: MythBans
 version: 2.7
 main: com.myththewolf.MythBans.Startup
+depend: [ProtocolLib]
 commands:
  mute:
      description: Mutes a player from the sever
