@@ -32,6 +32,10 @@ public class user implements CommandExecutor {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player not found.");
 				return true;
 			}
+			if(!sender.hasPermission(ConfigProperties.PROBATION_PERMISSION)){
+				sender.sendMessage(ConfigProperties.PREFIX+ChatColor.RED+"No permisson");
+				return true;
+			}
 			String UUID = pCache.getPlayerExact(args[0]).getUniqueId().toString();
 			String status = pClass.getStatus(UUID);
 			String join = MythDate.formatDate(pClass.getJoinDate(UUID));

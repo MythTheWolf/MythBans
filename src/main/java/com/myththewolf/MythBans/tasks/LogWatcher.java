@@ -6,11 +6,10 @@ import java.io.IOException;
 
 import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 
-import net.md_5.bungee.api.ChatColor;
-
-public class LogWatcher implements Runnable{
+public class LogWatcher implements Runnable {
 	private static String thread = "";
 
+	private static BufferedReader buffered;
 
 	@Override
 	public void run() {
@@ -20,32 +19,58 @@ public class LogWatcher implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
+
 	private static void monitorFile(String file) throws IOException {
-		final int POLL_INTERVAL = 1000;
+
 		FileReader reader = new FileReader(file);
-		BufferedReader buffered = new BufferedReader(reader);
-		try {
-			while (true) {
-				String line = buffered.readLine();
-				if (line == null) {
-					// end of file, start polling
-					Thread.sleep(POLL_INTERVAL);
+
+		buffered = new BufferedReader(reader);
+
+		looper: while (true) {
+
+			String line = buffered.readLine();
+			if (line == null) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				continue looper;
+			}
+			String tot = line;
+			for (int i = 0; i < 500; i++) {
+				String add = buffered.readLine();
+				if (add == null) {
+					break;
 				} else {
-					MythDiscordBot.getBot().appendConsole(ChatColor.stripColor("\n"+line));
+					tot += "\n" + add;
 				}
 			}
-		} catch (InterruptedException ex) {
-			ex.printStackTrace();
+
+			MythDiscordBot.getBot().appendConsole("\n" + tot);
+
 		}
-		buffered.close();
+
 	}
-	public static void clearLog(){
+
+	public static void clearLog() {
 		thread = "";
 	}
-	public static String getThread(){
+
+	public static String getThread() {
 		return thread;
-		
+
+	}
+
+	public static void closeReader() {
+		try {
+			buffered.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

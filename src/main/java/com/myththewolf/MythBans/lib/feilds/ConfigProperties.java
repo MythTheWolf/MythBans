@@ -20,6 +20,7 @@ public class ConfigProperties {
 	public static String SYSTEM_LOCALE = "en_US";
 	public static final String VERSION = "2.7.5";
 	public static final String[] LANGS = { "en_US" };
+	public static String PREFIX_UNALTERED;
 	public static List<String> ROOT_ACCOUNTS;
 	public static String SERVER_UNMUTE_FORMAT;
 	public static String SQL_HOST;
@@ -99,6 +100,7 @@ public class ConfigProperties {
 			SQL_PASSWORD = cfg.getString("SQL-PASSWORD");
 			CRON_INTERVAL = cfg.getInt("CRON-UDPATE-TIME");
 			PREFIX = ChatColor.translateAlternateColorCodes('&', cfg.getString("PREFIX"));
+			PREFIX_UNALTERED = ChatColor.translateAlternateColorCodes('&', cfg.getString("PREFIX"));
 			VIEWMSG_PERM = ChatColor.translateAlternateColorCodes('&', cfg.getString("BANMESSAGE-PERMISSION"));
 			DEBUG = cfg.getBoolean("DEBUG-MODE");
 			API_URL = ChatColor.translateAlternateColorCodes('&', cfg.getString("API-STARTPOINT"));
@@ -169,7 +171,7 @@ public class ConfigProperties {
 		PreparedStatement ps;
 		ResultSet rs;
 		try {
-			ps = (PreparedStatement) c.prepareStatement("SELECT * FROM Mythbans_Discord WHERE `key` = ?");
+			ps = (PreparedStatement) c.prepareStatement("SELECT * FROM MythBans_Discord WHERE `key` = ?");
 			ps.setString(1, "SERVER-SETUP");
 			rs = ps.executeQuery();
 			while (rs.next()) {

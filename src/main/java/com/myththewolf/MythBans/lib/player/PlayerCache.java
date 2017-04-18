@@ -154,7 +154,16 @@ public class PlayerCache {
 			return false;
 		}
 	}
-
+	public String getDiscordID(String UUID) throws SQLException {
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_NameCache WHERE `UUID` = ?");
+		ps.setString(1, UUID);
+		rs = ps.executeQuery();
+		if (!rs.next()) {
+			return "";
+		} else {
+			return rs.getString("discord_id");
+		}
+	}
 	public void bindSecret(String secret, String ID) throws SQLException {
 		ps = (PreparedStatement) con.prepareStatement("DELETE FROM MythBans_Discord WHERE `value` = ?");
 		ps.setString(1, ID);

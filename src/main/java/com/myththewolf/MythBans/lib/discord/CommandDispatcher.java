@@ -7,26 +7,32 @@ import java.util.List;
 import com.myththewolf.MythBans.lib.player.AbstractPlayer;
 
 import de.btobastian.javacord.entities.User;
+import de.btobastian.javacord.entities.message.Message;
 
 public class CommandDispatcher {
 
-	public CommandDispatcher(String cmd, User sender) {
-
+	public CommandDispatcher(String cmd, User sender, Message theMessage) {
+		System.out.println(cmd);
 		List<String> split = Arrays.asList(cmd.split(" "));
 		if (!MythDiscordBot.getCommandMap().containsKey(split.get(0))) {
-			sender.sendMessage("Command not found!");
+			theMessage.reply("Command not found!");
 			return;
 		} else {
 			try {
 				MythCommandExecute MCE = MythDiscordBot.getCommandMap().get(split.get(0));
 				AbstractPlayer AP = new AbstractPlayer(sender.getId());
 				if (AP.isLinked()) {
-					split.remove(0);
-					MCE.runCommand(sender, AP.getPlayer(), split.toArray(new String[split.size()]));
+					if (split.size() > 1) {
+						split.remove(0);
+					}
+					MCE.runCommand(sender, AP.getPlayer(), split.toArray(new String[split.size()]), theMessage);
 				} else {
-					split.remove(0);
-					MCE.runCommand(sender, null, split.toArray(new String[split.size()]));
+					if (split.size() > 1) {
+						split.remove(0);
+					}
+					MCE.runCommand(sender, null, split.toArray(new String[split.size()]), theMessage);
 				}
+				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}

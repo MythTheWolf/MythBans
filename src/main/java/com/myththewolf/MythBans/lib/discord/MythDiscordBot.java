@@ -11,10 +11,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.common.util.concurrent.FutureCallback;
+import com.myththewolf.MythBans.commands.discord.McLink;
+import com.myththewolf.MythBans.commands.discord.Ping;
+import com.myththewolf.MythBans.commands.discord.setup;
+import com.myththewolf.MythBans.commands.discord.shutdown;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.discord.events.MessageCreate;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.player.AbstractPlayer;
 import com.myththewolf.MythBans.tasks.LogWatcher;
 
 import de.btobastian.javacord.DiscordAPI;
@@ -25,8 +28,9 @@ import de.btobastian.javacord.entities.User;
 import de.btobastian.javacord.entities.message.Message;
 import de.btobastian.javacord.entities.permissions.PermissionState;
 import de.btobastian.javacord.entities.permissions.PermissionType;
-import de.btobastian.javacord.entities.permissions.Permissions;
+import de.btobastian.javacord.entities.permissions.Role;
 import de.btobastian.javacord.entities.permissions.impl.ImplPermissionsBuilder;
+import net.md_5.bungee.api.ChatColor;
 
 public class MythDiscordBot {
 	public static DiscordAPI theConnection;
@@ -41,6 +45,7 @@ public class MythDiscordBot {
 	private Channel consoleChannel;
 	private Message conThread;
 	static MythDiscordBot tmp;
+	private boolean supposed2bshutdown = false;
 
 	public MythDiscordBot(final JavaPlugin pl) {
 		tmp = this;
@@ -56,13 +61,14 @@ public class MythDiscordBot {
 					if (isSetup()) {
 						connectedServer = api.getServerById(getServerID());
 						mcChannel = getChannel();
-						thread = getThread();
 						updateRoles();
 						consoleChannel = getConsole();
 						mcChannel.updateTopic("PM MythBot with \"mclink\" to use this channel");
+						getThread();
 						Bukkit.getScheduler().runTaskAsynchronously(pl, new LogWatcher());
-
-						return;
+						registerCommand("!mclink", new McLink());
+						registerCommand("!ping", new Ping());
+						registerCommand("!shutdown", new shutdown(tmp));
 					} else {
 						OK = false;
 						if (api.getServers().size() < 0) {
@@ -72,7 +78,10 @@ public class MythDiscordBot {
 						} else {
 							System.out.println(
 									"Bot is joined and everything is OK. But you need to run !setup on your server.");
+							registerCommand("!setup", new setup(tmp));
+							return;
 						}
+
 					}
 				} catch (SQLException | InterruptedException | ExecutionException e) {
 					// TODO Auto-generated catch block
@@ -94,31 +103,84 @@ public class MythDiscordBot {
 		return tmp;
 	}
 
-	private void updateRoles() throws SQLException {
+	private void updateRoles() throws SQLException, InterruptedException, ExecutionException {
 		ImplPermissionsBuilder IMPL = new ImplPermissionsBuilder();
+		IMPL.setState(PermissionType.EMBED_LINKS, PermissionState.DENIED);
+		IMPL.setState(PermissionType.ATTACH_FILE, PermissionState.DENIED);
+		IMPL.setState(PermissionType.USE_EXTERNAL_EMOJIS, PermissionState.DENIED);
+		getChannel().updateOverwrittenPermissions(getAllowedRoll(), IMPL.build());
 
-		iterateUser: for (User UU : theConnection.getUsers()) {
-			if (UU.isBot()) {
-				continue iterateUser;
-			}
-			AbstractPlayer AB = new AbstractPlayer(UU.getId());
-			System.out.println(AB.isLinked());
-			if (AB.isLinked()) {
+		for (Role R : getServer().getRoles()) {
+			if (R.getId() == getAllowedRoll().getId()) {
+				System.out.println("Setting allow--->" + R.getName());
+				IMPL.setState(PermissionType.READ_MESSAGE_HISTORY, PermissionState.ALLOWED);
+				IMPL.setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED);
 				IMPL.setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED);
-				IMPL.setState(PermissionType.EMBED_LINKS, PermissionState.DENIED);
-				IMPL.setState(PermissionType.ATTACH_FILE, PermissionState.DENIED);
-				IMPL.setState(PermissionType.USE_EXTERNAL_EMOJIS, PermissionState.DENIED);
-				System.out.println("IS_LINKED");
-				this.mcChannel.updateOverwrittenPermissions(UU, IMPL.build());
-				continue iterateUser;
+				getChannel().updateOverwrittenPermissions(R, IMPL.build());
+				for (User U : R.getUsers()) {
+					getChannel().updateOverwrittenPermissions(U, IMPL.build());
+				}
+			} else {
+				System.out.println("Setting deny--->" + R.getName());
+				IMPL.setState(PermissionType.READ_MESSAGE_HISTORY, PermissionState.DENIED);
+				IMPL.setState(PermissionType.READ_MESSAGES, PermissionState.DENIED);
+				IMPL.setState(PermissionType.SEND_MESSAGES, PermissionState.DENIED);
+				getChannel().updateOverwrittenPermissions(R, IMPL.build());
 			}
-			System.out.println("IS_LINKED_NOT");
-			IMPL.setState(PermissionType.READ_MESSAGES, PermissionState.DENIED);
-			IMPL.setState(PermissionType.READ_MESSAGE_HISTORY, PermissionState.DENIED);
-			IMPL.setState(PermissionType.SEND_MESSAGES, PermissionState.DENIED);
-			this.mcChannel.updateOverwrittenPermissions(UU, IMPL.build());
-			continue iterateUser;
+
+			if (R.getId() == getRootroll().getId()) {
+				IMPL.setState(PermissionType.READ_MESSAGE_HISTORY, PermissionState.ALLOWED);
+				IMPL.setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED);
+				IMPL.setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED);
+				for (User U : R.getUsers()) {
+					getConsole().updateOverwrittenPermissions(U, IMPL.build());
+				}
+				getConsole().updateOverwrittenPermissions(R, IMPL.build());
+			} else {
+				System.out.println("Setting deny--->" + R.getName());
+				IMPL.setState(PermissionType.READ_MESSAGE_HISTORY, PermissionState.DENIED);
+				IMPL.setState(PermissionType.READ_MESSAGES, PermissionState.DENIED);
+				IMPL.setState(PermissionType.SEND_MESSAGES, PermissionState.DENIED);
+				getConsole().updateOverwrittenPermissions(R, IMPL.build());
+			}
+
 		}
+		IMPL.setState(PermissionType.READ_MESSAGE_HISTORY, PermissionState.ALLOWED);
+		IMPL.setState(PermissionType.READ_MESSAGES, PermissionState.ALLOWED);
+		IMPL.setState(PermissionType.SEND_MESSAGES, PermissionState.ALLOWED);
+		getChannel().updateOverwrittenPermissions(theConnection.getYourself(), IMPL.build());
+		getConsole().updateOverwrittenPermissions(theConnection.getYourself(), IMPL.build());
+	}
+
+	public void linkUser(String ID) {
+		try {
+			getAllowedRoll().addUser(theConnection.getUserById(ID).get());
+		} catch (SQLException | InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	private Role getAllowedRoll() throws SQLException {
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Discord WHERE `key` = ?");
+		ps.setString(1, "ROLE-ID");
+		rs = ps.executeQuery();
+		while (rs.next()) {
+
+			return getServer().getRoleById(rs.getString("value"));
+		}
+		return null;
+	}
+
+	private Role getRootroll() throws SQLException {
+		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Discord WHERE `key` = ?");
+		ps.setString(1, "ROOT-ROLE-ID");
+		rs = ps.executeQuery();
+		while (rs.next()) {
+
+			return getServer().getRoleById(rs.getString("value"));
+		}
+		return null;
 	}
 
 	public DiscordAPI getConnection() {
@@ -140,7 +202,7 @@ public class MythDiscordBot {
 		return false;
 	}
 
-	public void writeData(String SRVID, String CHANID, String CON_ID) throws SQLException {
+	public void writeData(String SRVID, String ROLEID, String ROOT_ID) throws SQLException {
 		ps = (PreparedStatement) con.prepareStatement("INSERT INTO MythBans_Discord (`key`,`value`) VALUES (?,?)");
 		ps.setString(1, "SYSTEM-SETUP");
 		ps.setBoolean(2, true);
@@ -148,11 +210,11 @@ public class MythDiscordBot {
 		ps.setString(1, "SERVER-ID");
 		ps.setString(2, SRVID);
 		ps.executeUpdate();
-		ps.setString(1, "MINECRAFT-CHANNEL-ID");
-		ps.setString(2, CHANID);
+		ps.setString(1, "ROLE-ID");
+		ps.setString(2, ROLEID);
 		ps.executeUpdate();
-		ps.setString(1, "CONSOLE-CHANNEL-ID");
-		ps.setString(2, CON_ID);
+		ps.setString(1, "ROOT-ROLE-ID");
+		ps.setString(2, ROOT_ID);
 		ps.executeUpdate();
 	}
 
@@ -168,15 +230,16 @@ public class MythDiscordBot {
 		ps.setString(1, "SERVER-ID");
 		rs = ps.executeQuery();
 		while (rs.next()) {
-			System.out.println(rs.getString("value"));
+
 			return rs.getString("value");
 		}
 		return null;
 	}
 
 	public Message getThread() throws InterruptedException, ExecutionException {
-		if (this.thread == null) {
-			return this.mcChannel.sendMessage("-----Bot online-----\n").get();
+		if (this.thread == null || this.thread.getId() == null) {
+			this.thread = this.mcChannel.sendMessage("-----Bot online-----\n").get();
+			return this.thread;
 
 		} else {
 			return this.thread;
@@ -205,62 +268,66 @@ public class MythDiscordBot {
 	}
 
 	public void appendThread(String append) {
-		String old = this.thread.getContent();
-		this.thread.edit(old + append);
+		String old;
+		try {
+			old = getThread().getContent();
+			getThread().edit(old + append);
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public Server getServer() {
 		return connectedServer;
 	}
 
-	public Channel getChannel() throws SQLException {
-		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Discord WHERE `key` = ?");
-		ps.setString(1, "MINECRAFT-CHANNEL-ID");
-		rs = ps.executeQuery();
-		rs.next();
+	public Channel getChannel() throws InterruptedException, ExecutionException {
+		if (this.mcChannel == null) {
+			this.mcChannel = getServer().createChannel("minecraft").get();
+			return this.mcChannel;
+		} else {
+			return this.mcChannel;
+		}
 
-		return MythDiscordBot.theConnection.getChannelById(rs.getString("value"));
 	}
 
-	public Channel getConsole() throws SQLException {
-		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_Discord WHERE `key` = ?");
-		ps.setString(1, "CONSOLE-CHANNEL-ID");
-		rs = ps.executeQuery();
-		rs.next();
+	public Channel getConsole() throws SQLException, InterruptedException, ExecutionException {
+		if (this.consoleChannel == null) {
+			this.consoleChannel = getServer().createChannel("console").get();
+			return this.consoleChannel;
+		} else {
+			return this.consoleChannel;
+		}
 
-		return MythDiscordBot.theConnection.getChannelById(rs.getString("value"));
 	}
 
 	public void disconnect() {
-		if (this.thread != null) {
-			this.thread.delete();
+		try {
+			this.getChannel().delete();
+			this.getConsole().delete();
+			supposed2bshutdown = true;
+		} catch (SQLException | InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		if(this.conThread != null){
-			this.conThread.delete();
-		}
-		if (this.mcChannel != null) {
-			this.mcChannel.updateTopic("MC Server offline.");
-			ImplPermissionsBuilder IM = new ImplPermissionsBuilder();
-			IM.setState(PermissionType.SEND_MESSAGES, PermissionState.DENIED);
-			Permissions PERMS = IM.build();
-			iterateUser: for (User UU : theConnection.getUsers()) {
-				if (UU.isBot()) {
-					continue iterateUser;
-				}
-				this.mcChannel.updateOverwrittenPermissions(UU, PERMS);
-			}
-		}
+
 		theConnection.disconnect();
 	}
 
-	public void appendConsole(String app) {
+	public boolean isShutdown() {
+		return supposed2bshutdown;
+	}
 
+	public void appendConsole(String stuff) {
+		String app = ChatColor.stripColor(stuff);
 		try {
 			if (getConsoleThread().getContent().length() > 2000) {
 				this.remakeConsoleThread(app);
 				return;
 			}
-			getConsoleThread().edit(getConsoleThread().getContent() + app);
+			getConsoleThread().edit(ChatColor.stripColor(getConsoleThread().getContent() + app));
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();

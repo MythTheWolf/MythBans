@@ -3,9 +3,6 @@ package com.myththewolf.MythBans.lib;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
@@ -53,6 +50,7 @@ import com.myththewolf.MythBans.lib.player.events.PlayerJoin;
 import com.myththewolf.MythBans.lib.player.events.PlayerQuit;
 import com.myththewolf.MythBans.lib.tool.LanguageGoverner;
 import com.myththewolf.MythBans.tasks.AlerResolved;
+import com.myththewolf.MythBans.tasks.LogWatcher;
 import com.myththewolf.MythBans.tasks.WarnUnsolvedTickets;
 
 public class MythBans {
@@ -79,49 +77,9 @@ public class MythBans {
 
 	public void startDiscordBot() {
 		MBD = new MythDiscordBot(MythPlugin);
-		Connection con = MythSQLConnect.getConnection();
-		PreparedStatement ps;
-		try {
-			// Discord table
-			if (ConfigProperties.DEBUG) {
-				Bukkit.getLogger().info("Loading MySQL Table: Discord");
-			}
-			DatabaseMetaData dbm = con.getMetaData();
-			// check if "employee" table is there
-			ResultSet tables = dbm.getTables(null, null, "Mythbans_Discord", null);
-			if (tables.next()) {
-				// Table exists
-			} else {
-				ps = (PreparedStatement) con.prepareStatement(
-						"CREATE TABLE `MythBans_Discord` ( `ID` INT NOT NULL AUTO_INCREMENT, `key` VARCHAR(255) NULL DEFAULT NULL , `value` VARCHAR(255) NULL DEFAULT NULL , PRIMARY KEY (`ID`) ) ENGINE = InnoDB;");
-				ps.executeUpdate();
-				ps = null;
-				ps = (PreparedStatement) con
-						.prepareStatement("INSERT INTO MythBans_Discord (`key`,value) VALUES ( ? , ? )");
-				ps.setString(1, "SERVER-SETUP");
-				ps.setString(2, "false");
-				ps.executeUpdate();
-				ps.setString(1, "SERVER-ID");
-				ps.setString(2, "");
-				ps.executeUpdate();
-				ps.setString(1, "MINECRAFT-CHANNEL-ID");
-				ps.setString(2, "");
-				ps.executeUpdate();
-				ps.setString(1, "LOG-CHANNEL-ID");
-				ps.setString(2, "");
-				ps.executeUpdate();
-				ps.setString(1, "SERVER-CHAT-MESSAGE-ID");
-				ps.setString(2, "");
-				ps.executeUpdate();
-
-			}
-
-			if (ConfigProperties.DEBUG) {
-				Bukkit.getLogger().info("All MySQL tables generated.");
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
+		MythSQLConnect.getConnection();
+		if (ConfigProperties.DEBUG) {
+			Bukkit.getLogger().info("All MySQL tables generated.");
 		}
 
 	}
@@ -205,7 +163,7 @@ public class MythBans {
 		MythPlugin.getCommand("mythbans").setExecutor(new mythapi());
 		MythPlugin.getCommand("closedtickets").setExecutor(new closedtickets());
 		MythPlugin.getCommand("player").setExecutor(new user());
-		MythPlugin.getCommand("link").setExecutor(new Link());
+		MythPlugin.getCommand("link").setExecutor(new Link(MBD));
 		MythPlugin.getCommand("potato").setExecutor(new Potato(MythPlugin));
 		MythPlugin.getCommand("softmute").setExecutor(new softmute());
 		MythPlugin.getCommand("mbreload").setExecutor(new ReloadMythBans(MythPlugin));
@@ -235,15 +193,22 @@ public class MythBans {
 	public void startDaemon() throws SQLException {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(MythPlugin, new WarnUnsolvedTickets(MythPlugin), 20, 6000);
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(MythPlugin, new AlerResolved(), 20, 3000);
-		
+
 	}
 
 	public void shutdown() {
 
 		Bukkit.getScheduler().cancelAllTasks();
-		if (ConfigProperties.use_bot) {
-			MBD.disconnect();
+		try {
+			if (MBD.isSetup()) {
+				MBD.disconnect();
+				LogWatcher.closeReader();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
 	}
 
 	public void disableSelf() {

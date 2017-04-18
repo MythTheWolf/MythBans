@@ -110,19 +110,16 @@ public class MythSQLConnect {
 			ps = (PreparedStatement) con.prepareStatement(
 					"CREATE TABLE IF NOT EXISTS `MythBans_AbstractData` ( `ID` INT NOT NULL AUTO_INCREMENT , `key` VARCHAR(255) NOT NULL , `value` VARCHAR(255) NOT NULL , PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
 			ps.executeUpdate();
-			//Discord
 			if (ConfigProperties.DEBUG) {
 				Bukkit.getLogger().info("Loading MySQL Table: Discord");
 			}
 			ps = (PreparedStatement) con.prepareStatement(
-					"CREATE TABLE IF NOT EXISTS `MythBans_Discord` ( `ID` INT NOT NULL AUTO_INCREMENT , `key` VARCHAR(255) NOT NULL , `value` VARCHAR(255) NOT NULL , PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
-			ps.executeUpdate();
+					"CREATE TABLE IF NOT EXISTS `MythBans_Discord` ( `ID` INT NOT NULL AUTO_INCREMENT, `key` VARCHAR(255) NULL DEFAULT NULL , `value` VARCHAR(255) NULL DEFAULT NULL , PRIMARY KEY (`ID`) ) ENGINE = InnoDB;");
+			ps.executeUpdate();	
 		} catch (SQLException e) {
 			Bukkit.getConsoleSender().sendMessage("SERVERE: Fatal MySQL Error!");
 			e.printStackTrace();
 		}
 	}
-	
-	
 
 }

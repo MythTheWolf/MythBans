@@ -25,21 +25,20 @@ public class Ban implements CommandExecutor {
 	private String toUUID;
 	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
 	private PlayerLanguage PL;
-
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 
 		try {
 			PL = new PlayerLanguage(sender);
-		
 			if (args.length < 1) {
-				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("COMMAND_BAN_USAGE"));
+				sender.sendMessage(ConfigProperties.PREFIX + PL.getList().get("COMMAND_BAN_USAGE"));
 				return true;
 			} else if (pCache.getOfflinePlayerExact(args[0]) == null) {
-				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NULL_PLAYER"));
+				sender.sendMessage(ConfigProperties.PREFIX + PL.getList().get("ERR_NULL_PLAYER"));
 				return true;
 			} else if (!sender.hasPermission(ConfigProperties.BAN_PERMISSION)) {
-				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NO_PERMISSION"));
+				sender.sendMessage(ConfigProperties.PREFIX + PL.getList().get("ERR_NO_PERMISSION"));
 				return true;
 			} else {
 				toBan = pCache.getOfflinePlayerExact(args[0]);
@@ -61,12 +60,12 @@ public class Ban implements CommandExecutor {
 				PL = new PlayerLanguage(player);
 				if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
 					player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-							this.formatMessage(toUUID, PL.languageList.get("PUNISHMENT_BAN_INFORM"))));
+							this.formatMessage(toUUID, PL.getList().get("PUNISHMENT_BAN_INFORM"))));
 				}
 			}
 			if (toBan.isOnline()) {
 				PL = new PlayerLanguage(toBan);
-				toBan.getPlayer().kickPlayer(this.formatMessage(toUUID, PL.languageList.get("PUNISHMENT_BAN_KICK")));
+				toBan.getPlayer().kickPlayer(this.formatMessage(toUUID, PL.getList().get("PUNISHMENT_BAN_KICK")));
 			}
 		} catch (
 

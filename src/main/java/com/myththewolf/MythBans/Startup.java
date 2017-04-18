@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.myththewolf.MythBans.lib.MythBans;
+import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.tool.Date;
 import com.myththewolf.MythBans.tasks.DisableDueToError;
@@ -31,7 +32,7 @@ public class Startup extends JavaPlugin {
 			Bukkit.getServer().getPluginManager().disablePlugin(this);
 		}
 		this.MB = mb;
-		mb.loadCommands();
+
 		MythLogger.info("Loaded 6 tables.");
 		
 
@@ -40,6 +41,7 @@ public class Startup extends JavaPlugin {
 			ConfigProperties.dumpDiscord();
 
 		}
+		mb.loadCommands();
 		mb.loadEvents();
 		try {
 			mb.startDaemon();
@@ -83,8 +85,13 @@ public class Startup extends JavaPlugin {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		if (ConfigProperties.use_bot) {
-			this.MB.shutdown();
+		try {
+			if (MythDiscordBot.getBot().isSetup()) {
+				this.MB.shutdown();
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}

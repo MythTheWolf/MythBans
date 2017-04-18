@@ -11,17 +11,14 @@ import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.player.AbstractPlayer;
 import com.myththewolf.MythBans.lib.player.Player;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
-import com.myththewolf.MythBans.lib.tool.Utils;
 
 import de.btobastian.javacord.DiscordAPI;
 import de.btobastian.javacord.entities.message.Message;
-import de.btobastian.javacord.entities.message.MessageAttachment;
 import de.btobastian.javacord.listener.message.MessageCreateListener;
 import net.md_5.bungee.api.ChatColor;
 
 public class MessageCreate implements MessageCreateListener {
 	private MythDiscordBot myBot;
-	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 
 	public MessageCreate(MythDiscordBot MDB) {
 		myBot = MDB;
@@ -31,52 +28,28 @@ public class MessageCreate implements MessageCreateListener {
 	@Override
 	public void onMessageCreate(DiscordAPI theAPI, Message theMessage) {
 		try {
+			String[] theSplit = theMessage.getContent().split(" ");
 			if (theMessage.getAuthor().isBot()) {
 				return;
 			}
-
-			if (theMessage.getAttachments().size() > 0) {
-				for (MessageAttachment MA : theMessage.getAttachments()) {
-					if (MA.getFileName().indexOf("png") > 0) {
-
-					}
-				}
-
-			}
-			String[] theSplit = theMessage.getContent().split(" ");
-			for (String entry : theSplit) {
-				if (MythDiscordBot.getCommandMap().containsKey(entry)) {
-					new CommandDispatcher(theSplit[0], theMessage.getAuthor());
-					break;
-				} else {
-					continue;
-				}
-			}
-			if (theSplit[0].equals("mclink")) {
-				if (pCache.isLinked(theMessage.getAuthor().getId())) {
-					theMessage.getAuthor().sendMessage("You are already linked!");
-					return;
-				}
-				String SALT = Utils.getSaltString();
-				while (pCache.secretExists(SALT)) {
-					SALT = Utils.getSaltString();
-				}
-				theMessage.getAuthor().sendMessage("Type this in game: /link " + SALT);
-				pCache.bindSecret(SALT, theMessage.getAuthor().getId());
+			if(theSplit[0].equals("!startup") && myBot.isShutdown()){
+				new CommandDispatcher(theMessage.getContent(), theMessage.getAuthor(), theMessage);
+				return;
+			}else if(myBot.isShutdown()){
 				return;
 			}
-			if (theSplit[0].equals("!setup") && !myBot.isSetup()) {
-				String SRV_ID = theMessage.getChannelReceiver().getServer().getId();
-				String CHAN_ID = theMessage.getChannelReceiver().getServer().createChannel("minecraft").get().getId();
-				String CON_ID = theMessage.getChannelReceiver().getServer().createChannel("console").get().getId();
-				myBot.writeData(SRV_ID, CHAN_ID, CON_ID);
-				theMessage.delete();
-				theMessage.getAuthor().sendMessage(
-						"Alright sparky, here's the deal: I have written down everythig I needed, and all you need to do is restart your server.\n I will remain disconnected until then.");
-				myBot.disconnect();
+			if(theSplit[0].charAt(0) == '!'){
+				new CommandDispatcher(theMessage.getContent(), theMessage.getAuthor(), theMessage);
 				return;
 			}
-			
+
+			if (theMessage.getChannelReceiver().getId() != myBot.getChannel().getId()
+					&& theMessage.getChannelReceiver().getId() != myBot.getConsole().getId()) {
+				return;
+			}
+			if(!myBot.isSetup()){
+				return;
+			}
 			AbstractPlayer AB = new AbstractPlayer(theMessage.getAuthor().getId());
 
 			String MC_ID = null;
@@ -89,19 +62,21 @@ public class MessageCreate implements MessageCreateListener {
 				return;
 			}
 			MC_ID = AB.getPlayer().getUniqueId().toString();
-			if(myBot.isSetup() && theMessage.getChannelReceiver().equals(myBot.getConsole())){
-				if(!AB.isRootAccount()){
-					theMessage.getAuthor().sendMessage("You are not a root acount!");
+			if (myBot.isSetup() && theMessage.getChannelReceiver().getId() == myBot.getConsole().getId()) {
+				if (!AB.isRootAccount()) {
+					theMessage.reply("You are not a root account!");
 					return;
-				}else{
+				} else {
 					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), theMessage.getContent());
-					myBot.appendConsole("\n" + theMessage.getAuthor().getName()+": " + theMessage.getContent());
+
+					theMessage.delete();
 				}
 			}
+
 			if (myBot.isSetup() && !theMessage.getChannelReceiver().equals(myBot.getChannel())) {
 				return;
 			}
-			
+
 			PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 			if (!theMessage.getChannelReceiver().getId().equals(myBot.getChannel().getId())) {
 				theMessage.getAuthor().sendMessage("Command not found");

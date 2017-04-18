@@ -104,6 +104,7 @@ public class PlayerLanguage {
 	}
 
 	public HashMap<String,String> clearColor() {
+		System.out.println("Clearing color...");
 		HashMap<String, String> NEW = new HashMap<String, String>();
 		Iterator<Entry<String, String>> it = this.languageList.entrySet().iterator();
 		while (it.hasNext()) {
@@ -119,7 +120,9 @@ public class PlayerLanguage {
 			
 		}
 		this.languageList = null;
-		this.languageList = new HashMap<String,String>(NEW);
+		this.languageList = NEW;
+		//System.out.println(this.languageList);
+	
 		return NEW;
 	}
 
@@ -172,7 +175,9 @@ public class PlayerLanguage {
 		languageList.put("MUTUAL_USERS", file.getString("MUTUAL-USERS"));
 
 	}
-
+	public HashMap<String,String> getList(){
+		return this.languageList;
+	}
 	private static String UUIDThat(Player p) {
 		com.myththewolf.MythBans.lib.player.Player pClass = new com.myththewolf.MythBans.lib.player.Player();
 		try {
@@ -206,9 +211,11 @@ public class PlayerLanguage {
 
 	private static String convert(CommandSender sender) {
 		if (sender instanceof ConsoleCommandSender) {
+			ConfigProperties.PREFIX = ChatColor.stripColor(ConfigProperties.PREFIX);
 			CON_RUN = true;
 			return ConfigProperties.SYSTEM_LOCALE;
 		} else {
+			ConfigProperties.PREFIX = ConfigProperties.PREFIX_UNALTERED;
 			return UUIDThat((Player) sender);
 		}
 	}

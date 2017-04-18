@@ -49,8 +49,6 @@ public class AbstractPlayer {
 		try {
 			return ConfigProperties.ROOT_ACCOUNTS.contains(this.getPlayer().getUniqueId().toString());
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		return false;
 	}

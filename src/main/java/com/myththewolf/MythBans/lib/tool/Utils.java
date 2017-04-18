@@ -22,7 +22,8 @@ import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 
 public class Utils {
 	public static List<File> tempFiles = new ArrayList<File>();
-	 public static final String EOL = System.getProperty("line.separator");
+	public static final String EOL = System.getProperty("line.separator");
+
 	public static String makeString(String[] args, int index) {
 		String myString = ""; // we're going to store the arguments here
 
@@ -180,25 +181,43 @@ public class Utils {
 			I.delete();
 		}
 	}
-	 public static String readFile(String filename) throws IOException {
-	      BufferedReader br = null;
-	      FileReader fr = null;
 
-	      try {
-	         fr = new FileReader(filename);
-	         br = new BufferedReader(fr);
-	         String nextLine = "";
-	         StringBuilder sb = new StringBuilder();
-	         while ((nextLine = br.readLine()) != null) {
-	           sb.append(nextLine); // note: BufferedReader strips the EOL character
-	                                //   so we add a new one!
-	           sb.append(EOL);
-	         }
-	         return sb.toString();
-	      }
-	      finally {
-	         if (br != null) br.close();
-	         if (fr != null) fr.close();
-	      }
-	   }
+	public static String readFile(String filename) throws IOException {
+		BufferedReader br = null;
+		FileReader fr = null;
+
+		try {
+			fr = new FileReader(filename);
+			br = new BufferedReader(fr);
+			String nextLine = "";
+			StringBuilder sb = new StringBuilder();
+			while ((nextLine = br.readLine()) != null) {
+				sb.append(nextLine); // note: BufferedReader strips the EOL
+										// character
+										// so we add a new one!
+				sb.append(EOL);
+			}
+			return sb.toString();
+		} finally {
+			if (br != null)
+				br.close();
+			if (fr != null)
+				fr.close();
+		}
+	}
+
+	public static String[] splitStringEvery(String s, int interval) {
+		int arrayLength = (int) Math.ceil(((s.length() / (double) interval)));
+		String[] result = new String[arrayLength];
+
+		int j = 0;
+		int lastIndex = result.length - 1;
+		for (int i = 0; i < lastIndex; i++) {
+			result[i] = s.substring(j, j + interval);
+			j += interval;
+		} // Add the last bit
+		result[lastIndex] = s.substring(j);
+
+		return result;
+	}
 }
