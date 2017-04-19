@@ -11,8 +11,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.google.common.util.concurrent.FutureCallback;
+import com.myththewolf.MythBans.commands.discord.ClearLog;
 import com.myththewolf.MythBans.commands.discord.McLink;
 import com.myththewolf.MythBans.commands.discord.Ping;
+import com.myththewolf.MythBans.commands.discord.ReloadConsoleEngine;
 import com.myththewolf.MythBans.commands.discord.setup;
 import com.myththewolf.MythBans.commands.discord.shutdown;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
@@ -40,17 +42,17 @@ public class MythDiscordBot {
 	private Connection con = MythSQLConnect.getConnection();
 	private Channel mcChannel;
 	private Server connectedServer;
-	private Message thread = null;
 	private static HashMap<String, MythCommandExecute> CommandMap = new HashMap<String, MythCommandExecute>();
 	private Channel consoleChannel;
 	private Message conThread;
 	static MythDiscordBot tmp;
 	private boolean supposed2bshutdown = false;
-
+	int log_watch_id;
+	private JavaPlugin plugin;
 	public MythDiscordBot(final JavaPlugin pl) {
 		tmp = this;
 		DiscordAPI api = Javacord.getApi(ConfigProperties.BOT_API, true);
-
+		plugin = pl;
 		api.connect(new FutureCallback<DiscordAPI>() {
 			@Override
 			public void onSuccess(final DiscordAPI api) {
@@ -64,11 +66,12 @@ public class MythDiscordBot {
 						updateRoles();
 						consoleChannel = getConsole();
 						mcChannel.updateTopic("PM MythBot with \"mclink\" to use this channel");
-						getThread();
-						Bukkit.getScheduler().runTaskAsynchronously(pl, new LogWatcher());
+						log_watch_id = Bukkit.getScheduler().runTaskAsynchronously(pl, new LogWatcher()).getTaskId();
 						registerCommand("!mclink", new McLink());
 						registerCommand("!ping", new Ping());
 						registerCommand("!shutdown", new shutdown(tmp));
+						registerCommand("!clear", new ClearLog(tmp));
+						registerCommand("!reload", new ReloadConsoleEngine(log_watch_id, pl));
 					} else {
 						OK = false;
 						if (api.getServers().size() < 0) {
@@ -236,16 +239,7 @@ public class MythDiscordBot {
 		return null;
 	}
 
-	public Message getThread() throws InterruptedException, ExecutionException {
-		if (this.thread == null || this.thread.getId() == null) {
-			this.thread = this.mcChannel.sendMessage("-----Bot online-----\n").get();
-			return this.thread;
 
-		} else {
-			return this.thread;
-		}
-
-	}
 
 	public Message getConsoleThread() throws InterruptedException, ExecutionException {
 		if (this.conThread == null) {
@@ -256,7 +250,9 @@ public class MythDiscordBot {
 		}
 
 	}
-
+	public JavaPlugin getJavaPlugin(){
+		return this.plugin;
+	}
 	public void remakeConsoleThread(String input) {
 		try {
 			this.consoleChannel.sendMessage(input).get();
@@ -268,10 +264,8 @@ public class MythDiscordBot {
 	}
 
 	public void appendThread(String append) {
-		String old;
 		try {
-			old = getThread().getContent();
-			getThread().edit(old + append);
+			getChannel().sendMessage(append);
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

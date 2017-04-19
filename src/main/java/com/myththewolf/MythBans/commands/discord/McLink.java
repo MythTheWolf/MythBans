@@ -39,4 +39,20 @@ public class McLink implements MythCommandExecute {
 
 	}
 
+	public boolean requiresLinkedAccount() {
+		return false;
+	}
+
+	@Override
+	public boolean requiresRoot() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean requiresLinked() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

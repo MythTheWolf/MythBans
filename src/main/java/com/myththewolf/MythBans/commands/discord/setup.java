@@ -64,4 +64,16 @@ public class setup implements MythCommandExecute {
 
 	}
 
+	@Override
+	public boolean requiresRoot() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean requiresLinked() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

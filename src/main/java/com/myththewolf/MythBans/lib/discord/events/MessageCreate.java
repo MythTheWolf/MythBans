@@ -32,13 +32,13 @@ public class MessageCreate implements MessageCreateListener {
 			if (theMessage.getAuthor().isBot()) {
 				return;
 			}
-			if(theSplit[0].equals("!startup") && myBot.isShutdown()){
+			if (theSplit[0].equals("!startup") && myBot.isShutdown()) {
 				new CommandDispatcher(theMessage.getContent(), theMessage.getAuthor(), theMessage);
 				return;
-			}else if(myBot.isShutdown()){
+			} else if (myBot.isShutdown()) {
 				return;
 			}
-			if(theSplit[0].charAt(0) == '!'){
+			if (theSplit[0].charAt(0) == '!') {
 				new CommandDispatcher(theMessage.getContent(), theMessage.getAuthor(), theMessage);
 				return;
 			}
@@ -47,21 +47,13 @@ public class MessageCreate implements MessageCreateListener {
 					&& theMessage.getChannelReceiver().getId() != myBot.getConsole().getId()) {
 				return;
 			}
-			if(!myBot.isSetup()){
+			if (!myBot.isSetup()) {
 				return;
 			}
 			AbstractPlayer AB = new AbstractPlayer(theMessage.getAuthor().getId());
 
 			String MC_ID = null;
 			Player thePlayer = new Player();
-			if (!AB.isLinked()) {
-
-				Thread.sleep(500);
-				theMessage.delete();
-				theMessage.getAuthor().sendMessage("I couldn't send your message because your MC account isn't linked");
-				return;
-			}
-			MC_ID = AB.getPlayer().getUniqueId().toString();
 			if (myBot.isSetup() && theMessage.getChannelReceiver().getId() == myBot.getConsole().getId()) {
 				if (!AB.isRootAccount()) {
 					theMessage.reply("You are not a root account!");
@@ -70,8 +62,17 @@ public class MessageCreate implements MessageCreateListener {
 					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), theMessage.getContent());
 
 					theMessage.delete();
+					return;
 				}
 			}
+			if (!AB.isLinked()) {
+
+				Thread.sleep(500);
+				theMessage.delete();
+				theMessage.getAuthor().sendMessage("I couldn't send your message because your MC account isn't linked");
+				return;
+			}
+			MC_ID = AB.getPlayer().getUniqueId().toString();
 
 			if (myBot.isSetup() && !theMessage.getChannelReceiver().equals(myBot.getChannel())) {
 				return;

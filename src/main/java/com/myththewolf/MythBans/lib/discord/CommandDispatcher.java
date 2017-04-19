@@ -12,7 +12,7 @@ import de.btobastian.javacord.entities.message.Message;
 public class CommandDispatcher {
 
 	public CommandDispatcher(String cmd, User sender, Message theMessage) {
-		System.out.println(cmd);
+	
 		List<String> split = Arrays.asList(cmd.split(" "));
 		if (!MythDiscordBot.getCommandMap().containsKey(split.get(0))) {
 			theMessage.reply("Command not found!");
@@ -21,18 +21,22 @@ public class CommandDispatcher {
 			try {
 				MythCommandExecute MCE = MythDiscordBot.getCommandMap().get(split.get(0));
 				AbstractPlayer AP = new AbstractPlayer(sender.getId());
+				if (MCE.requiresLinked() && !AP.isLinked()) {
+					theMessage.reply("You must be a linked account before executing this command.");
+					return;
+				}
+				if (MCE.requiresRoot() && !AP.isRootAccount()) {
+					theMessage.reply("You must be a root account before executing this command.");
+					return;
+				}
 				if (AP.isLinked()) {
 					if (split.size() > 1) {
 						split.remove(0);
 					}
 					MCE.runCommand(sender, AP.getPlayer(), split.toArray(new String[split.size()]), theMessage);
 				} else {
-					if (split.size() > 1) {
-						split.remove(0);
-					}
 					MCE.runCommand(sender, null, split.toArray(new String[split.size()]), theMessage);
 				}
-				
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
