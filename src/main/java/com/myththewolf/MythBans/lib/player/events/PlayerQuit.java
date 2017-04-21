@@ -7,16 +7,20 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.tool.Date;
 
 public class PlayerQuit implements Listener {
 	private Date date = new Date();
-	private com.myththewolf.MythBans.lib.player.Player pClass = new com.myththewolf.MythBans.lib.player.Player();
+	private MythPlayer pClass;
+
 	@EventHandler
-	public void onPlayerQuit(PlayerQuitEvent e) throws SQLException{
+	public void onPlayerQuit(PlayerQuitEvent e) throws SQLException {
 		Player p = e.getPlayer();
+		pClass = new MythPlayer(p.getUniqueId().toString());
 		String UUID = p.getUniqueId().toString();
-		pClass.setQuitTime(date.formatDate(date.getNewDate()), UUID);
-		pClass.setPlayTime(UUID,date.getTimeDifference(pClass.getSessionJoinDate(UUID), date.getNewDate()) + pClass.getPlayTime(UUID));
+		pClass.setQuitTime(date.formatDate(date.getNewDate()));
+		pClass.setPlayTime(
+				date.getTimeDifference(pClass.getSessionJoinDate(UUID), date.getNewDate()) + pClass.getPlayTime());
 	}
 }

@@ -18,7 +18,7 @@ import org.joda.time.format.PeriodFormatterBuilder;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.player.Player;
+import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Date;
 import com.myththewolf.MythBans.lib.tool.Utils;
@@ -29,7 +29,7 @@ public class TempBan implements CommandExecutor {
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private com.myththewolf.MythBans.lib.tool.Date date = new Date();
-	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new Player();
+	private MythPlayer PlayerClass;
 	private OfflinePlayer p;
 
 	@Override
@@ -47,6 +47,7 @@ public class TempBan implements CommandExecutor {
 						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
 			} else {
+				PlayerClass = new MythPlayer(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
 				final PeriodFormatter format = new PeriodFormatterBuilder().appendDays().appendSuffix("d").appendWeeks()
 						.appendSuffix("w").appendMonths().appendSuffix("mon").appendYears().appendSuffix("y")
 						.appendMinutes().appendSuffix("m").appendSeconds().appendSuffix("s").appendHours()
@@ -92,16 +93,16 @@ public class TempBan implements CommandExecutor {
 
 	private String formatMessage(String UUID2, String format) throws SQLException {
 		String toFormat = format;
-		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
+		if (PlayerClass.getWhoBanned().equals("CONSOLE")) {
 			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
 		} else {
 			toFormat = toFormat.replaceAll("\\{staffMember\\}",
-					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
+					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned())).getName());
 		}
 
 		toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
-		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID2));
-		toFormat = toFormat.replaceAll("\\{expire\\}", PlayerClass.getExpireDate(UUID2).toString());
+		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason());
+		toFormat = toFormat.replaceAll("\\{expire\\}", PlayerClass.getExpireDate().toString());
 		return toFormat;
 	}
 }

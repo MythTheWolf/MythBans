@@ -4,6 +4,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.bukkit.OfflinePlayer;
 
+import com.myththewolf.MythBans.lib.discord.DiscordCommand;
 import com.myththewolf.MythBans.lib.discord.MythCommandExecute;
 import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.tasks.LogWatcher;
@@ -18,6 +19,7 @@ public class ClearLog implements MythCommandExecute{
 	}
 
 	@Override
+	@DiscordCommand(requiresLinked=false,requiresRoot=true)
 	public void runCommand(User theDiscordUser, OfflinePlayer theBukkitUser, String[] args, Message theMessage) {
 			try {
 				bot.getConsoleThread().edit("[MythBansBot]Cleared log!");
@@ -29,16 +31,5 @@ public class ClearLog implements MythCommandExecute{
 		
 	}
 
-	@Override
-	public boolean requiresRoot() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean requiresLinked() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 }

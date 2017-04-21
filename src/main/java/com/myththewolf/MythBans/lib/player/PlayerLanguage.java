@@ -100,10 +100,10 @@ public class PlayerLanguage {
 			NEW.put(pair.getKey().toString(), ChatColor.translateAlternateColorCodes('&', pair.getValue().toString()));
 			it.remove(); // avoids a ConcurrentModificationException
 		}
-		this.languageList = new HashMap<String,String>(NEW);	
+		this.languageList = new HashMap<String, String>(NEW);
 	}
 
-	public HashMap<String,String> clearColor() {
+	public HashMap<String, String> clearColor() {
 		System.out.println("Clearing color...");
 		HashMap<String, String> NEW = new HashMap<String, String>();
 		Iterator<Entry<String, String>> it = this.languageList.entrySet().iterator();
@@ -117,12 +117,12 @@ public class PlayerLanguage {
 				bad = ChatColor.stripColor(bad);
 			}
 			NEW.put(pair.getKey().toString(), bad);
-			
+
 		}
 		this.languageList = null;
 		this.languageList = NEW;
-		//System.out.println(this.languageList);
-	
+		// System.out.println(this.languageList);
+
 		return NEW;
 	}
 
@@ -175,38 +175,31 @@ public class PlayerLanguage {
 		languageList.put("MUTUAL_USERS", file.getString("MUTUAL-USERS"));
 
 	}
-	public HashMap<String,String> getList(){
+
+	public HashMap<String, String> getList() {
 		return this.languageList;
 	}
+
 	private static String UUIDThat(Player p) {
-		com.myththewolf.MythBans.lib.player.Player pClass = new com.myththewolf.MythBans.lib.player.Player();
-		try {
-			if (pClass.getLang(p.getUniqueId().toString()) == null) {
-				return ConfigProperties.SYSTEM_LOCALE;
-			} else {
-				return pClass.getLang(p.getUniqueId().toString());
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		com.myththewolf.MythBans.lib.player.MythPlayer pClass = new com.myththewolf.MythBans.lib.player.MythPlayer(
+				p.getUniqueId().toString());
+		if (pClass.getLang() == null) {
+			return ConfigProperties.SYSTEM_LOCALE;
+		} else {
+			return pClass.getLang();
 		}
-		return null;
+
 	}
 
 	private static String UUIDThat(OfflinePlayer p) {
 
-		com.myththewolf.MythBans.lib.player.Player pClass = new com.myththewolf.MythBans.lib.player.Player();
-		try {
-			if (pClass.getLang(p.getUniqueId().toString()) == null) {
-				return ConfigProperties.SYSTEM_LOCALE;
-			} else {
-				return pClass.getLang(p.getUniqueId().toString());
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		com.myththewolf.MythBans.lib.player.MythPlayer pClass = new com.myththewolf.MythBans.lib.player.MythPlayer(
+				p.getUniqueId().toString());
+		if (pClass.getLang() == null) {
+			return ConfigProperties.SYSTEM_LOCALE;
+		} else {
+			return pClass.getLang();
 		}
-		return null;
 	}
 
 	private static String convert(CommandSender sender) {

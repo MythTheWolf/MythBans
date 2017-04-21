@@ -1,7 +1,5 @@
 package com.myththewolf.MythBans.commands;
 
-import java.sql.SQLException;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,11 +7,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
 
 public class ClearChat implements CommandExecutor {
 
-	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
+	private com.myththewolf.MythBans.lib.player.MythPlayer PlayerClass;
 	private PlayerLanguage PL;
 
 	@Override
@@ -24,13 +23,8 @@ public class ClearChat implements CommandExecutor {
 			return true;
 		} else {
 			Player tmp = (Player) sender;
-			try {
-				PL = new PlayerLanguage(PlayerClass.getLang(tmp.getUniqueId().toString()));
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return false;
-			}
+			PlayerClass = new MythPlayer(tmp.getUniqueId().toString());
+			PL = new PlayerLanguage(PlayerClass.getLang());
 			if (!sender.hasPermission(ConfigProperties.CLEARCHAT_PERMISSION)) {
 				sender.sendMessage(PL.languageList.get("ERR_NO_PERMISSION"));
 				return false;

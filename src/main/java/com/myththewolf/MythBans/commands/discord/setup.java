@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutionException;
 
 import org.bukkit.OfflinePlayer;
 
+import com.myththewolf.MythBans.lib.discord.DiscordCommand;
 import com.myththewolf.MythBans.lib.discord.MythCommandExecute;
 import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 
@@ -27,6 +28,7 @@ public class setup implements MythCommandExecute {
 	}
 
 	@Override
+	@DiscordCommand(requiresLinked=false,requiresRoot=true)
 	public void runCommand(User theDiscordUser, OfflinePlayer theBukkitUser, String[] args,Message theMessage) {
 		try {
 			if(myBot.isSetup()){
@@ -64,16 +66,6 @@ public class setup implements MythCommandExecute {
 
 	}
 
-	@Override
-	public boolean requiresRoot() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
-	@Override
-	public boolean requiresLinked() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 }

@@ -1,5 +1,7 @@
 package com.myththewolf.MythBans.lib.discord;
 
+import java.lang.reflect.Method;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +22,7 @@ import com.myththewolf.MythBans.commands.discord.shutdown;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.discord.events.MessageCreate;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.tasks.LogWatcher;
+import com.myththewolf.MythBans.tasks.BetterLogWatcher;
 
 import de.btobastian.javacord.DiscordAPI;
 import de.btobastian.javacord.Javacord;
@@ -49,6 +51,7 @@ public class MythDiscordBot {
 	private boolean supposed2bshutdown = false;
 	int log_watch_id;
 	private JavaPlugin plugin;
+
 	public MythDiscordBot(final JavaPlugin pl) {
 		tmp = this;
 		DiscordAPI api = Javacord.getApi(ConfigProperties.BOT_API, true);
@@ -66,7 +69,7 @@ public class MythDiscordBot {
 						updateRoles();
 						consoleChannel = getConsole();
 						mcChannel.updateTopic("PM MythBot with \"mclink\" to use this channel");
-						log_watch_id = Bukkit.getScheduler().runTaskAsynchronously(pl, new LogWatcher()).getTaskId();
+						log_watch_id = Bukkit.getScheduler().runTaskAsynchronously(pl, new BetterLogWatcher()).getTaskId();
 						registerCommand("!mclink", new McLink());
 						registerCommand("!ping", new Ping());
 						registerCommand("!shutdown", new shutdown(tmp));
@@ -239,8 +242,6 @@ public class MythDiscordBot {
 		return null;
 	}
 
-
-
 	public Message getConsoleThread() throws InterruptedException, ExecutionException {
 		if (this.conThread == null) {
 			this.conThread = this.consoleChannel.sendMessage("-----Bot online-----\n").get();
@@ -250,13 +251,17 @@ public class MythDiscordBot {
 		}
 
 	}
-	public JavaPlugin getJavaPlugin(){
+
+	public JavaPlugin getJavaPlugin() {
 		return this.plugin;
 	}
+
 	public void remakeConsoleThread(String input) {
 		try {
-			this.consoleChannel.sendMessage(input).get();
-			LogWatcher.clearLog();
+			this.conThread.delete();
+			this.conThread = this.consoleChannel.sendMessage(input).get();
+			BetterLogWatcher.clearLog();
+			
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -315,6 +320,7 @@ public class MythDiscordBot {
 	}
 
 	public void appendConsole(String stuff) {
+	
 		String app = ChatColor.stripColor(stuff);
 		try {
 			if (getConsoleThread().getContent().length() > 2000) {
@@ -333,6 +339,16 @@ public class MythDiscordBot {
 	}
 
 	public void registerCommand(String command, MythCommandExecute executor) {
+		try {
+			Method M = executor.getClass().getMethod("runCommand");
+			if (!M.isAnnotationPresent(DiscordCommand.class)) {
+				this.plugin.getLogger().severe("Can't parse command " + command + ", missing annotations!");
+				return;
+			}
+
+		} catch (NoSuchMethodException | SecurityException e) {
+
+		}
 		CommandMap.put(command, executor);
 	}
 }

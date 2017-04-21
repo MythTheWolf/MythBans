@@ -19,6 +19,7 @@ import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.player.IP;
+import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Date;
 
@@ -26,13 +27,14 @@ import net.md_5.bungee.api.ChatColor;
 
 public class PlayerJoin implements Listener {
 	private PlayerCache pc = new PlayerCache(MythSQLConnect.getConnection());
-	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
+	private MythPlayer PlayerClass;
 	private final com.myththewolf.MythBans.lib.tool.Date d = new Date();
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private IP ipClass = new IP();
 	private JavaPlugin thePlugin;
 	private MythDiscordBot MDB;
-	public PlayerJoin(JavaPlugin pl,MythDiscordBot MDBI) {
+
+	public PlayerJoin(JavaPlugin pl, MythDiscordBot MDBI) {
 		thePlugin = pl;
 		MDB = MDBI;
 	}
@@ -52,13 +54,13 @@ public class PlayerJoin implements Listener {
 			pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
 		}
 		if (pc.getPlayerExact(e.getPlayer().getName()) == null) {
-			PlayerClass.processNewUser(e.getPlayer().getUniqueId().toString(), e.getPlayer().getName());
-			PlayerClass.setSession(e.getPlayer().getUniqueId().toString(), d.formatDate(d.getNewDate()));
+			MythPlayer.processNewUser(e.getPlayer().getUniqueId().toString(), e.getPlayer().getName());
+			PlayerClass.setSession(d.formatDate(d.getNewDate()));
 		}
 
-		switch (PlayerClass.getStatus(e.getPlayer().getUniqueId().toString())) {
+		switch (PlayerClass.getStatus()) {
 		case "OK":
-			PlayerClass.setSession(e.getPlayer().getUniqueId().toString(), d.formatDate(d.getNewDate()));
+			PlayerClass.setSession(d.formatDate(d.getNewDate()));
 			dbc.cleanUser(e.getPlayer().getUniqueId().toString());
 			break;
 		case "banned":
@@ -71,11 +73,11 @@ public class PlayerJoin implements Listener {
 			message = this.formatMessage(e.getPlayer().getUniqueId().toString(), ConfigProperties.USER_TEMPBAN_FORMAT,
 					false);
 			e.getPlayer().getName();
-			if (d.getNewDate().before(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
+			if (d.getNewDate().before(PlayerClass.getExpireDate())) {
 				e.getPlayer().kickPlayer(message);
 				return;
-			} else if (d.getNewDate().after(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
-				PlayerClass.clearExpire(e.getPlayer().getUniqueId().toString());
+			} else if (d.getNewDate().after(PlayerClass.getExpireDate())) {
+				PlayerClass.clearExpire();
 			}
 			break;
 		default:
@@ -92,11 +94,11 @@ public class PlayerJoin implements Listener {
 				message = this.formatMessage(e.getPlayer().getUniqueId().toString(),
 						ConfigProperties.USER_IPTEMPBAN_FORMAT, true);
 				e.getPlayer().getName();
-				if (d.getNewDate().before(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
+				if (d.getNewDate().before(PlayerClass.getExpireDate())) {
 					e.getPlayer().kickPlayer(message);
 					return;
-				} else if (d.getNewDate().after(PlayerClass.getExpireDate(e.getPlayer().getUniqueId().toString()))) {
-					PlayerClass.clearExpire(e.getPlayer().getUniqueId().toString());
+				} else if (d.getNewDate().after(PlayerClass.getExpireDate())) {
+					PlayerClass.clearExpire();
 				}
 				break;
 			default:
@@ -127,8 +129,8 @@ public class PlayerJoin implements Listener {
 				}
 			}
 		}
-		if(ConfigProperties.use_bot){
-			MDB.appendThread("\n >>>"+e.getPlayer().getName()+" joined the server <<<");
+		if (ConfigProperties.use_bot) {
+			MDB.appendThread("\n >>>" + e.getPlayer().getName() + " joined the server <<<");
 		}
 	}
 
@@ -148,14 +150,14 @@ public class PlayerJoin implements Listener {
 
 			toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
 
-			if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
+			if (PlayerClass.getWhoBanned().equals("CONSOLE")) {
 				toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
 			} else {
 				toFormat = toFormat.replaceAll("\\{staffMember\\}",
-						Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
+						Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned())).getName());
 			}
 
-			toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID2));
+			toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason());
 		}
 		return toFormat;
 	}

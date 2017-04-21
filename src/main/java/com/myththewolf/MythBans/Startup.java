@@ -12,6 +12,7 @@ import org.bukkit.scheduler.BukkitTask;
 import com.myththewolf.MythBans.lib.MythBans;
 import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.tool.Date;
 import com.myththewolf.MythBans.tasks.DisableDueToError;
 
@@ -73,14 +74,15 @@ public class Startup extends JavaPlugin {
 	}
 
 	public void onDisable() {
-		com.myththewolf.MythBans.lib.player.Player pClass = new com.myththewolf.MythBans.lib.player.Player();
+		
 		Date date = new Date();
 		try {
 			for (Player p : Bukkit.getOnlinePlayers()) {
+				MythPlayer pClass = new MythPlayer(p.getUniqueId().toString());
 				String UUID = p.getUniqueId().toString();
-				pClass.setQuitTime(date.formatDate(date.getNewDate()), UUID);
-				pClass.setPlayTime(UUID, date.getTimeDifference(pClass.getSessionJoinDate(UUID), date.getNewDate())
-						+ pClass.getPlayTime(UUID));
+				pClass.setQuitTime(date.formatDate(date.getNewDate()));
+				pClass.setPlayTime(date.getTimeDifference(pClass.getSessionJoinDate(UUID), date.getNewDate())
+						+ pClass.getPlayTime());
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

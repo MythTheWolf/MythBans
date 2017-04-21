@@ -14,12 +14,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
-import com.myththewolf.MythBans.lib.player.Player;
+import com.myththewolf.MythBans.lib.player.MythPlayer;
 
 public class ImportJSON extends BukkitRunnable {
 
 	private final CommandSender sender;
-	private final Player pp = new Player();
+	
 	private final DatabaseCommands dbc = new DatabaseCommands();
 
 	public ImportJSON(JavaPlugin plugin, CommandSender se) {
@@ -48,7 +48,7 @@ public class ImportJSON extends BukkitRunnable {
 				ArrayList<String> checked = new ArrayList<String>();
 				if (!Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).hasPlayedBefore()) {
 					if (!checked.contains(UUID2)) {
-						pp.processNewUser(UUID2, name);
+						MythPlayer.processNewUser(UUID2, name);
 
 					}
 				}

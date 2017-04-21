@@ -14,14 +14,16 @@ import org.bukkit.entity.Player;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 
 public class PardonUser implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private String toUUID = "";
-	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
+	private MythPlayer PlayerClass;
 	private String byUUID;
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
@@ -37,6 +39,7 @@ public class PardonUser implements CommandExecutor {
 				return true;
 			} else {
 				toUUID = pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString();
+				PlayerClass = new MythPlayer(toUUID);
 				if (sender instanceof ConsoleCommandSender) {
 					dbc.pardonUser(toUUID, "CONSOLE");
 					byUUID = "CONSOLE";
@@ -60,15 +63,14 @@ public class PardonUser implements CommandExecutor {
 
 	private String formatMessage(String UUID2, String format) throws SQLException {
 		String toFormat = format;
-		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
+		if (PlayerClass.getWhoBanned().equals("CONSOLE")) {
 			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
 		} else {
-			toFormat = toFormat.replaceAll("\\{staffMember\\}",
-					pCache.getName(byUUID));
+			toFormat = toFormat.replaceAll("\\{staffMember\\}", pCache.getName(byUUID));
 		}
 
 		toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
-		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason(UUID2));
+		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason());
 
 		return toFormat;
 	}

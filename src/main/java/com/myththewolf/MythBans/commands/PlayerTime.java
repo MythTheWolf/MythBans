@@ -9,14 +9,14 @@ import org.bukkit.command.CommandSender;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.player.Player;
+import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Date;
 
 import net.md_5.bungee.api.ChatColor;
 
 public class PlayerTime implements CommandExecutor {
-	private com.myththewolf.MythBans.lib.player.Player mythPlayer = new Player();
+	private MythPlayer mythPlayer;
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private Date mythDate = new Date();
 
@@ -34,20 +34,21 @@ public class PlayerTime implements CommandExecutor {
 			OfflinePlayer p = pCache.getOfflinePlayerExact(args[0]);
 			String time;
 			long dump;
+			mythPlayer = new MythPlayer(p.getUniqueId().toString());
 			if (p.isOnline()) {
-				dump = mythDate.getTimeDifference(mythPlayer.getSessionJoinDate(p.getUniqueId().toString()), mythDate.getNewDate()) + mythPlayer.getPlayTime(p.getUniqueId().toString());
+				dump = mythDate.getTimeDifference(mythPlayer.getSessionJoinDate(p.getUniqueId().toString()),
+						mythDate.getNewDate()) + mythPlayer.getPlayTime();
 				time = mythDate.convertToPd(dump);
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "User has play time of " + time);
 				return true;
 			} else {
-				time = mythDate.convertToPd(mythPlayer.getPlayTime(p.getUniqueId().toString()));
-				java.util.Date off = mythPlayer.getQuitDate(p.getUniqueId().toString());
-				sender.sendMessage(
-						ConfigProperties.PREFIX + ChatColor.GOLD + "User has play time of " + time + "(First joined on "
-								+ mythDate.formatDate(mythPlayer.getJoinDate(p.getUniqueId().toString())) + ")");
+				time = mythDate.convertToPd(mythPlayer.getPlayTime());
+				java.util.Date off = mythPlayer.getQuitDate();
+				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "User has play time of " + time
+						+ "(First joined on " + mythDate.formatDate(mythPlayer.getJoinDate()) + ")");
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "User has been offline for "
 						+ mythDate.convertToPd(mythDate.getTimeDifference(off, mythDate.getNewDate())) + "(Last seen: "
-						+ mythDate.formatDate(mythPlayer.getQuitDate(p.getUniqueId().toString())) + ")");
+						+ mythDate.formatDate(mythPlayer.getQuitDate()) + ")");
 				return true;
 			}
 

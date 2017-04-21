@@ -7,12 +7,13 @@ import org.bukkit.command.CommandSender;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.player.Player;
+import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 
 public class softmute implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
-	private Player pClass = new Player();
+	private MythPlayer pClass;
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
@@ -27,11 +28,12 @@ public class softmute implements CommandExecutor {
 						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
 			} else {
-				if(pClass.getStatus(pCache.getUUID(args[0])).equals("softmuted")){
-					pClass.setStatus(pCache.getUUID(args[0]),"OK");
+				pClass = new MythPlayer(pCache.getUUID(args[0]));
+				if (pClass.getStatus().equals("softmuted")) {
+					pClass.setStatus("OK");
 					sender.sendMessage(ConfigProperties.PREFIX + "Unsoftmuted player.");
-				}else{
-					pClass.setStatus(pCache.getUUID(args[0]),"softmuted");
+				} else {
+					pClass.setStatus("softmuted");
 					sender.sendMessage(ConfigProperties.PREFIX + "Softmuted player.");
 				}
 			}

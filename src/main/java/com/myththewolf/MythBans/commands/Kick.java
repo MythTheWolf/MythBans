@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
 import com.myththewolf.MythBans.lib.tool.Utils;
@@ -21,7 +22,7 @@ import com.myththewolf.MythBans.lib.tool.Utils;
 public class Kick implements CommandExecutor {
 	private final PlayerCache pc = new PlayerCache(MythSQLConnect.getConnection());
 	private final DatabaseCommands dbc = new DatabaseCommands();
-	private final com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
+	private MythPlayer PlayerClass;
 	private Player toKick;
 	private PlayerLanguage PL;
 
@@ -38,6 +39,7 @@ public class Kick implements CommandExecutor {
 				return true;
 			} else {
 				toKick = pc.getPlayerExact(args[0]);
+				PlayerClass = new MythPlayer(toKick.getUniqueId().toString());
 			}
 			PL = new PlayerLanguage(toKick.getUniqueId().toString());
 			if (sender instanceof ConsoleCommandSender) {
@@ -80,15 +82,15 @@ public class Kick implements CommandExecutor {
 	private String formatMessage(String UUID2, String format) throws SQLException {
 		String toFormat = format;
 
-		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
+		if (PlayerClass.getWhoBanned().equals("CONSOLE")) {
 			toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 		} else {
 			toFormat = toFormat.replaceAll("\\{0\\}",
-					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
+					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned())).getName());
 		}
 
 		toFormat = toFormat.replaceAll("\\{1\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
-		toFormat = toFormat.replaceAll("\\{2\\}", PlayerClass.getReason(UUID2));
+		toFormat = toFormat.replaceAll("\\{2\\}", PlayerClass.getReason());
 
 		return toFormat;
 	}

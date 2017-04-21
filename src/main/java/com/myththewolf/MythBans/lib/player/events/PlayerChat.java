@@ -14,7 +14,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.player.Player;
+import com.myththewolf.MythBans.lib.player.MythPlayer;
 
 public class PlayerChat implements Listener {
 
@@ -30,18 +30,16 @@ public class PlayerChat implements Listener {
 			throws SQLException, InterruptedException, ExecutionException {
 
 		org.bukkit.entity.Player p = e.getPlayer();
-		String UUID = p.getUniqueId().toString();
-		Player playerClass = new Player();
+		MythPlayer playerClass = new MythPlayer(p.getUniqueId().toString());
 
-		if (e.getMessage().equalsIgnoreCase(ConfigProperties.SOFTMUTE_RELEASE_COMMAND)
-				&& !(playerClass.isOverride(p.getUniqueId().toString()))) {
-			playerClass.setOverride(p.getUniqueId().toString(), true);
-			playerClass.setStatus(p.getUniqueId().toString(), "OK");
+		if (e.getMessage().equalsIgnoreCase(ConfigProperties.SOFTMUTE_RELEASE_COMMAND) && !(playerClass.isOverride())) {
+			MythPlayer.setOverride(p.getUniqueId().toString(), true);
+			playerClass.setStatus("OK");
 			dbc.cleanUser(p.getUniqueId().toString());
 			p.sendMessage(ConfigProperties.PREFIX + ChatColor.GREEN + "You may now speak!");
 			e.setCancelled(true);
 		}
-		if (playerClass.getStatus(UUID).equals("muted")) {
+		if (playerClass.getStatus().equals("muted")) {
 			p.sendMessage(ChatColor.translateAlternateColorCodes('&', ConfigProperties.PREFIX)
 					+ "Your voice has been silenced!");
 			e.setCancelled(true);
@@ -79,7 +77,7 @@ public class PlayerChat implements Listener {
 			e.setCancelled(true);
 			return;
 		}
-		if (playerClass.getStatus(e.getPlayer().getUniqueId().toString()).equals("softmuted")) {
+		if (playerClass.getStatus().equals("softmuted")) {
 			org.bukkit.entity.Player PP = e.getPlayer();
 			String who = PP.getDisplayName();
 			String message = e.getMessage();
@@ -99,7 +97,7 @@ public class PlayerChat implements Listener {
 			e.setCancelled(true);
 			return;
 		}
-		if (playerClass.getStatus(e.getPlayer().getUniqueId().toString()).equals("trial")) {
+		if (playerClass.getStatus().equals("trial")) {
 			e.setCancelled(true);
 			String message = e.getMessage();
 			for (org.bukkit.entity.Player i : Bukkit.getOnlinePlayers()) {

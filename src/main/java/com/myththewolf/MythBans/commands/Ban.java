@@ -14,6 +14,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
 import com.myththewolf.MythBans.lib.tool.Utils;
@@ -23,9 +24,9 @@ public class Ban implements CommandExecutor {
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private OfflinePlayer toBan;
 	private String toUUID;
-	private com.myththewolf.MythBans.lib.player.Player PlayerClass = new com.myththewolf.MythBans.lib.player.Player();
+	private MythPlayer PlayerClass;
 	private PlayerLanguage PL;
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 
@@ -42,7 +43,7 @@ public class Ban implements CommandExecutor {
 				return true;
 			} else {
 				toBan = pCache.getOfflinePlayerExact(args[0]);
-
+				PlayerClass = new MythPlayer(toBan.getUniqueId().toString());
 				if (sender instanceof ConsoleCommandSender) {
 					String reason = Utils.makeString(args, 1);
 					dbc.banUser(toBan.getUniqueId().toString(), "CONSOLE", reason);
@@ -78,15 +79,15 @@ public class Ban implements CommandExecutor {
 
 	private String formatMessage(String UUID2, String format) throws SQLException {
 		String toFormat = format;
-		if (PlayerClass.getWhoBanned(UUID2).equals("CONSOLE")) {
+		if (PlayerClass.getWhoBanned().equals("CONSOLE")) {
 			toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 		} else {
 			toFormat = toFormat.replaceAll("\\{0\\}",
-					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned(UUID2))).getName());
+					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned())).getName());
 		}
 
 		toFormat = toFormat.replaceAll("\\{1\\}", pCache.getName(UUID2));
-		toFormat = toFormat.replaceAll("\\{2\\}", PlayerClass.getReason(UUID2));
+		toFormat = toFormat.replaceAll("\\{2\\}", PlayerClass.getReason());
 
 		return toFormat;
 	}

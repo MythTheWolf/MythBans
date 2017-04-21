@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.player.Player;
+import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Date;
 import com.myththewolf.MythBans.lib.player.IP;
@@ -17,7 +17,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class user implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
-	private Player pClass = new Player();
+	private MythPlayer pClass;
 	private Date MythDate = new Date();
 	private IP ipClass = new IP();
 
@@ -28,29 +28,30 @@ public class user implements CommandExecutor {
 			return true;
 		}
 		try {
-			if (pCache.getPlayerExact(args[0]) == null) {
+			if (pCache.getOfflinePlayerExact(args[0]) == null) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player not found.");
 				return true;
 			}
-			if(!sender.hasPermission(ConfigProperties.PROBATION_PERMISSION)){
-				sender.sendMessage(ConfigProperties.PREFIX+ChatColor.RED+"No permisson");
+			if (!sender.hasPermission(ConfigProperties.PROBATION_PERMISSION)) {
+				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "No permisson");
 				return true;
 			}
+			pClass = new MythPlayer(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
 			String UUID = pCache.getPlayerExact(args[0]).getUniqueId().toString();
-			String status = pClass.getStatus(UUID);
-			String join = MythDate.formatDate(pClass.getJoinDate(UUID));
-			String playTime = MythDate.convertToPd(pClass.getPlayTime(UUID));
-			String bannedBy = pClass.getWhoBanned(UUID);
-			String reason = pClass.getReason(UUID);
-			java.util.Date expire = pClass.getExpireDate(UUID);
+			String status = pClass.getStatus();
+			String join = MythDate.formatDate(pClass.getJoinDate());
+			String playTime = MythDate.convertToPd(pClass.getPlayTime());
+			String bannedBy = pClass.getWhoBanned();
+			String reason = pClass.getReason();
+			java.util.Date expire = pClass.getExpireDate();
 			sender.sendMessage(ChatColor.YELLOW + "------------------------");
 			sender.sendMessage(ChatColor.GOLD + "Status: " + ChatColor.RED + status);
 			sender.sendMessage(ChatColor.GOLD + "Join date: " + ChatColor.RED + join);
 			sender.sendMessage(ChatColor.GOLD + "Total play time: " + ChatColor.RED + playTime);
-			if ((bannedBy != null) && !bannedBy.equals("") ) {
+			if ((bannedBy != null) && !bannedBy.equals("")) {
 				sender.sendMessage(ChatColor.GOLD + "Action applied by: " + ChatColor.RED + pCache.getName(bannedBy));
 			}
-			if (reason != null && !reason.equals("") ) {
+			if (reason != null && !reason.equals("")) {
 				sender.sendMessage(ChatColor.GOLD + "Reason: " + ChatColor.RED + reason);
 			}
 			if (!(expire == null) && !expire.equals("")) {

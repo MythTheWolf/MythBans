@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import org.bukkit.OfflinePlayer;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
+import com.myththewolf.MythBans.lib.discord.DiscordCommand;
 import com.myththewolf.MythBans.lib.discord.MythCommandExecute;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Utils;
@@ -19,7 +20,7 @@ public class McLink implements MythCommandExecute {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
+	@DiscordCommand(requiresLinked = false, requiresRoot = false)
 	public void runCommand(User theDiscordUser, OfflinePlayer theBukkitUser, String[] args, Message theMessage) {
 		try {
 			if (pCache.isLinked(theMessage.getAuthor().getId())) {
@@ -37,22 +38,6 @@ public class McLink implements MythCommandExecute {
 			e.printStackTrace();
 		}
 
-	}
-
-	public boolean requiresLinkedAccount() {
-		return false;
-	}
-
-	@Override
-	public boolean requiresRoot() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean requiresLinked() {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }
