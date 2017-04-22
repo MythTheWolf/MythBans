@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Date;
@@ -34,7 +35,7 @@ public class PlayerTime implements CommandExecutor {
 			OfflinePlayer p = pCache.getOfflinePlayerExact(args[0]);
 			String time;
 			long dump;
-			mythPlayer = new MythPlayer(p.getUniqueId().toString());
+			mythPlayer = PlayerDataCache.getInstance(p.getUniqueId().toString());
 			if (p.isOnline()) {
 				dump = mythDate.getTimeDifference(mythPlayer.getSessionJoinDate(p.getUniqueId().toString()),
 						mythDate.getNewDate()) + mythPlayer.getPlayTime();

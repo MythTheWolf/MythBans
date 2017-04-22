@@ -12,6 +12,7 @@ import org.bukkit.scheduler.BukkitTask;
 import com.myththewolf.MythBans.lib.MythBans;
 import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.tool.Date;
 import com.myththewolf.MythBans.tasks.DisableDueToError;
@@ -23,7 +24,7 @@ public class Startup extends JavaPlugin {
 	private MythBans MB;
 
 	public void onEnable() {
-		
+		PlayerDataCache.makeMap();
 		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory
 				.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 		root.setLevel(Level.INFO);
@@ -88,7 +89,7 @@ public class Startup extends JavaPlugin {
 			e.printStackTrace();
 		}
 		try {
-			if (MythDiscordBot.getBot().isSetup()) {
+			if (ConfigProperties.use_bot && MythDiscordBot.getBot().isSetup()) {
 				this.MB.shutdown();
 			}
 		} catch (SQLException e) {

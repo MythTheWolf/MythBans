@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.tool.Date;
 
@@ -17,7 +18,7 @@ public class PlayerQuit implements Listener {
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent e) throws SQLException {
 		Player p = e.getPlayer();
-		pClass = new MythPlayer(p.getUniqueId().toString());
+		pClass = PlayerDataCache.getInstance(e.getPlayer().getUniqueId().toString());
 		String UUID = p.getUniqueId().toString();
 		pClass.setQuitTime(date.formatDate(date.getNewDate()));
 		pClass.setPlayTime(

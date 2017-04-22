@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Date;
@@ -36,7 +37,7 @@ public class user implements CommandExecutor {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "No permisson");
 				return true;
 			}
-			pClass = new MythPlayer(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
+			pClass = PlayerDataCache.getInstance(pCache.getUUID(args[0]));
 			String UUID = pCache.getPlayerExact(args[0]).getUniqueId().toString();
 			String status = pClass.getStatus();
 			String join = MythDate.formatDate(pClass.getJoinDate());

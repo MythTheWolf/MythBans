@@ -18,6 +18,7 @@ import org.joda.time.format.PeriodFormatterBuilder;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Date;
@@ -47,7 +48,7 @@ public class TempBan implements CommandExecutor {
 						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
 			} else {
-				PlayerClass = new MythPlayer(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
+				PlayerClass = PlayerDataCache.getInstance(pCache.getUUID(args[0]));
 				final PeriodFormatter format = new PeriodFormatterBuilder().appendDays().appendSuffix("d").appendWeeks()
 						.appendSuffix("w").appendMonths().appendSuffix("mon").appendYears().appendSuffix("y")
 						.appendMinutes().appendSuffix("m").appendSeconds().appendSuffix("s").appendHours()

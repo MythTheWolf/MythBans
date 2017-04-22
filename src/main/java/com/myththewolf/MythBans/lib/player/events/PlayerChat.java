@@ -14,6 +14,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 
 public class PlayerChat implements Listener {
@@ -30,7 +31,7 @@ public class PlayerChat implements Listener {
 			throws SQLException, InterruptedException, ExecutionException {
 
 		org.bukkit.entity.Player p = e.getPlayer();
-		MythPlayer playerClass = new MythPlayer(p.getUniqueId().toString());
+		MythPlayer playerClass = PlayerDataCache.getInstance(p.getUniqueId().toString());
 
 		if (e.getMessage().equalsIgnoreCase(ConfigProperties.SOFTMUTE_RELEASE_COMMAND) && !(playerClass.isOverride())) {
 			MythPlayer.setOverride(p.getUniqueId().toString(), true);

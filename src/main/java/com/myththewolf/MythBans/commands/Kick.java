@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
@@ -39,7 +40,7 @@ public class Kick implements CommandExecutor {
 				return true;
 			} else {
 				toKick = pc.getPlayerExact(args[0]);
-				PlayerClass = new MythPlayer(toKick.getUniqueId().toString());
+				PlayerClass = PlayerDataCache.getInstance(toKick.getUniqueId().toString());
 			}
 			PL = new PlayerLanguage(toKick.getUniqueId().toString());
 			if (sender instanceof ConsoleCommandSender) {

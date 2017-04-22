@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 
@@ -39,7 +40,7 @@ public class PardonUser implements CommandExecutor {
 				return true;
 			} else {
 				toUUID = pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString();
-				PlayerClass = new MythPlayer(toUUID);
+				PlayerClass = PlayerDataCache.getInstance(toUUID);
 				if (sender instanceof ConsoleCommandSender) {
 					dbc.pardonUser(toUUID, "CONSOLE");
 					byUUID = "CONSOLE";

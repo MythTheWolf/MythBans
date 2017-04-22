@@ -12,6 +12,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Utils;
@@ -36,7 +37,9 @@ public class Probate implements CommandExecutor {
 						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
 			} else {
-				playerClass = new MythPlayer(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
+
+				playerClass = PlayerDataCache
+						.getInstance(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
 				String stat = playerClass.getStatus();
 				if (!stat.equals("OK") && !stat.equals("trial")) {
 					sender.sendMessage(stat);

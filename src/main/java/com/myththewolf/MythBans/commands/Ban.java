@@ -14,6 +14,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
@@ -43,7 +44,8 @@ public class Ban implements CommandExecutor {
 				return true;
 			} else {
 				toBan = pCache.getOfflinePlayerExact(args[0]);
-				PlayerClass = new MythPlayer(toBan.getUniqueId().toString());
+				
+				PlayerClass = PlayerDataCache.getInstance(toBan.getUniqueId().toString());
 				if (sender instanceof ConsoleCommandSender) {
 					String reason = Utils.makeString(args, 1);
 					dbc.banUser(toBan.getUniqueId().toString(), "CONSOLE", reason);

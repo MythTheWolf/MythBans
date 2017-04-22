@@ -18,6 +18,7 @@ import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.IP;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
@@ -45,6 +46,7 @@ public class PlayerJoin implements Listener {
 		e.getPlayer().setInvulnerable(false);
 		e.getPlayer().removeMetadata("is_potato", thePlugin);
 		System.out.println("IMBOUND---->" + e.getPlayer().getName());
+	
 		String message;
 		if (!pc.ipExist(e.getPlayer().getAddress().getAddress().toString())) {
 			pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
@@ -55,12 +57,12 @@ public class PlayerJoin implements Listener {
 		}
 		if (pc.getPlayerExact(e.getPlayer().getName()) == null) {
 			MythPlayer.processNewUser(e.getPlayer().getUniqueId().toString(), e.getPlayer().getName());
-			PlayerClass.setSession(d.formatDate(d.getNewDate()));
+			MythPlayer.setSession(e.getPlayer().getUniqueId().toString(),d.formatDate(d.getNewDate()));
 		}
-
+		PlayerClass = PlayerDataCache.getInstance(e.getPlayer().getUniqueId().toString());
 		switch (PlayerClass.getStatus()) {
 		case "OK":
-			PlayerClass.setSession(d.formatDate(d.getNewDate()));
+			
 			dbc.cleanUser(e.getPlayer().getUniqueId().toString());
 			break;
 		case "banned":

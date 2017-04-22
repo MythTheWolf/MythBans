@@ -36,7 +36,7 @@ public class CommandEvent implements Listener {
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				MythPlayerMetaData MPM = new MythPlayerMetaData(p.getUniqueId().toString());
 				if (MPM.isSpying()) {
-					p.sendMessage(ChatColor.AQUA + "[Socialspy]" + e.getPlayer().getName() + " " + e.getMessage());
+					p.sendMessage(e.getPlayer().getDisplayName()+":" + e.getMessage());
 				}
 			}
 		}

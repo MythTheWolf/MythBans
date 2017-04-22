@@ -14,6 +14,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
@@ -40,7 +41,7 @@ public class Mute implements CommandExecutor {
 				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NO_PERMISSION"));
 				return true;
 			}
-			PlayerClass = new MythPlayer(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
+			PlayerClass = PlayerDataCache.getInstance(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
 			String stat = PlayerClass.getStatus();
 			if (!stat.equals("OK") && !stat.equals("muted")) {
 				sender.sendMessage(

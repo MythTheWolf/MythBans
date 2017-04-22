@@ -7,6 +7,7 @@ import java.util.Date;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 
 public class MythPlayer {
 	private ResultSet rs;
@@ -18,7 +19,7 @@ public class MythPlayer {
 	private String WHO_BANNED;
 	private boolean IS_OVERRIDE;
 	private Date EXPIRE_DATE;
-	private String UUID;
+	private static String UUID;
 	private Long PLAY_TIME;
 	private Date QUIT_DATE;
 	private Date JOIN_DATE;
@@ -32,6 +33,7 @@ public class MythPlayer {
 			ps.setString(1, theUUID);
 			rs = ps.executeQuery();
 			if (!rs.next()) {
+		
 				return;
 			} else {
 				UUID = theUUID;
@@ -45,12 +47,18 @@ public class MythPlayer {
 					EXPIRE_DATE = MythDate.parseDate(rs.getString("expires"));
 				}
 				PLAY_TIME = rs.getLong("playtime");
-				QUIT_DATE = MythDate.parseDate(rs.getString("last_quit_date"));
+				if (rs.getString("last_quit_date") == null || rs.getString("last_quit_date").equals("") ) {
+					QUIT_DATE = null;
+				} else {
+					QUIT_DATE = MythDate.parseDate(rs.getString("last_quit_date"));
+				}
 				JOIN_DATE = MythDate.parseDate(rs.getString("timestamp"));
 				SESSION_START = MythDate.parseDate(rs.getString("session_start"));
 				LANG_FILE = rs.getString("lang_file");
 			}
-		} catch (SQLException e) {
+		} catch (
+
+		SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -60,7 +68,14 @@ public class MythPlayer {
 	public String getStatus() {
 		return PLAYER_STATUS;
 	}
-
+	public static void setSession(String UUID2, String time) throws SQLException{
+		ps = (PreparedStatement) MythSQLConnect.getConnection()
+				.prepareStatement("UPDATE MythBans_PlayerStats SET session_start = ?  WHERE UUID = ?");
+		ps.setString(2, UUID2);
+		ps.setString(1, time);
+		ps.executeUpdate();
+		PlayerDataCache.rebuildUser(UUID);
+	}
 	public String getReason() {
 		if (BAN_REASON == null || BAN_REASON.equals("")) {
 			return ConfigProperties.DEFAULT_BAN_REASON;
@@ -92,6 +107,7 @@ public class MythPlayer {
 		ps.executeUpdate();
 		setOverride(UUID, false);
 		ps.close();
+		PlayerDataCache.rebuildUser(UUID);
 	}
 
 	public boolean isOverride() throws SQLException {
@@ -104,6 +120,7 @@ public class MythPlayer {
 		ps.setString(1, Boolean.toString(over));
 		ps.setString(2, UUID);
 		ps.executeUpdate();
+		PlayerDataCache.rebuildUser(UUID);
 	}
 
 	public Date getExpireDate() throws SQLException {
@@ -118,6 +135,7 @@ public class MythPlayer {
 		ps.setString(3, UUID);
 		ps.executeUpdate();
 		ps.close();
+		PlayerDataCache.rebuildUser(UUID);
 	}
 
 	public long getPlayTime() {
@@ -130,6 +148,7 @@ public class MythPlayer {
 		ps.setString(1, time);
 		ps.setString(2, UUID);
 		ps.executeUpdate();
+		PlayerDataCache.rebuildUser(UUID);
 	}
 
 	public ResultSet getHistoryPack() throws SQLException {
@@ -151,13 +170,7 @@ public class MythPlayer {
 		return SESSION_START;
 	}
 
-	public void setSession(String time) throws SQLException {
-		ps = (PreparedStatement) MythSQLConnect.getConnection()
-				.prepareStatement("UPDATE MythBans_PlayerStats SET session_start = ?  WHERE UUID = ?");
-		ps.setString(2, UUID);
-		ps.setString(1, time);
-		ps.executeUpdate();
-	}
+	
 
 	public void setPlayTime(long timeDifference) throws SQLException {
 		ps = (PreparedStatement) MythSQLConnect.getConnection()
@@ -165,6 +178,7 @@ public class MythPlayer {
 		ps.setString(2, UUID);
 		ps.setString(1, Long.toString(timeDifference));
 		ps.executeUpdate();
+		PlayerDataCache.rebuildUser(UUID);
 	}
 
 	public void setStatus(String stat) throws SQLException {
@@ -173,6 +187,7 @@ public class MythPlayer {
 		ps.setString(2, UUID);
 		ps.setString(1, stat);
 		ps.executeUpdate();
+		PlayerDataCache.rebuildUser(UUID);
 
 	}
 

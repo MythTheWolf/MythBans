@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 import org.bukkit.entity.Player;
 
+import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
+
 public class DatabaseCommands {
 	private Connection c = MythSQLConnect.getConnection();
 	private PreparedStatement ps;
@@ -23,7 +25,7 @@ public class DatabaseCommands {
 		ps.setString(2, "userMute");
 		ps.setString(3, byUUID);
 		ps.executeUpdate();
-
+		PlayerDataCache.rebuildUser(UUID);
 	}
 
 	public void banUser(String UUID, String byUUID, String reason) throws SQLException {
@@ -43,6 +45,7 @@ public class DatabaseCommands {
 		ps.setString(4, reason);
 		ps.executeUpdate();
 		ps.close();
+		PlayerDataCache.rebuildUser(UUID);
 	}
 
 	public void tmpBanUser(String UUID, String byUUID, String reason, String expireDate) throws SQLException {
@@ -62,6 +65,7 @@ public class DatabaseCommands {
 		ps.setString(4, reason);
 		ps.setString(5, expireDate);
 		ps.executeUpdate();
+		PlayerDataCache.rebuildUser(UUID);
 	}
 
 	public void kickUser(String UUID, String byUUID, String reason) throws SQLException {
@@ -78,6 +82,7 @@ public class DatabaseCommands {
 		ps.setString(2, reason);
 		ps.setString(3, UUID);
 		ps.executeUpdate();
+		PlayerDataCache.rebuildUser(UUID);
 	}
 
 	public void pardonIP(String IP) throws SQLException {
@@ -150,6 +155,7 @@ public class DatabaseCommands {
 		ps.setString(3, byUUID);
 		ps.setString(4, reason);
 		ps.executeUpdate();
+		PlayerDataCache.rebuildUser(UUID);
 	}
 
 	public void banIP(String IP, String byUUID, String reason) throws SQLException {
@@ -168,6 +174,7 @@ public class DatabaseCommands {
 		ps.setString(3, byUUID);
 		ps.setString(4, reason);
 		ps.executeUpdate();
+		
 	}
 
 	public void unProbate(String UUID, String byUUID) throws SQLException {
@@ -181,6 +188,7 @@ public class DatabaseCommands {
 		ps.setString(2, "unProbate");
 		ps.setString(3, byUUID);
 		ps.executeUpdate();
+		PlayerDataCache.rebuildUser(UUID);
 	}
 
 	public void cleanUser(String UUID) throws SQLException {
@@ -191,6 +199,7 @@ public class DatabaseCommands {
 		ps.setString(3, "");
 		ps.setString(4, UUID);
 		ps.executeUpdate();
+		PlayerDataCache.rebuildUser(UUID);
 	}
 
 	public void pardonUser(String UUID, String byUUID) throws SQLException {
@@ -204,6 +213,7 @@ public class DatabaseCommands {
 		ps.setString(2, "userPardon");
 		ps.setString(3, byUUID);
 		ps.executeUpdate();
+		PlayerDataCache.rebuildUser(UUID);
 	}
 
 	public void UnmuteUser(String UUID, String byUUID) throws SQLException {
@@ -217,6 +227,7 @@ public class DatabaseCommands {
 		ps.setString(2, "userUnmute");
 		ps.setString(3, byUUID);
 		ps.executeUpdate();
+		PlayerDataCache.rebuildUser(UUID);
 	}
 
 	public void writeMessageToHistory(String text, String user) throws SQLException {
