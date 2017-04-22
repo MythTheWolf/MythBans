@@ -9,18 +9,15 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 
-import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
-import com.myththewolf.MythBans.lib.tool.Utils;
 
 public class Probate implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private OfflinePlayer p;
-	private DatabaseCommands dbc = new DatabaseCommands();
 	private MythPlayer playerClass;
 
 	@Override
@@ -40,38 +37,26 @@ public class Probate implements CommandExecutor {
 
 				playerClass = PlayerDataCache
 						.getInstance(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
-				String stat = playerClass.getStatus();
-				if (!stat.equals("OK") && !stat.equals("trial")) {
-					sender.sendMessage(stat);
-					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED
-							+ "Can't override status; User is not currently set to \"OK\"");
-					return true;
 
-				} else {
-
-				}
 				p = pCache.getOfflinePlayerExact(args[0]);
-				if (playerClass.getStatus().equals("trial")) {
+				if (playerClass.getProbate()) {
 					if (sender instanceof ConsoleCommandSender) {
-						dbc.unProbate(p.getUniqueId().toString(), "CONSOLE");
+						playerClass.setProbate(false);
 						sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Unprobated " + p.getName());
 						return true;
 					} else {
-						dbc.unProbate(p.getUniqueId().toString(),
-								((org.bukkit.entity.Player) sender).getUniqueId().toString());
+						playerClass.setProbate(false);
 						sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Unprobated " + p.getName());
 						return true;
 					}
 				} else {
 					if (sender instanceof ConsoleCommandSender) {
-						dbc.setProbation(p.getUniqueId().toString(), "CONSOLE", Utils.makeString(args, 2));
+						playerClass.setProbate(true);
 						sender.sendMessage(
 								ConfigProperties.PREFIX + ChatColor.GOLD + "Set " + p.getName() + " on probation.");
 						return true;
 					} else {
-						org.bukkit.entity.Player pp = (org.bukkit.entity.Player) sender;
-						dbc.setProbation(p.getUniqueId().toString(), pp.getUniqueId().toString(),
-								Utils.makeString(args, 2));
+						playerClass.setProbate(true);
 						sender.sendMessage(
 								ConfigProperties.PREFIX + ChatColor.GOLD + "Set " + p.getName() + " on probation.");
 						return true;

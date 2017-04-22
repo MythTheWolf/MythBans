@@ -98,7 +98,7 @@ public class PlayerChat implements Listener {
 			e.setCancelled(true);
 			return;
 		}
-		if (playerClass.getStatus().equals("trial")) {
+		if (playerClass.getProbate()) {
 			e.setCancelled(true);
 			String message = e.getMessage();
 			for (org.bukkit.entity.Player i : Bukkit.getOnlinePlayers()) {

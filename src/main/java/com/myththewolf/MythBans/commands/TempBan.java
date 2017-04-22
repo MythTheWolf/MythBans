@@ -21,6 +21,7 @@ import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
+import com.myththewolf.MythBans.lib.player.PlayerLanguage;
 import com.myththewolf.MythBans.lib.tool.Date;
 import com.myththewolf.MythBans.lib.tool.Utils;
 
@@ -32,20 +33,21 @@ public class TempBan implements CommandExecutor {
 	private com.myththewolf.MythBans.lib.tool.Date date = new Date();
 	private MythPlayer PlayerClass;
 	private OfflinePlayer p;
-
+	private PlayerLanguage PL;
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
+			PL = new PlayerLanguage(sender);
 			if (args.length < 2) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /tempban <user> <time> [reason]");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("COMMAND_TEMPBAN_USAGE"));
 				return true;
 			} else if (pCache.getOfflinePlayerExact(args[0]) == null) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has never played on this server.");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NULL_PLAYER"));
 				return true;
 
 			} else if (!sender.hasPermission(ConfigProperties.TEMPBAN_PERMISSION)) {
 				sender.sendMessage(
-						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
+						ConfigProperties.PREFIX + PL.languageList.get("ERR_NO_PERMISSION"));
 				return true;
 			} else {
 				PlayerClass = PlayerDataCache.getInstance(pCache.getUUID(args[0]));
@@ -56,6 +58,7 @@ public class TempBan implements CommandExecutor {
 				try {
 					long milli = format.parsePeriod(args[1]).toStandardDuration().getMillis();
 					java.util.Date finalDate = new java.util.Date(System.currentTimeMillis() + milli);
+					
 					String dateStr = date.formatDate(finalDate);
 					String reason = Utils.makeString(args, 2);
 					String UUID = pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString();
@@ -68,14 +71,16 @@ public class TempBan implements CommandExecutor {
 						p = pCache.getOfflinePlayerExact(args[0]);
 					}
 					for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
+						PL = new PlayerLanguage(player);
 						if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
 							player.sendMessage(this.formatMessage(p.getUniqueId().toString(),
-									ConfigProperties.SERVER_TEMPBAN_FORMAT));
+									PL.languageList.get("PUNISHMENT_TEMPBAN_INFORM")));
 						}
 					}
 					if (p.isOnline()) {
+						PL = new PlayerLanguage(p);
 						p.getPlayer().kickPlayer(
-								this.formatMessage(p.getUniqueId().toString(), ConfigProperties.USER_TEMPBAN_FORMAT));
+								this.formatMessage(p.getUniqueId().toString(), PL.languageList.get("PUNISHMENT_TEMPBAN_KICK")));
 					}
 					return true;
 				} catch (Exception e) {
@@ -95,15 +100,17 @@ public class TempBan implements CommandExecutor {
 	private String formatMessage(String UUID2, String format) throws SQLException {
 		String toFormat = format;
 		if (PlayerClass.getWhoBanned().equals("CONSOLE")) {
-			toFormat = toFormat.replaceAll("\\{staffMember\\}", "CONSOLE");
+			toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 		} else {
-			toFormat = toFormat.replaceAll("\\{staffMember\\}",
+			toFormat = toFormat.replaceAll("\\{0\\}",
 					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned())).getName());
 		}
 
-		toFormat = toFormat.replaceAll("\\{culprit\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
-		toFormat = toFormat.replaceAll("\\{reason\\}", PlayerClass.getReason());
-		toFormat = toFormat.replaceAll("\\{expire\\}", PlayerClass.getExpireDate().toString());
+		toFormat = toFormat.replaceAll("\\{1\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
+		toFormat = toFormat.replaceAll("\\{3\\}", PlayerClass.getReason());
+		Date MythDate = new Date();
+		String PD = MythDate.convertToPd(MythDate.getTimeDifference(MythDate.getNewDate(),PlayerClass.getExpireDate()));
+		toFormat = toFormat.replaceAll("\\{2\\}", PD);
 		return toFormat;
 	}
 }

@@ -140,6 +140,7 @@ public class PlayerLanguage {
 		languageList.put("ERR_NOMUTUALUSERS", file.getString("ERR-NOMUTUALUSERS"));
 		// Command-Specific messages
 		languageList.put("COMMAND_BAN_USAGE", file.getString("COMMAND-BAN-USAGE"));
+		languageList.put("COMMAND_TEMPBAN_USAGE", file.getString("COMMAND-TEMPBAN-USAGE"));
 		languageList.put("COMMAND_CREATEUI_USAGE", file.getString("COMMAND-CREATEUI-USAGE"));
 		languageList.put("COMMAND_GETFAM_USAGE", file.getString("COMMAND-GETFAM-USAGE"));
 		languageList.put("COMMAND_IPBAN_USAGE", file.getString("COMMAND-IPBAN-USAGE"));
@@ -157,8 +158,9 @@ public class PlayerLanguage {
 		languageList.put("COMMAND_IMPORTJSON_TASKSTART", file.getString("COMMAND-IMPORTJSON-TASKSTART"));
 		// Punishment messages
 		languageList.put("PUNISHMENT_BAN_INFORM", file.getString("PUNISHMENT-BAN-INFORM"));
+		languageList.put("PUNISHMENT_TEMPBAN_INFORM", file.getString("PUNISHMENT-TEMPBAN-INFORM"));
 		languageList.put("PUNISHMENT_BAN_KICK", file.getString("PUNISHMENT-BAN-KICK"));
-
+		languageList.put("PUNISHMENT_TEMPBAN_KICK", file.getString("PUNISHMENT-TEMPBAN-KICK"));
 		languageList.put("PUNISHMENT_IPBAN_INFORM", file.getString("PUNISHMENT-IPBAN-INFORM"));
 		languageList.put("PUNISHMENT_IPBAN_KICK", file.getString("PUNISHMENT-IPBAN-KICK"));
 
@@ -171,6 +173,7 @@ public class PlayerLanguage {
 		languageList.put("PUNISHMENT_UNMUTE_INFORM", file.getString("PUNISHMENT-UNMUTE-INFORM"));
 		languageList.put("PUNISHMENT_UNMUTE_PLAYER", file.getString("PUNISHMENT-UNMUTE-PLAYER"));
 		languageList.put("PUNISHMENT_IPPARDON", file.getString("PUNISHMENT-IPPARDON"));
+		languageList.put("PUNISHMENT_USERPARDON", file.getString("PUNISHMENT-USERPARDON"));
 		// Data tapback
 		languageList.put("MUTUAL_USERS", file.getString("MUTUAL-USERS"));
 

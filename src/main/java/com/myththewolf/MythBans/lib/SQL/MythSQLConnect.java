@@ -61,7 +61,7 @@ public class MythSQLConnect {
 				Bukkit.getLogger().info("Loading MySQL Table: PlayerStats");
 			}
 			ps = (PreparedStatement) con.prepareStatement(
-					"CREATE TABLE IF NOT EXISTS `MythBans_PlayerStats` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `override` VARCHAR(255) NULL DEFAULT NULL, `status` VARCHAR(255) NOT NULL,`lang_file` VARCHAR(255) NOT NULL DEFAULT 'en_US' , `group` VARCHAR(255) NOT NULL ,`expires` VARCHAR(255) NULL DEFAULT NULL , `reason` VARCHAR(255) NULL DEFAULT NULL , `timestamp` VARCHAR(255) NOT NULL, `byUUID` VARCHAR(255) NULL DEFAULT NULL , `last_quit_date` VARCHAR(255) NULL DEFAULT NULL, `last_name` VARCHAR(255) NOT NULL, `playtime` LONGTEXT NULL DEFAULT NULL, `session_start` VARCHAR(255) NULL DEFAULT NULL,PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
+					"CREATE TABLE IF NOT EXISTS `MythBans_PlayerStats` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `override` VARCHAR(255) NULL DEFAULT NULL, `probated` VARCHAR(255) NULL DEFAULT NULL ,`status` VARCHAR(255) NOT NULL,`lang_file` VARCHAR(255) NOT NULL DEFAULT 'en_US' , `group` VARCHAR(255) NOT NULL ,`expires` VARCHAR(255) NULL DEFAULT NULL , `reason` VARCHAR(255) NULL DEFAULT NULL , `timestamp` VARCHAR(255) NOT NULL, `byUUID` VARCHAR(255) NULL DEFAULT NULL , `last_quit_date` VARCHAR(255) NULL DEFAULT NULL, `last_name` VARCHAR(255) NOT NULL, `playtime` LONGTEXT NULL DEFAULT NULL, `session_start` VARCHAR(255) NULL DEFAULT NULL,PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
 			ps.executeUpdate();
 			// Player Caches
 			if (ConfigProperties.DEBUG) {

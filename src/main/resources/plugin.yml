@@ -47,21 +47,6 @@ commands:
  playertime:
      description: Displays Total PlayerTime
      aliases: [playtime,pt]
- tickettp:
-     description: Teleports you to point of specified ticket
-     aliases: [ttp,whereisgreif]
- tickets:
-     description: Views tickets and reports
-     aliases: [reports,ts]
- mytickets:
-     description: Shows all of your open tickets
-     aliases: [mt,myticket]
- close: 
-     description: Closes a ticket 
-     aliases: [closeticket,ct]
- ticket:
-     description: Get info from ticket ID
-     aliases: []
  mythbans:
      description: Shows API and plugin version
      aliases: []

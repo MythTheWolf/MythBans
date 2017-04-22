@@ -17,7 +17,9 @@ public class Date {
 			return null;
 		}
 	}
-
+	public String getNewDateString(){
+		return f.format(new java.util.Date());
+	}
 	public java.util.Date parseDate(String in) {
 		try {
 			return f.parse(in);

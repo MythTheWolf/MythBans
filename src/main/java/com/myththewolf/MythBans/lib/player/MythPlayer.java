@@ -25,6 +25,7 @@ public class MythPlayer {
 	private Date JOIN_DATE;
 	private Date SESSION_START;
 	private String LANG_FILE;
+	private boolean IS_PROBATED;
 
 	public MythPlayer(String theUUID) {
 		try {
@@ -33,7 +34,7 @@ public class MythPlayer {
 			ps.setString(1, theUUID);
 			rs = ps.executeQuery();
 			if (!rs.next()) {
-		
+
 				return;
 			} else {
 				UUID = theUUID;
@@ -47,14 +48,20 @@ public class MythPlayer {
 					EXPIRE_DATE = MythDate.parseDate(rs.getString("expires"));
 				}
 				PLAY_TIME = rs.getLong("playtime");
-				if (rs.getString("last_quit_date") == null || rs.getString("last_quit_date").equals("") ) {
+				if (rs.getString("last_quit_date") == null || rs.getString("last_quit_date").equals("")) {
 					QUIT_DATE = null;
 				} else {
 					QUIT_DATE = MythDate.parseDate(rs.getString("last_quit_date"));
 				}
 				JOIN_DATE = MythDate.parseDate(rs.getString("timestamp"));
-				SESSION_START = MythDate.parseDate(rs.getString("session_start"));
+				if (rs.getString("session_start") == null) {
+					SESSION_START = MythDate.getNewDate();
+					setSession(UUID, MythDate.formatDate(MythDate.getNewDate()));
+				} else {
+					SESSION_START = MythDate.parseDate(rs.getString("session_start"));
+				}
 				LANG_FILE = rs.getString("lang_file");
+				IS_PROBATED = rs.getBoolean("probated");
 			}
 		} catch (
 
@@ -68,14 +75,17 @@ public class MythPlayer {
 	public String getStatus() {
 		return PLAYER_STATUS;
 	}
-	public static void setSession(String UUID2, String time) throws SQLException{
+
+	public static void setSession(String UUID2, String time) throws SQLException {
 		ps = (PreparedStatement) MythSQLConnect.getConnection()
 				.prepareStatement("UPDATE MythBans_PlayerStats SET session_start = ?  WHERE UUID = ?");
 		ps.setString(2, UUID2);
 		ps.setString(1, time);
 		ps.executeUpdate();
 		PlayerDataCache.rebuildUser(UUID);
+		System.out.println("UPDATING SESSION:::" + time);
 	}
+
 	public String getReason() {
 		if (BAN_REASON == null || BAN_REASON.equals("")) {
 			return ConfigProperties.DEFAULT_BAN_REASON;
@@ -114,6 +124,15 @@ public class MythPlayer {
 		return IS_OVERRIDE;
 	}
 
+	public void setProbate(boolean pro) throws SQLException {
+		ps = MythSQLConnect.getConnection()
+				.prepareStatement("UPDATE MythBans_PlayerStats SET `probated` = ? where UUID = ?");
+		ps.setString(1, Boolean.toString(pro));
+		ps.setString(2, UUID);
+		ps.executeUpdate();
+		PlayerDataCache.rebuildUser(UUID);
+	}
+
 	public static void setOverride(String UUID, boolean over) throws SQLException {
 		ps = MythSQLConnect.getConnection()
 				.prepareStatement("UPDATE MythBans_PlayerStats SET `override` = ? where UUID = ?");
@@ -140,6 +159,10 @@ public class MythPlayer {
 
 	public long getPlayTime() {
 		return PLAY_TIME;
+	}
+
+	public boolean getProbate() {
+		return IS_PROBATED;
 	}
 
 	public void setQuitTime(String time) throws SQLException {
@@ -169,8 +192,6 @@ public class MythPlayer {
 	public Date getSessionJoinDate(String UUID) throws SQLException {
 		return SESSION_START;
 	}
-
-	
 
 	public void setPlayTime(long timeDifference) throws SQLException {
 		ps = (PreparedStatement) MythSQLConnect.getConnection()

@@ -30,6 +30,7 @@ public class CommandEvent implements Listener {
 			}
 			e.getPlayer().sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Potatoes can't execute commands!");
 			e.setCancelled(true);
+			return;
 		}
 		/* ALL OF THE NOPE */
 		if (!(e.getMessage().indexOf("cs_trigger") > 0)) {

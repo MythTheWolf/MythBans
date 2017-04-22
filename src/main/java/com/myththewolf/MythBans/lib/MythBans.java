@@ -32,13 +32,6 @@ import com.myththewolf.MythBans.commands.mbfix;
 import com.myththewolf.MythBans.commands.mythapi;
 import com.myththewolf.MythBans.commands.softmute;
 import com.myththewolf.MythBans.commands.user;
-import com.myththewolf.MythBans.commands.ticket.CloseTicket;
-import com.myththewolf.MythBans.commands.ticket.MyTickets;
-import com.myththewolf.MythBans.commands.ticket.ReportGrief;
-import com.myththewolf.MythBans.commands.ticket.Ticket;
-import com.myththewolf.MythBans.commands.ticket.Tickets;
-import com.myththewolf.MythBans.commands.ticket.closedtickets;
-import com.myththewolf.MythBans.commands.ticket.tickettp;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
@@ -153,15 +146,11 @@ public class MythBans {
 		MythPlugin.getCommand("pardonIP").setExecutor(new PardonIP(MythPlugin));
 		MythPlugin.getCommand("getFam").setExecutor(new getFam());
 		MythPlugin.getCommand("kickip").setExecutor(new IPKick(MythPlugin));
-		MythPlugin.getCommand("reportGreif").setExecutor(new ReportGrief());
+
 		MythPlugin.getCommand("playertime").setExecutor(new PlayerTime());
-		MythPlugin.getCommand("tickettp").setExecutor(new tickettp());
-		MythPlugin.getCommand("tickets").setExecutor(new Tickets());
-		MythPlugin.getCommand("mytickets").setExecutor(new MyTickets());
-		MythPlugin.getCommand("ticket").setExecutor(new Ticket());
-		MythPlugin.getCommand("close").setExecutor(new CloseTicket());
+
 		MythPlugin.getCommand("mythbans").setExecutor(new mythapi());
-		MythPlugin.getCommand("closedtickets").setExecutor(new closedtickets());
+
 		MythPlugin.getCommand("player").setExecutor(new user());
 		MythPlugin.getCommand("link").setExecutor(new Link(MBD));
 		MythPlugin.getCommand("potato").setExecutor(new Potato(MythPlugin));
