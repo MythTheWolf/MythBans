@@ -43,28 +43,13 @@ public class MessageCreate implements MessageCreateListener {
 				return;
 			}
 
-			if (theMessage.getChannelReceiver().getId() != myBot.getChannel().getId()
-					&& theMessage.getChannelReceiver().getId() != myBot.getConsole().getId()) {
-				return;
-			}
 			if (!myBot.isSetup()) {
 				return;
 			}
 			AbstractPlayer AB = new AbstractPlayer(theMessage.getAuthor().getId());
 
 			String MC_ID = null;
-		
-			if (myBot.isSetup() && theMessage.getChannelReceiver().getId() == myBot.getConsole().getId()) {
-				if (!AB.isRootAccount()) {
-					theMessage.reply("You are not a root account!");
-					return;
-				} else {
-					Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), theMessage.getContent());
 
-					theMessage.delete();
-					return;
-				}
-			}
 			if (!AB.isLinked()) {
 
 				Thread.sleep(500);
@@ -77,7 +62,7 @@ public class MessageCreate implements MessageCreateListener {
 			if (myBot.isSetup() && !theMessage.getChannelReceiver().equals(myBot.getChannel())) {
 				return;
 			}
-			
+
 			PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 			if (!theMessage.getChannelReceiver().getId().equals(myBot.getChannel().getId())) {
 				theMessage.getAuthor().sendMessage("Command not found");
