@@ -7,7 +7,6 @@ import org.bukkit.OfflinePlayer;
 import com.myththewolf.MythBans.lib.discord.DiscordCommand;
 import com.myththewolf.MythBans.lib.discord.MythCommandExecute;
 import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
-import com.myththewolf.MythBans.tasks.LogWatcher;
 
 import de.btobastian.javacord.entities.User;
 import de.btobastian.javacord.entities.message.Message;
@@ -23,7 +22,7 @@ public class ClearLog implements MythCommandExecute{
 	public void runCommand(User theDiscordUser, OfflinePlayer theBukkitUser, String[] args, Message theMessage) {
 			try {
 				bot.getConsoleThread().edit("[MythBansBot]Cleared log!");
-				LogWatcher.clearLog();
+		
 			} catch (InterruptedException | ExecutionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -1,7 +1,6 @@
 package com.myththewolf.MythBans.lib.discord;
 
 import java.lang.reflect.Method;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,7 +21,8 @@ import com.myththewolf.MythBans.commands.discord.shutdown;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.discord.events.MessageCreate;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.tasks.BetterLogWatcher;
+import com.myththewolf.MythBans.tasks.LogFileTailer;
+import com.myththewolf.MythBans.tasks.ManualPushConsole;
 
 import de.btobastian.javacord.DiscordAPI;
 import de.btobastian.javacord.Javacord;
@@ -64,22 +64,26 @@ public class MythDiscordBot {
 				api.registerListener(new MessageCreate(tmp));
 				try {
 					if (isSetup()) {
+						
 						connectedServer = api.getServerById(getServerID());
 						mcChannel = getChannel();
 						updateRoles();
 						consoleChannel = getConsole();
 						mcChannel.updateTopic("PM MythBot with \"mclink\" to use this channel");
-						log_watch_id = Bukkit.getScheduler().runTaskAsynchronously(pl, new BetterLogWatcher()).getTaskId();
+						LogFileTailer LFT = new LogFileTailer("logs/latest.log",500);
+						Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new ManualPushConsole(LFT), 0, 60);
 						registerCommand("!mclink", new McLink());
 						registerCommand("!ping", new Ping());
 						registerCommand("!shutdown", new shutdown(tmp));
 						registerCommand("!clear", new ClearLog(tmp));
 						registerCommand("!reload", new ReloadConsoleEngine(log_watch_id, pl));
+						
+						Bukkit.getScheduler().runTaskAsynchronously(plugin, LFT);
 					} else {
 						OK = false;
 						if (api.getServers().size() < 0) {
 							System.out.println(
-									"The bot key and everythins is OK, but you need to join it to your server!");
+									"The bot key and everythings is OK, but you need to join it to your server!");
 							return;
 						} else {
 							System.out.println(
@@ -260,8 +264,7 @@ public class MythDiscordBot {
 		try {
 			this.conThread.delete();
 			this.conThread = this.consoleChannel.sendMessage(input).get();
-			BetterLogWatcher.clearLog();
-			
+
 		} catch (InterruptedException | ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -320,10 +323,10 @@ public class MythDiscordBot {
 	}
 
 	public void appendConsole(String stuff) {
-	
+
 		String app = ChatColor.stripColor(stuff);
 		try {
-			if (getConsoleThread().getContent().length() > 2000) {
+			if (getConsoleThread().getContent().length() >= 1500) {
 				this.remakeConsoleThread(app);
 				return;
 			}
@@ -337,7 +340,15 @@ public class MythDiscordBot {
 	public static HashMap<String, MythCommandExecute> getCommandMap() {
 		return CommandMap;
 	}
-
+	public String getConsoleContext(){
+		try {
+			return getConsoleThread().getContent();
+		} catch (InterruptedException | ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	public void registerCommand(String command, MythCommandExecute executor) {
 		try {
 			Method M = executor.getClass().getMethod("runCommand");

@@ -12,6 +12,7 @@ import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
+import com.myththewolf.MythBans.lib.player.PlayerLanguage;
 import com.myththewolf.MythBans.lib.tool.Date;
 
 import net.md_5.bungee.api.ChatColor;
@@ -20,16 +21,17 @@ public class PlayerTime implements CommandExecutor {
 	private MythPlayer mythPlayer;
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private Date mythDate = new Date();
-
+	private PlayerLanguage PL;
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
+			PL = new PlayerLanguage(sender);
 			if (args.length < 1) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /playtime <user>");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("COMMAND_PLAYERTIME_USAGE"));
 				return true;
 			}
 			if (pCache.getOfflinePlayerExact(args[0]) == null) {
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player not found");
+				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NULL_PLAYER"));
 				return true;
 			}
 			OfflinePlayer p = pCache.getOfflinePlayerExact(args[0]);

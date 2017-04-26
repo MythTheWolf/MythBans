@@ -77,3 +77,7 @@ commands:
  mbfix:
      description: Fixes Lang issues
      aliases: []
+ xenUpdate:
+     description: Set xenforo group
+     aliases: []
+

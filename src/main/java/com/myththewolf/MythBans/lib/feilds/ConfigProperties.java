@@ -18,7 +18,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class ConfigProperties {
 	public static String SYSTEM_LOCALE = "en_US";
-	public static final String VERSION = "2.7.6";
+	public static final String VERSION = "2.8.0";
 	public static final String[] LANGS = { "en_US" };
 	public static String PREFIX_UNALTERED;
 	public static List<String> ROOT_ACCOUNTS;
@@ -86,8 +86,14 @@ public class ConfigProperties {
 	public static String DISCORD_THREAD_ID;
 	public static String RELOAD;
 	public static String SOFTMUTE_RELEASE_COMMAND;
+	public static String XEN_SQL_HOST;
+	public static String XEN_SQL_PORT;
+	public static String XEN_SQL_DATABASE;
+	public static String XEN_SQL_USERNAME;
+	public static String XEN_SQL_PASSWORD;
 	public static boolean AUTO_MUTE = false;
 	public static FileConfiguration lang;
+
 	public static HashMap<String, FileConfiguration> langMap = new HashMap<String, FileConfiguration>();
 
 	public static void dumpProperties(FileConfiguration cfg) {
@@ -98,6 +104,13 @@ public class ConfigProperties {
 			SQL_DATABASE = cfg.getString("SQL-DATABASE");
 			SQL_USERNAME = cfg.getString("SQL-USER");
 			SQL_PASSWORD = cfg.getString("SQL-PASSWORD");
+			
+			XEN_SQL_HOST = cfg.getString("XEN-SQL-HOST");
+			XEN_SQL_PORT = cfg.getString("XEN-SQL-PORT");
+			XEN_SQL_DATABASE = cfg.getString("XEN-SQL-DATABASE");
+			XEN_SQL_USERNAME = cfg.getString("XEN-SQL-USER");
+			XEN_SQL_PASSWORD = cfg.getString("XEN-SQL-PASSWORD");
+			
 			CRON_INTERVAL = cfg.getInt("CRON-UDPATE-TIME");
 			PREFIX = ChatColor.translateAlternateColorCodes('&', cfg.getString("PREFIX"));
 			PREFIX_UNALTERED = ChatColor.translateAlternateColorCodes('&', cfg.getString("PREFIX"));

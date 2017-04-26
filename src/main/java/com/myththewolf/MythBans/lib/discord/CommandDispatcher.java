@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.OfflinePlayer;
+
 import com.myththewolf.MythBans.lib.player.AbstractPlayer;
 
 import de.btobastian.javacord.entities.User;
@@ -22,7 +24,13 @@ public class CommandDispatcher {
 			try {
 				MythCommandExecute MCE = MythDiscordBot.getCommandMap().get(split.get(0));
 				AbstractPlayer AP = new AbstractPlayer(sender.getId());
-				Method M = MCE.getClass().getMethod("runCommand");
+				@SuppressWarnings("rawtypes")
+				Class[] args = new Class[4];
+				args[0] = User.class;
+				args[1] = OfflinePlayer.class;
+				args[2] = String[].class;
+				args[3] = Message.class;
+				Method M = MCE.getClass().getMethod("runCommand",args);
 				DiscordCommand  CO;
 				if(!M.isAnnotationPresent(DiscordCommand.class)){
 					theMessage.delete();
@@ -34,11 +42,11 @@ public class CommandDispatcher {
 				if(CO.deleteTriggerMessage()){
 					theMessage.delete();
 				}
-				if (CO.requiresRoot() && !AP.isLinked()) {
+				if (CO.requiresLinked() && !AP.isLinked()) {
 					theMessage.reply("You must be a linked account before executing this command.");
 					return;
 				}
-				if (CO.requiresLinked() && !AP.isRootAccount()) {
+				if (CO.requiresRoot() && !AP.isRootAccount()) {
 					theMessage.reply("You must be a root account before executing this command.");
 					return;
 				}
@@ -49,6 +57,7 @@ public class CommandDispatcher {
 					MCE.runCommand(sender, AP.getPlayer(), split.toArray(new String[split.size()]), theMessage);
 				} else {
 					MCE.runCommand(sender, null, split.toArray(new String[split.size()]), theMessage);
+					System.out.println("RUNNING____NOTBUKKIT");
 				}
 			} catch (SQLException | NoSuchMethodException | SecurityException e) {
 				e.printStackTrace();

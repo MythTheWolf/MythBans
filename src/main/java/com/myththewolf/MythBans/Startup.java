@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.myththewolf.MythBans.lib.MythBans;
 import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
+import com.myththewolf.MythBans.lib.feilds.AbstractMaps;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
@@ -24,6 +25,8 @@ public class Startup extends JavaPlugin {
 	private MythBans MB;
 
 	public void onEnable() {
+
+		
 		PlayerDataCache.makeMap();
 		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory
 				.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
@@ -36,7 +39,6 @@ public class Startup extends JavaPlugin {
 		this.MB = mb;
 
 		MythLogger.info("Loaded 6 tables.");
-		
 
 		if (ConfigProperties.use_bot) {
 			mb.startDiscordBot();
@@ -71,11 +73,11 @@ public class Startup extends JavaPlugin {
 		if (RUN) {
 			System.out.println("****** TEST RAN OK ******");
 		}
-
+		AbstractMaps.buildMaps();
 	}
 
 	public void onDisable() {
-		
+
 		Date date = new Date();
 		try {
 			for (Player p : Bukkit.getOnlinePlayers()) {

@@ -8,7 +8,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.myththewolf.MythBans.lib.feilds.AbstractMaps;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.MythPlayerMetaData;
 
 import net.md_5.bungee.api.ChatColor;
@@ -20,6 +22,16 @@ public class CommandEvent implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onCommand(PlayerCommandPreprocessEvent e) throws Exception {
+		MythPlayer MP = new MythPlayer(e.getPlayer().getUniqueId().toString());
+		if(!MP.isOverride()){
+			if(e.getMessage().indexOf("rules") > -1){
+				System.out.println("UPDATING_RULES");
+				AbstractMaps.read_rules.put(e.getPlayer().getUniqueId().toString(), true);
+			}else if(!AbstractMaps.read_rules.containsKey(e.getPlayer().getUniqueId().toString())){
+				System.out.println("SETTING_FALSE");
+				AbstractMaps.read_rules.put(e.getPlayer().getUniqueId().toString(), false);
+			}
+		}
 		if (ConfigProperties.DEBUG) {
 			System.out.println("[MythBans]Captured command event!");
 		}

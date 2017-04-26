@@ -27,8 +27,9 @@ public class setup implements MythCommandExecute {
 		// TODO Auto-generated constructor stub
 	}
 
+
+	@DiscordCommand(requiresLinked=false,requiresRoot=false)
 	@Override
-	@DiscordCommand(requiresLinked=false,requiresRoot=true)
 	public void runCommand(User theDiscordUser, OfflinePlayer theBukkitUser, String[] args,Message theMessage) {
 		try {
 			if(myBot.isSetup()){

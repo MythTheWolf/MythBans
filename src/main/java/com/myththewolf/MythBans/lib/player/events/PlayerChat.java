@@ -13,6 +13,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
+import com.myththewolf.MythBans.lib.feilds.AbstractMaps;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
@@ -82,6 +83,17 @@ public class PlayerChat implements Listener {
 			org.bukkit.entity.Player PP = e.getPlayer();
 			String who = PP.getDisplayName();
 			String message = e.getMessage();
+			if (!AbstractMaps.new_join_count.containsKey(e.getPlayer().getUniqueId().toString())) {
+				AbstractMaps.new_join_count.put(e.getPlayer().getUniqueId().toString(), 0);
+			} else if (AbstractMaps.new_join_count.get(e.getPlayer().getUniqueId().toString()) > 2
+					&& AbstractMaps.read_rules.get(e.getPlayer().getUniqueId().toString())) {
+				e.getPlayer().sendMessage(ConfigProperties.PREFIX + "Buddy! Read /rules, your chat perms are limited!");
+			} else if (AbstractMaps.new_join_count.get(e.getPlayer().getUniqueId().toString()) > 20) {
+				e.getPlayer().sendMessage(ConfigProperties.PREFIX + "Buddy! Read /rules, your chat perms are limited!");
+			} else {
+				AbstractMaps.new_join_count.put(e.getPlayer().getUniqueId().toString(),
+						AbstractMaps.new_join_count.get(e.getPlayer().getUniqueId().toString()) + 1);
+			}
 			if (e.getPlayer().hasPermission("essentials.chat.color")) {
 				PP.sendMessage(ChatColor.WHITE + "<" + who + ChatColor.WHITE + "> "
 						+ ChatColor.translateAlternateColorCodes('&', message));

@@ -32,6 +32,12 @@ CRON-UPDATE-TIME: '40'
 API-STARTPOINT: 'localhost/API.php'
 #xenAPI Secret key to use
 API-KEY: 'somesecretcode'
+#XenForo database
+XEN-SQL-HOST: 'localhost'
+XEN-SQL-PORT: '3306'
+XEN-SQL-DATABASE: 'main'
+XEN-SQL-USER: 'root'
+XEN-SQL-PASSWORD: 'root'
 #Discord bot
 USE-BOT: false
 DISCORD-BOT-KEY: 'mykey'

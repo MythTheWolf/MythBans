@@ -25,6 +25,7 @@ import com.myththewolf.MythBans.commands.Potato;
 import com.myththewolf.MythBans.commands.Probate;
 import com.myththewolf.MythBans.commands.ReloadMythBans;
 import com.myththewolf.MythBans.commands.TempBan;
+import com.myththewolf.MythBans.commands.UpdateXenForo;
 import com.myththewolf.MythBans.commands.createUI;
 import com.myththewolf.MythBans.commands.getFam;
 import com.myththewolf.MythBans.commands.importJSON;
@@ -43,7 +44,6 @@ import com.myththewolf.MythBans.lib.player.events.PlayerJoin;
 import com.myththewolf.MythBans.lib.player.events.PlayerQuit;
 import com.myththewolf.MythBans.lib.tool.LanguageGoverner;
 import com.myththewolf.MythBans.tasks.AlerResolved;
-import com.myththewolf.MythBans.tasks.LogWatcher;
 import com.myththewolf.MythBans.tasks.WarnUnsolvedTickets;
 
 public class MythBans {
@@ -159,6 +159,7 @@ public class MythBans {
 		// MythPlugin.getCommand("socialspy").setExecutor(new SocialSpy());
 		MythPlugin.getCommand("clearchat").setExecutor(new ClearChat());
 		MythPlugin.getCommand("mbfix").setExecutor(new mbfix(this));
+		MythPlugin.getCommand("xenUpdate").setExecutor(new UpdateXenForo());
 	}
 
 	public void buildCommandMap() {
@@ -191,7 +192,7 @@ public class MythBans {
 		try {
 			if (MBD.isSetup()) {
 				MBD.disconnect();
-				LogWatcher.closeReader();
+	
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
