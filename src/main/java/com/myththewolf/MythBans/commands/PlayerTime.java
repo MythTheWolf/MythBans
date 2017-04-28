@@ -3,6 +3,7 @@ package com.myththewolf.MythBans.commands;
 import java.sql.SQLException;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Statistic;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -15,13 +16,11 @@ import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
 import com.myththewolf.MythBans.lib.tool.Date;
 
-import net.md_5.bungee.api.ChatColor;
-
 public class PlayerTime implements CommandExecutor {
-	private MythPlayer mythPlayer;
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
-	private Date mythDate = new Date();
 	private PlayerLanguage PL;
+	private Date mythDate = new Date();
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		try {
@@ -35,26 +34,15 @@ public class PlayerTime implements CommandExecutor {
 				return true;
 			}
 			OfflinePlayer p = pCache.getOfflinePlayerExact(args[0]);
-			String time;
-			long dump;
-			mythPlayer = PlayerDataCache.getInstance(p.getUniqueId().toString());
-			if (p.isOnline()) {
-				dump = mythDate.getTimeDifference(mythPlayer.getSessionJoinDate(p.getUniqueId().toString()),
-						mythDate.getNewDate()) + mythPlayer.getPlayTime();
-				time = mythDate.convertToPd(dump);
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "User has play time of " + time);
-				return true;
+			MythPlayer MP = PlayerDataCache.getInstance(p.getUniqueId().toString());
+			long init;
+			if (!p.isOnline()) {
+				init = MP.getPlayTime();
 			} else {
-				time = mythDate.convertToPd(mythPlayer.getPlayTime());
-				java.util.Date off = mythPlayer.getQuitDate();
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "User has play time of " + time
-						+ "(First joined on " + mythDate.formatDate(mythPlayer.getJoinDate()) + ")");
-				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "User has been offline for "
-						+ mythDate.convertToPd(mythDate.getTimeDifference(off, mythDate.getNewDate())) + "(Last seen: "
-						+ mythDate.formatDate(mythPlayer.getQuitDate()) + ")");
-				return true;
+				init = p.getPlayer().getStatistic(Statistic.PLAY_ONE_TICK);
 			}
-
+			String PD = mythDate.convertToPd((init / 20) * 1000);
+			sender.sendMessage(ConfigProperties.PREFIX + "User has play time of " + PD);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -2,6 +2,7 @@ package com.myththewolf.MythBans.lib.player.events;
 
 import java.sql.SQLException;
 
+import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,9 +20,8 @@ public class PlayerQuit implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent e) throws SQLException {
 		Player p = e.getPlayer();
 		pClass = PlayerDataCache.getInstance(e.getPlayer().getUniqueId().toString());
-		String UUID = p.getUniqueId().toString();
 		pClass.setQuitTime(date.formatDate(date.getNewDate()));
-		pClass.setPlayTime(
-				date.getTimeDifference(pClass.getSessionJoinDate(UUID), date.getNewDate()) + pClass.getPlayTime());
+		long tick = p.getStatistic(Statistic.PLAY_ONE_TICK);
+		pClass.setPlayTime((tick / 20) * 1000);
 	}
 }

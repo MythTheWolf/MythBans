@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.Statistic;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -32,6 +33,7 @@ public class PlayerChat implements Listener {
 			throws SQLException, InterruptedException, ExecutionException {
 
 		org.bukkit.entity.Player p = e.getPlayer();
+		e.getPlayer().getStatistic(Statistic.PLAY_ONE_TICK);
 		MythPlayer playerClass = PlayerDataCache.getInstance(p.getUniqueId().toString());
 
 		if (e.getMessage().equalsIgnoreCase(ConfigProperties.SOFTMUTE_RELEASE_COMMAND) && !(playerClass.isOverride())) {

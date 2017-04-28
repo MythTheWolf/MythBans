@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
@@ -82,10 +83,9 @@ public class Startup extends JavaPlugin {
 		try {
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				MythPlayer pClass = new MythPlayer(p.getUniqueId().toString());
-				String UUID = p.getUniqueId().toString();
 				pClass.setQuitTime(date.formatDate(date.getNewDate()));
-				pClass.setPlayTime(date.getTimeDifference(pClass.getSessionJoinDate(UUID), date.getNewDate())
-						+ pClass.getPlayTime());
+				long tick = p.getStatistic(Statistic.PLAY_ONE_TICK);
+				pClass.setPlayTime((tick / 20) * 1000);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

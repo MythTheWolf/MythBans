@@ -171,7 +171,7 @@ public class MythDiscordBot {
 		return false;
 	}
 
-	public void writeData(String SRVID, String ROLEID, String ROOT_ID) throws SQLException {
+	public void writeData(String SRVID, String ROLEID) throws SQLException {
 		ps = (PreparedStatement) con.prepareStatement("INSERT INTO MythBans_Discord (`key`,`value`) VALUES (?,?)");
 		ps.setString(1, "SYSTEM-SETUP");
 		ps.setBoolean(2, true);
@@ -181,9 +181,6 @@ public class MythDiscordBot {
 		ps.executeUpdate();
 		ps.setString(1, "ROLE-ID");
 		ps.setString(2, ROLEID);
-		ps.executeUpdate();
-		ps.setString(1, "ROOT-ROLE-ID");
-		ps.setString(2, ROOT_ID);
 		ps.executeUpdate();
 	}
 
