@@ -13,6 +13,3 @@ deploy:
   on:
     repo: MythTheWolf/MythBans-JavaPlugin
     branch: master
-    
-after_success:
-- sh set_tags.sh
