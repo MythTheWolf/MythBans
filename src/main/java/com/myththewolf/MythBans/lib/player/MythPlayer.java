@@ -219,4 +219,8 @@ public class MythPlayer {
 			return LANG_FILE;
 		}
 	}
+
+	public String getId() {
+		return UUID;
+	}
 }

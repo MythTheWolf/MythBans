@@ -43,8 +43,6 @@ import com.myththewolf.MythBans.lib.player.events.PlayerEatEvent;
 import com.myththewolf.MythBans.lib.player.events.PlayerJoin;
 import com.myththewolf.MythBans.lib.player.events.PlayerQuit;
 import com.myththewolf.MythBans.lib.tool.LanguageGoverner;
-import com.myththewolf.MythBans.tasks.AlerResolved;
-import com.myththewolf.MythBans.tasks.WarnUnsolvedTickets;
 
 public class MythBans {
 	private JavaPlugin MythPlugin;
@@ -181,8 +179,8 @@ public class MythBans {
 	}
 
 	public void startDaemon() throws SQLException {
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(MythPlugin, new WarnUnsolvedTickets(MythPlugin), 20, 6000);
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(MythPlugin, new AlerResolved(), 20, 3000);
+	
+
 
 	}
 

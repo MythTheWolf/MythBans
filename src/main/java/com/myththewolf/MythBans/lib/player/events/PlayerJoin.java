@@ -149,7 +149,7 @@ public class PlayerJoin implements Listener {
 				toFormat = toFormat.replaceAll("\\{0\\}",
 						Bukkit.getOfflinePlayer(UUID.fromString(ipClass.getWhoBanned(UUID2))).getName());
 			}
-			toFormat = toFormat.replaceAll("\\{2\\}", ipClass.getReason(UUID2));
+			toFormat = toFormat.replaceAll("\\{3\\}", ipClass.getReason(UUID2));
 		} else {
 
 			toFormat = toFormat.replaceAll("\\{1\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());

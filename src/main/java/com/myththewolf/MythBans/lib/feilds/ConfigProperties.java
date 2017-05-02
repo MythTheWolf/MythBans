@@ -99,6 +99,7 @@ public class ConfigProperties {
 	public static void dumpProperties(FileConfiguration cfg) {
 		try {
 
+			
 			SQL_HOST = cfg.getString("SQL-HOST");
 			SQL_PORT = cfg.getString("SQL-PORT");
 			SQL_DATABASE = cfg.getString("SQL-DATABASE");
