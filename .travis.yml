@@ -3,13 +3,6 @@ sudo: false
 script:
 - mvn clean install
 - mv target/MythBans.jar MythBans.jar
-deploy:
-  provider: releases
-  api_key:
-    secure: l2PMZIaFtx/R7WvHrqy1iT0b0NOKrbbXqkVHlGF+M5kP13b8S+fYg9W4gF/wfSE/mGrhQkIqJXp0jn13r16aP5lsWZLKmksm56DDC3HHOmiYjlbMWdMdYs/LXLgbzWcTSA04E0wLUeUP6fsinBgs6yJFROt9Qq6nWWyUUTj+WrjgAoP8vRV19nT9AVN+sSXXsno0AvQox6vu/DCfgaG2NsKvcs6uSRKCyE+mOL0TEcOc/Xc6I9/Mn7HXK8TI0fzco6gSQflk09M5jBIzztusfbJQXl+pH3SQWg6ek0e4GZb10r4LSc32ll/V0RcJuqt7kIRftB0ugDvovIwadY0Fyqd9jUENeCX3YlwMyMAfF7T3KNZLZQCtd308k2DInIf6icjTdwf/RCOyGxSLoh+It75uOT43gWmmmLrQ3n2xld9q1G9HYQnWhrNVoi4XDD9r5/KrfObG1vgZNFF5p9wWIQnevMnWH4rQhNGFfBRi20Bf3TDfJuIrT/IIE6YSz2Id4fmqd3KjHmH9+0ag3lhl0mU6a5T+RJzjuKHpdRy4kEFbgN+jJukIcN7TFhIv/ZrsoFSgr6SAPxua7rk5LO5lg1ggy4XpBM1kUSN4++7v4dNMEhd2w/0Fw+0VbHJaOUXcdEbMDsJzSHQSvdWww6yiovBhh1ZsYrngVL1F7BbJTXs=
-  file: MythBans.jar
-  
-  skip_cleanup: true
   on:
     repo: MythTheWolf/MythBans-JavaPlugin
     branch: master
