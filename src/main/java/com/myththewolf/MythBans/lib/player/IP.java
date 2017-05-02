@@ -16,7 +16,7 @@ public class IP {
 	private PlayerCache pc = new PlayerCache(con);
 
 	public String getWhoBanned(String IP) throws SQLException {
-		System.out.println("INPUT---->" + IP);
+		
 		ps = (PreparedStatement) con.prepareStatement("SELECT * FROM MythBans_IPCache WHERE IP_ADDRESS = ?");
 		ps.setString(1, IP);
 		rs = ps.executeQuery();
@@ -61,7 +61,7 @@ public class IP {
 			fam.add(pc.getName(rs.getString("UUID")));
 			theAmount++;
 		}
-		System.out.println(theAmount);
+
 		if (theAmount <= 0) {
 			return new String[0];
 		} else {

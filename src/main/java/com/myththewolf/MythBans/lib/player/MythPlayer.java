@@ -83,7 +83,7 @@ public class MythPlayer {
 		ps.setString(1, time);
 		ps.executeUpdate();
 		PlayerDataCache.rebuildUser(UUID);
-		System.out.println("UPDATING SESSION:::" + time);
+
 	}
 
 	public String getReason() {

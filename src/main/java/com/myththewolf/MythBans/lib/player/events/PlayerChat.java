@@ -33,7 +33,7 @@ public class PlayerChat implements Listener {
 			throws SQLException, InterruptedException, ExecutionException {
 
 		org.bukkit.entity.Player p = e.getPlayer();
-		e.getPlayer().getStatistic(Statistic.PLAY_ONE_TICK);
+
 		MythPlayer playerClass = PlayerDataCache.getInstance(p.getUniqueId().toString());
 
 		if (e.getMessage().equalsIgnoreCase(ConfigProperties.SOFTMUTE_RELEASE_COMMAND) && !(playerClass.isOverride())) {
@@ -42,6 +42,7 @@ public class PlayerChat implements Listener {
 			dbc.cleanUser(p.getUniqueId().toString());
 			p.sendMessage(ConfigProperties.PREFIX + ChatColor.GREEN + "You may now speak!");
 			e.setCancelled(true);
+			return;
 		}
 		if (playerClass.getStatus().equals("muted")) {
 			p.sendMessage(ChatColor.translateAlternateColorCodes('&', ConfigProperties.PREFIX)

@@ -1,7 +1,6 @@
 package com.myththewolf.MythBans.commands;
 
 import java.sql.SQLException;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -44,21 +43,22 @@ public class Ban implements CommandExecutor {
 				return true;
 			} else {
 				toBan = pCache.getOfflinePlayerExact(args[0]);
-				
+
 				PlayerClass = PlayerDataCache.getInstance(toBan.getUniqueId().toString());
 				if (sender instanceof ConsoleCommandSender) {
 					String reason = Utils.makeString(args, 1);
 					dbc.banUser(toBan.getUniqueId().toString(), "CONSOLE", reason);
-
+					PlayerDataCache.rebuildUser(toBan.getUniqueId().toString());
 					toUUID = toBan.getUniqueId().toString();
 				} else {
 					String reason = Utils.makeString(args, 1);
 					org.bukkit.entity.Player by = (org.bukkit.entity.Player) sender;
 					dbc.banUser(toBan.getUniqueId().toString(), by.getUniqueId().toString(), reason);
-
+					PlayerDataCache.rebuildUser(toBan.getUniqueId().toString());
 					toUUID = toBan.getUniqueId().toString();
 				}
 			}
+			PlayerClass = PlayerDataCache.getInstance(toUUID);
 			for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 				PL = new PlayerLanguage(player);
 				if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
@@ -84,8 +84,7 @@ public class Ban implements CommandExecutor {
 		if (PlayerClass.getWhoBanned().equals("CONSOLE")) {
 			toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 		} else {
-			toFormat = toFormat.replaceAll("\\{0\\}",
-					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned())).getName());
+			toFormat = toFormat.replaceAll("\\{0\\}", pCache.getName(PlayerClass.getWhoBanned()));
 		}
 
 		toFormat = toFormat.replaceAll("\\{1\\}", pCache.getName(UUID2));

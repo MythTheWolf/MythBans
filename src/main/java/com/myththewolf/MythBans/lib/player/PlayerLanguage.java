@@ -28,24 +28,24 @@ public class PlayerLanguage {
 
 			file = ConfigProperties.langMap.get("en_US");
 			if (CON_RUN) {
-				System.out.println("CR1");
+
 				writeStatic();
 				clearColor();
 				return;
 			} else {
-				System.out.println("WC");
+
 				writeColor();
 			}
 		} else {
 
 			file = ConfigProperties.langMap.get(theLang);
 			if (CON_RUN) {
-				System.out.println("CR2");
+			
 				writeStatic();
 				clearColor();
 				return;
 			} else {
-				System.out.println("WC2");
+
 				writeColor();
 			}
 		}
