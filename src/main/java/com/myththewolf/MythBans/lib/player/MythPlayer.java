@@ -9,6 +9,12 @@ import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 
+/**
+ * Contains all getters for a player,main SQL table is MythBans_PlayerStats.
+ * 
+ * @author MythTheWolf
+ *
+ */
 public class MythPlayer {
 	private ResultSet rs;
 	private static PreparedStatement ps;
@@ -27,6 +33,13 @@ public class MythPlayer {
 	private String LANG_FILE;
 	private boolean IS_PROBATED;
 
+	/**
+	 * The Main Constructor for this class, this constructor must be called.
+	 * 
+	 * @author MythTheWolf
+	 * @param theUUID
+	 *            - Player's UUID
+	 */
 	public MythPlayer(String theUUID) {
 		try {
 			ps = (PreparedStatement) MythSQLConnect.getConnection()
@@ -72,10 +85,26 @@ public class MythPlayer {
 
 	}
 
+	/**
+	 * Get the player's current status from the cache created by constructor
+	 * 
+	 * @see MythPlayer
+	 * @return String - The Player's current status
+	 * 
+	 */
 	public String getStatus() {
 		return PLAYER_STATUS;
 	}
 
+	/**
+	 * Set a player's session start in the database
+	 * 
+	 * @param UUID2
+	 *            - The player's UUID
+	 * @param time
+	 *            - The time in a string format
+	 * @throws SQLException
+	 */
 	public static void setSession(String UUID2, String time) throws SQLException {
 		ps = (PreparedStatement) MythSQLConnect.getConnection()
 				.prepareStatement("UPDATE MythBans_PlayerStats SET session_start = ?  WHERE UUID = ?");
@@ -86,6 +115,12 @@ public class MythPlayer {
 
 	}
 
+	/**
+	 * 
+	 * @return String - Ban Reason: The reason a player is banned. <br />
+	 *         <b>Note: </b>If the reason is null or empty, the return is the
+	 *         default ban reason.
+	 */
 	public String getReason() {
 		if (BAN_REASON == null || BAN_REASON.equals("")) {
 			return ConfigProperties.DEFAULT_BAN_REASON;
@@ -94,10 +129,25 @@ public class MythPlayer {
 		}
 	}
 
+	/**
+	 * 
+	 * @return String - The UUID of the user who executed the punishment. <br />
+	 *         <b>Note: </b>Returns "CONSOLE" if the console was the command
+	 *         sender.
+	 */
 	public String getWhoBanned() {
 		return WHO_BANNED;
 	}
 
+	/**
+	 * Adds a new player to the database
+	 * 
+	 * @param UUID
+	 *            - User UUID
+	 * @param name
+	 *            - User name
+	 * @throws SQLException
+	 */
 	public static void processNewUser(String UUID, String name) throws SQLException {
 		Date date = MythDate.getNewDate();
 
@@ -120,10 +170,23 @@ public class MythPlayer {
 		PlayerDataCache.rebuildUser(UUID);
 	}
 
+	/**
+	 * Gets the player's override value.
+	 * 
+	 * @return Boolean - If the softmute value is overriden.
+	 * @throws SQLException
+	 */
 	public boolean isOverride() throws SQLException {
 		return IS_OVERRIDE;
 	}
 
+	/**
+	 * Set's a users probate value
+	 * 
+	 * @param pro
+	 *            - The probate value
+	 * @throws SQLException
+	 */
 	public void setProbate(boolean pro) throws SQLException {
 		ps = MythSQLConnect.getConnection()
 				.prepareStatement("UPDATE MythBans_PlayerStats SET `probated` = ? where UUID = ?");
@@ -133,6 +196,15 @@ public class MythPlayer {
 		PlayerDataCache.rebuildUser(UUID);
 	}
 
+	/**
+	 * Set's a users Override value
+	 * 
+	 * @param 
+	 * UUID - The Player's UUID
+	 * @param 
+	 * over - The Override value
+	 * @throws SQLException
+	 */
 	public static void setOverride(String UUID, boolean over) throws SQLException {
 		ps = MythSQLConnect.getConnection()
 				.prepareStatement("UPDATE MythBans_PlayerStats SET `override` = ? where UUID = ?");
@@ -141,11 +213,19 @@ public class MythPlayer {
 		ps.executeUpdate();
 		PlayerDataCache.rebuildUser(UUID);
 	}
-
+	/**
+	 * 
+	 * @return The expire date of a tempban
+	 * @throws SQLException
+	 * @see com.myththewolf.MythBans.lib.tool.Date
+	 */
 	public Date getExpireDate() throws SQLException {
 		return EXPIRE_DATE;
 	}
-
+	/**
+	 * Clears a player's expire date. Purely just for database cosmetics.
+	 * @throws SQLException
+	 */
 	public void clearExpire() throws SQLException {
 		ps = (PreparedStatement) MythSQLConnect.getConnection()
 				.prepareStatement("UPDATE MythBans_PlayerStats SET `status` = ?, `expires` = ? WHERE `UUID` = ?");
@@ -156,7 +236,10 @@ public class MythPlayer {
 		ps.close();
 		PlayerDataCache.rebuildUser(UUID);
 	}
-
+	/**
+	 * 
+	 * @return Long - The player's total time in miliseconds
+	 */
 	public long getPlayTime() {
 		return PLAY_TIME;
 	}

@@ -1,7 +1,6 @@
 package com.myththewolf.MythBans.commands;
 
 import java.sql.SQLException;
-
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -42,7 +41,7 @@ public class Kick implements CommandExecutor {
 				toKick = pc.getPlayerExact(args[0]);
 				PlayerClass = PlayerDataCache.getInstance(toKick.getUniqueId().toString());
 			}
-			PL = new PlayerLanguage(toKick.getUniqueId().toString());
+			PL = new PlayerLanguage(pc.getUUID(args[0]));
 			if (sender instanceof ConsoleCommandSender) {
 				dbc.kickUser(toKick.getUniqueId().toString(), "CONSOLE", Utils.makeString(args, 1));
 				pc.getPlayerExact(args[0]).kickPlayer(
@@ -52,7 +51,6 @@ public class Kick implements CommandExecutor {
 				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NO_PERMISSION"));
 				return true;
 			} else {
-
 				if (sender instanceof ConsoleCommandSender) {
 					dbc.kickUser(toKick.getUniqueId().toString(), "CONSOLE", Utils.makeString(args, 1));
 				} else {
@@ -82,17 +80,14 @@ public class Kick implements CommandExecutor {
 
 	private String formatMessage(String UUID2, String format) throws SQLException {
 		String toFormat = format;
-
 		if (PlayerClass.getWhoBanned().equals("CONSOLE")) {
 			toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 		} else {
 			toFormat = toFormat.replaceAll("\\{0\\}",
 					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned())).getName());
 		}
-
 		toFormat = toFormat.replaceAll("\\{1\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
 		toFormat = toFormat.replaceAll("\\{2\\}", PlayerClass.getReason());
-
 		return toFormat;
 	}
 }
