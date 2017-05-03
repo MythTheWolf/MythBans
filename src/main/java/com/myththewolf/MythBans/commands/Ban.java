@@ -47,15 +47,15 @@ public class Ban implements CommandExecutor {
 				PlayerClass = PlayerDataCache.getInstance(toBan.getUniqueId().toString());
 				if (sender instanceof ConsoleCommandSender) {
 					String reason = Utils.makeString(args, 1);
-					dbc.banUser(toBan.getUniqueId().toString(), "CONSOLE", reason);
+					dbc.banUser(pCache.getUUID(args[0]), "CONSOLE", reason);
 					PlayerDataCache.rebuildUser(toBan.getUniqueId().toString());
-					toUUID = toBan.getUniqueId().toString();
+					toUUID = pCache.getUUID(args[0]);
 				} else {
 					String reason = Utils.makeString(args, 1);
 					org.bukkit.entity.Player by = (org.bukkit.entity.Player) sender;
-					dbc.banUser(toBan.getUniqueId().toString(), by.getUniqueId().toString(), reason);
+					dbc.banUser(pCache.getUUID(args[0]), by.getUniqueId().toString(), reason);
 					PlayerDataCache.rebuildUser(toBan.getUniqueId().toString());
-					toUUID = toBan.getUniqueId().toString();
+					toUUID = pCache.getUUID(args[0]);
 				}
 			}
 			PlayerClass = PlayerDataCache.getInstance(toUUID);

@@ -1,6 +1,7 @@
 package com.myththewolf.MythBans.lib.tool;
 
 import java.io.BufferedReader;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -44,7 +45,9 @@ public class Utils {
 	 * null, returns empty string
 	 * 
 	 * @param l
+	 * 		The location to convert
 	 * @return
+	 * 		The location in a serial string
 	 */
 	static public String serializeLocation(final Location l) {
 		if (l == null) {
