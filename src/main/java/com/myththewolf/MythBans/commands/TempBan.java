@@ -5,7 +5,6 @@
 package com.myththewolf.MythBans.commands;
 
 import java.sql.SQLException;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -65,11 +64,14 @@ public class TempBan implements CommandExecutor {
 					if (sender instanceof org.bukkit.entity.Player) {
 						String byUUID = ((org.bukkit.entity.Player) sender).getUniqueId().toString();
 						dbc.tmpBanUser(UUID, byUUID, reason, dateStr);
+						PlayerDataCache.rebuildUser(UUID);
 						p = pCache.getOfflinePlayerExact(args[0]);
 					} else {
 						dbc.tmpBanUser(UUID, "CONSOLE", reason, dateStr);
+						PlayerDataCache.rebuildUser(UUID);
 						p = pCache.getOfflinePlayerExact(args[0]);
 					}
+					PlayerClass = PlayerDataCache.getInstance(UUID);
 					for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 						PL = new PlayerLanguage(player);
 						if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
@@ -102,15 +104,14 @@ public class TempBan implements CommandExecutor {
 		if (PlayerClass.getWhoBanned().equals("CONSOLE")) {
 			toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 		} else {
-			toFormat = toFormat.replaceAll("\\{0\\}",
-					Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned())).getName());
+			toFormat = toFormat.replaceAll("\\{0\\}", pCache.getName(PlayerClass.getWhoBanned()));
 		}
 
-		toFormat = toFormat.replaceAll("\\{1\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
-		toFormat = toFormat.replaceAll("\\{3\\}", PlayerClass.getReason());
+		toFormat = toFormat.replaceAll("\\{1\\}", pCache.getName(UUID2));
+		toFormat = toFormat.replaceAll("\\{2\\}", PlayerClass.getReason());
 		Date MythDate = new Date();
 		String PD = MythDate.convertToPd(MythDate.getTimeDifference(MythDate.getNewDate(),PlayerClass.getExpireDate()));
-		toFormat = toFormat.replaceAll("\\{2\\}", PD);
+		toFormat = toFormat.replaceAll("\\{3\\}", PD);
 		return toFormat;
 	}
 }

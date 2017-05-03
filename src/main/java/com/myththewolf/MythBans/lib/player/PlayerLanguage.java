@@ -19,7 +19,7 @@ import net.md_5.bungee.api.ChatColor;
 public class PlayerLanguage {
 	public HashMap<String, String> languageList = new HashMap<String, String>();
 	private FileConfiguration file;
-	static boolean CON_RUN;
+	static boolean CON_RUN = false;
 	private String[] codes = { "&4", "&c", "&6", "&e", "&2", "&a", "&b", "&3", "&1", "&9", "&d", "&5", "&f", "&7", "&8",
 			"&0", "&l", "&n", "&o", "&k", "&m", "&r" };
 
@@ -28,25 +28,23 @@ public class PlayerLanguage {
 
 			file = ConfigProperties.langMap.get("en_US");
 			if (CON_RUN) {
-
 				writeStatic();
 				clearColor();
 				return;
 			} else {
-
+				writeStatic();
 				writeColor();
+				return;
 			}
 		} else {
-
 			file = ConfigProperties.langMap.get(theLang);
 			if (CON_RUN) {
-			
 				writeStatic();
 				clearColor();
 				return;
 			} else {
-
 				writeColor();
+				return;
 			}
 		}
 	}
@@ -211,6 +209,7 @@ public class PlayerLanguage {
 			CON_RUN = true;
 			return ConfigProperties.SYSTEM_LOCALE;
 		} else {
+			CON_RUN = false;
 			ConfigProperties.PREFIX = ConfigProperties.PREFIX_UNALTERED;
 			return UUIDThat((Player) sender);
 		}

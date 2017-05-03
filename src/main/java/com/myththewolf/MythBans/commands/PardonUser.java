@@ -1,7 +1,7 @@
 package com.myththewolf.MythBans.commands;
 
 import java.sql.SQLException;
-import java.util.UUID;
+
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -54,7 +54,7 @@ public class PardonUser implements CommandExecutor {
 					PL = new PlayerLanguage(player);
 					if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {
 						player.sendMessage(ChatColor.translateAlternateColorCodes('&',
-								this.formatMessage(toUUID, PL.languageList.get("ERR_NO_PERMISSION"))));
+								this.formatMessage(toUUID, PL.languageList.get("PUNISHMENT_USERPARDON"))));
 					}
 				}
 				dbc.cleanUser(toUUID);
@@ -73,7 +73,7 @@ public class PardonUser implements CommandExecutor {
 			toFormat = toFormat.replaceAll("\\{0\\}", pCache.getName(byUUID));
 		}
 
-		toFormat = toFormat.replaceAll("\\{1\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
+		toFormat = toFormat.replaceAll("\\{1\\}", pCache.getName(UUID2));
 		return toFormat;
 	}
 }
