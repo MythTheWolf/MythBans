@@ -4,7 +4,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -36,6 +35,7 @@ public class PlayerJoin implements Listener {
 	private JavaPlugin thePlugin;
 	private MythDiscordBot MDB;
 	private PlayerLanguage lang;
+
 	public PlayerJoin(JavaPlugin pl, MythDiscordBot MDBI) {
 		thePlugin = pl;
 		MDB = MDBI;
@@ -43,7 +43,7 @@ public class PlayerJoin implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException {
-		
+
 		e.getPlayer().setInvulnerable(false);
 		e.getPlayer().removeMetadata("is_potato", thePlugin);
 		System.out.println("IMBOUND---->" + e.getPlayer().getName());
@@ -68,14 +68,14 @@ public class PlayerJoin implements Listener {
 			dbc.cleanUser(e.getPlayer().getUniqueId().toString());
 			break;
 		case "banned":
-			message = this.formatMessage(e.getPlayer().getUniqueId().toString(), lang.languageList.get("PUNISHMENT_BAN_KICK"),
-					false);
+			message = this.formatMessage(e.getPlayer().getUniqueId().toString(),
+					lang.languageList.get("PUNISHMENT_BAN_KICK"), false);
 
 			e.getPlayer().kickPlayer(message);
 			return;
 		case "tempBanned":
-			message = this.formatMessage(e.getPlayer().getUniqueId().toString(), lang.languageList.get("PUNISHMENT_TEMPBAN_KICK"),
-					false);
+			message = this.formatMessage(e.getPlayer().getUniqueId().toString(),
+					lang.languageList.get("PUNISHMENT_TEMPBAN_KICK"), false);
 			e.getPlayer().getName();
 			if (d.getNewDate().before(PlayerClass.getExpireDate())) {
 				e.getPlayer().kickPlayer(message);
@@ -146,19 +146,17 @@ public class PlayerJoin implements Listener {
 			if (ipClass.getWhoBanned(UUID2).equals("CONSOLE")) {
 				toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 			} else {
-				toFormat = toFormat.replaceAll("\\{0\\}",
-						Bukkit.getOfflinePlayer(UUID.fromString(ipClass.getWhoBanned(UUID2))).getName());
+				toFormat = toFormat.replaceAll("\\{0\\}", pc.getName(ipClass.getWhoBanned(UUID2)));
 			}
 			toFormat = toFormat.replaceAll("\\{3\\}", ipClass.getReason(UUID2));
 		} else {
 
-			toFormat = toFormat.replaceAll("\\{1\\}", Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).getName());
+			toFormat = toFormat.replaceAll("\\{1\\}", pc.getName(UUID2));
 
 			if (PlayerClass.getWhoBanned().equals("CONSOLE")) {
 				toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 			} else {
-				toFormat = toFormat.replaceAll("\\{0\\}",
-						Bukkit.getOfflinePlayer(UUID.fromString(PlayerClass.getWhoBanned())).getName());
+				toFormat = toFormat.replaceAll("\\{0\\}", pc.getName(PlayerClass.getWhoBanned()));
 			}
 
 			toFormat = toFormat.replaceAll("\\{2\\}", PlayerClass.getReason());
@@ -166,7 +164,7 @@ public class PlayerJoin implements Listener {
 			Date MythDate = new Date();
 			String PD = "undefined";
 			if (MythDate.getNewDate().before(PlayerClass.getExpireDate())) {
-				long mili = MythDate.getTimeDifference(MythDate.getNewDate(),PlayerClass.getExpireDate());
+				long mili = MythDate.getTimeDifference(MythDate.getNewDate(), PlayerClass.getExpireDate());
 				PD = MythDate.convertToPd(mili);
 			}
 			toFormat = toFormat.replaceAll("\\{3\\}", PD);
