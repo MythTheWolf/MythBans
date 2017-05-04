@@ -152,7 +152,7 @@ public class PlayerJoin implements Listener {
 		} else {
 
 			toFormat = toFormat.replaceAll("\\{1\\}", pc.getName(UUID2));
-
+			
 			if (PlayerClass.getWhoBanned().equals("CONSOLE")) {
 				toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 			} else {
