@@ -10,9 +10,8 @@ import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 
 /**
- * Contains all getters for a player,main SQL table is MythBans_PlayerStats.
  * 
- * @author MythTheWolf
+ * @author nicagner
  *
  */
 public class MythPlayer {
@@ -34,11 +33,8 @@ public class MythPlayer {
 	private boolean IS_PROBATED;
 
 	/**
-	 * The Main Constructor for this class, this constructor must be called.
 	 * 
-	 * @author MythTheWolf
 	 * @param theUUID
-	 *            - Player's UUID
 	 */
 	public MythPlayer(String theUUID) {
 		try {
@@ -237,17 +233,24 @@ public class MythPlayer {
 		PlayerDataCache.rebuildUser(UUID);
 	}
 	/**
-	 * 
+	 *  Gets the player's in game playtime.
 	 * @return Long - The player's total time in miliseconds
 	 */
 	public long getPlayTime() {
 		return PLAY_TIME;
 	}
-
+	/**
+	 * Gets the player's probate value.
+	 * @return Boolean - Probate value
+	 */
 	public boolean getProbate() {
 		return IS_PROBATED;
 	}
-
+	/**
+	 * Set's the user's session end
+	 * @param time - The end time in a String format
+	 * @throws SQLException
+	 */
 	public void setQuitTime(String time) throws SQLException {
 		ps = (PreparedStatement) MythSQLConnect.getConnection()
 				.prepareStatement("UPDATE MythBans_PlayerStats SET last_quit_date = ? WHERE UUID = ?");
@@ -256,26 +259,51 @@ public class MythPlayer {
 		ps.executeUpdate();
 		PlayerDataCache.rebuildUser(UUID);
 	}
-
+	/**
+	 * Gets the user's history.
+	 * <br />
+	 * <b>Note:</b> This is NOT cached, and is in realtime every time it's called.
+	 * 
+	 * @return A ResultSet of the user's ban/punishment history
+	 * @throws SQLException
+	 * 
+	 * 
+	 */
 	public ResultSet getHistoryPack() throws SQLException {
 		ps = (PreparedStatement) MythSQLConnect.getConnection()
 				.prepareStatement("SELECT * FROM MythBans_History WHERE UUID = ?");
 		ps.setString(1, UUID);
 		return ps.executeQuery();
 	}
-
+	/**
+	 * Gets the user's session quit date.
+	 * @return The session quit date (In a java.util.Date object)
+	 * @throws SQLException
+	 */
 	public Date getQuitDate() throws SQLException {
 		return QUIT_DATE;
 	}
-
+	/**
+	 * Gets the user's first  join date.
+	 * @return The users first join date (In a java.util.Date object)
+	 * @throws SQLException
+	 */
 	public Date getJoinDate() throws SQLException {
 		return JOIN_DATE;
 	}
-
+	/**
+	 * Gets the user's session start date.
+	 * @return The session start date (In a java.util.Date object)
+	 * @throws SQLException
+	 */
 	public Date getSessionJoinDate(String UUID) throws SQLException {
 		return SESSION_START;
 	}
-
+	/**
+	 * Sets the player's total playtime
+	 * @param timeDifference  - The total playtime in miliseconds. <br /><b>NOTE:</b> This is does not add time, it overrides. Be careful!
+	 * @throws SQLException
+	 */
 	public void setPlayTime(long timeDifference) throws SQLException {
 		ps = (PreparedStatement) MythSQLConnect.getConnection()
 				.prepareStatement("UPDATE MythBans_PlayerStats SET playtime = ?  WHERE UUID = ?");
@@ -284,7 +312,11 @@ public class MythPlayer {
 		ps.executeUpdate();
 		PlayerDataCache.rebuildUser(UUID);
 	}
-
+	/**
+	 * Sets the player's current status
+	 * @param stat - The status to set to.
+	 * @throws SQLException
+	 */
 	public void setStatus(String stat) throws SQLException {
 		ps = (PreparedStatement) MythSQLConnect.getConnection()
 				.prepareStatement("UPDATE MythBans_PlayerStats SET status = ?  WHERE UUID = ?");
@@ -294,7 +326,10 @@ public class MythPlayer {
 		PlayerDataCache.rebuildUser(UUID);
 
 	}
-
+	/**
+	 * Gets the player's lang values
+	 * @return The lang file name
+	 */
 	public String getLang() {
 		if (LANG_FILE == null || LANG_FILE.equals("")) {
 			return ConfigProperties.SYSTEM_LOCALE;
@@ -302,7 +337,10 @@ public class MythPlayer {
 			return LANG_FILE;
 		}
 	}
-
+	/**
+	 * Get player's ID
+	 * @return The player's UUID
+	 */
 	public String getId() {
 		return UUID;
 	}

@@ -11,6 +11,12 @@ import de.btobastian.javacord.entities.message.Message;
  */
 public interface MythCommandExecute {
 
-
+	/**
+	 * 
+	 * @param theDiscordUser - The JavaCord User object of the message sender
+	 * @param theBukkitUser - The OfflinePlayer object of the User's linked account (null if discord isnt linked)
+	 * @param args - Arguments to the command
+	 * @param theMessage - The unmodified message. Note that if  the deleteMessage annoation is true, this will be NULL
+	 */
 	public void runCommand(User theDiscordUser, OfflinePlayer theBukkitUser, String[] args, Message theMessage);
 }
