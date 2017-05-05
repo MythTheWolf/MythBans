@@ -170,7 +170,7 @@
 					</execution>
 				</executions>
 				<configuration>
-					<finalName>${project.artifactId}</finalName>
+				
 					<relocation>
 						<pattern>org.bstats</pattern>
 						<!-- Replace this with your package! -->
