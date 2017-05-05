@@ -35,10 +35,8 @@ public class Probate implements CommandExecutor {
 				return true;
 			} else {
 
-				playerClass = PlayerDataCache
-						.getInstance(pCache.getUUID(args[0]));
-
-				p = pCache.getOfflinePlayerExact(args[0]);
+				playerClass = PlayerDataCache.getInstance(pCache.getUUID(args[0]));
+				 p = pCache.getOfflinePlayerExact(args[0]);
 				if (playerClass.getProbate()) {
 					if (sender instanceof ConsoleCommandSender) {
 						playerClass.setProbate(false);
@@ -50,8 +48,7 @@ public class Probate implements CommandExecutor {
 						return true;
 					}
 				} else {
-					playerClass = PlayerDataCache
-							.getInstance(pCache.getUUID(args[0]));
+					playerClass = PlayerDataCache.getInstance(pCache.getUUID(args[0]));
 					p = pCache.getOfflinePlayerExact(args[0]);
 					if (sender instanceof ConsoleCommandSender) {
 						playerClass.setProbate(true);
