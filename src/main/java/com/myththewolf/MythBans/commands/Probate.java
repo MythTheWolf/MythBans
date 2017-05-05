@@ -52,6 +52,7 @@ public class Probate implements CommandExecutor {
 				} else {
 					playerClass = PlayerDataCache
 							.getInstance(pCache.getUUID(args[0]));
+					p = pCache.getOfflinePlayerExact(args[0]);
 					if (sender instanceof ConsoleCommandSender) {
 						playerClass.setProbate(true);
 						sender.sendMessage(

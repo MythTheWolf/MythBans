@@ -53,7 +53,7 @@ public class Potato implements CommandExecutor {
 				} else {
 					Location l = new Location(Bukkit.getServer().getWorld("world"), -9999.0, -5000.0, -9999.0);
 					Player thePlayer = pCache.getOfflinePlayerExact(args[0]).getPlayer();
-					thePlayer.setInvulnerable(false);
+					thePlayer.setInvulnerable(true);
 					Location ORG = thePlayer.getLocation();
 
 					thePlayer.sendMessage(ConfigProperties.PREFIX + "To clarify, you have been turned into a potato.");
