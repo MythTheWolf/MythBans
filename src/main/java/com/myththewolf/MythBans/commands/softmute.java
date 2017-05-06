@@ -33,9 +33,11 @@ public class softmute implements CommandExecutor {
 				if (pClass.getStatus().equals("softmuted")) {
 					pClass.setStatus("OK");
 					MythPlayer.setOverride(pClass.getId(),false);
+					PlayerDataCache.rebuildUser(pClass.getId());
 					sender.sendMessage(ConfigProperties.PREFIX + "Unsoftmuted player.");
 				} else {
 					pClass.setStatus("softmuted");
+					PlayerDataCache.rebuildUser(pClass.getId());
 					sender.sendMessage(ConfigProperties.PREFIX + "Softmuted player.");
 				}
 			}

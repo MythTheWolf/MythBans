@@ -3,7 +3,6 @@ package com.myththewolf.MythBans.commands;
 import java.sql.SQLException;
 
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,7 +16,7 @@ import com.myththewolf.MythBans.lib.player.PlayerCache;
 
 public class Probate implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
-	private OfflinePlayer p;
+
 	private MythPlayer playerClass;
 
 	@Override
@@ -26,45 +25,53 @@ public class Probate implements CommandExecutor {
 			if (args.length < 1) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Usage: /probate <user> [reason]");
 				return true;
-			} else if (pCache.getOfflinePlayerExact(args[0]) == null) {
+			}
+			if (pCache.getOfflinePlayerExact(args[0]) == null) {
 				sender.sendMessage(ConfigProperties.PREFIX + ChatColor.RED + "Player has not been on this server.");
 				return true;
-			} else if (!sender.hasPermission(ConfigProperties.PROBATION_PERMISSION)) {
+			}
+			if (!sender.hasPermission(ConfigProperties.PROBATION_PERMISSION)) {
 				sender.sendMessage(
 						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
+			}
+			playerClass = PlayerDataCache.getInstance(pCache.getUUID(args[0]));
+
+			if (playerClass.getProbate()) {
+				if (sender instanceof ConsoleCommandSender) {
+					playerClass.setProbate(false);
+					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Unprobated "
+							+ pCache.getName(pCache.getUUID(args[0])));
+					PlayerDataCache.rebuildUser(pCache.getUUID(args[0]));
+					return true;
+				} else {
+					playerClass.setProbate(false);
+					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Unprobated "
+							+ pCache.getName(pCache.getUUID(args[0])));
+					PlayerDataCache.rebuildUser(pCache.getUUID(args[0]));
+					return true;
+				}
 			} else {
 
-				playerClass = PlayerDataCache.getInstance(pCache.getUUID(args[0]));
-				 p = pCache.getOfflinePlayerExact(args[0]);
-				if (playerClass.getProbate()) {
-					if (sender instanceof ConsoleCommandSender) {
-						playerClass.setProbate(false);
-						sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Unprobated " + p.getName());
-						return true;
-					} else {
-						playerClass.setProbate(false);
-						sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Unprobated " + p.getName());
-						return true;
-					}
+				if (sender instanceof ConsoleCommandSender) {
+					playerClass.setProbate(true);
+					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Set "
+							+ pCache.getName(playerClass.getId()) + " on probation.");
+					PlayerDataCache.rebuildUser(pCache.getUUID(args[0]));
+					return true;
 				} else {
-					playerClass = PlayerDataCache.getInstance(pCache.getUUID(args[0]));
-					p = pCache.getOfflinePlayerExact(args[0]);
-					if (sender instanceof ConsoleCommandSender) {
-						playerClass.setProbate(true);
-						sender.sendMessage(
-								ConfigProperties.PREFIX + ChatColor.GOLD + "Set " + p.getName() + " on probation.");
-						return true;
-					} else {
-						playerClass.setProbate(true);
-						sender.sendMessage(
-								ConfigProperties.PREFIX + ChatColor.GOLD + "Set " + p.getName() + " on probation.");
-						return true;
-					}
-
+					playerClass.setProbate(true);
+					PlayerDataCache.rebuildUser(playerClass.getId());
+					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Set "
+							+ pCache.getName(pCache.getUUID(args[0])) + " on probation.");
+					return true;
 				}
+
 			}
-		} catch (SQLException e) {
+
+		} catch (
+
+		SQLException e) {
 			e.printStackTrace();
 		}
 		return true;

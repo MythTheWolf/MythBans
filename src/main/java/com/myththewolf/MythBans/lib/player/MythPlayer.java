@@ -24,7 +24,7 @@ public class MythPlayer {
 	private String WHO_BANNED;
 	private boolean IS_OVERRIDE;
 	private Date EXPIRE_DATE;
-	private static String UUID;
+	private String UUID;
 	private Long PLAY_TIME;
 	private Date QUIT_DATE;
 	private Date JOIN_DATE;
@@ -107,7 +107,7 @@ public class MythPlayer {
 		ps.setString(2, UUID2);
 		ps.setString(1, time);
 		ps.executeUpdate();
-		PlayerDataCache.rebuildUser(UUID);
+		PlayerDataCache.rebuildUser(UUID2);
 
 	}
 
@@ -342,6 +342,6 @@ public class MythPlayer {
 	 * @return The player's UUID
 	 */
 	public String getId() {
-		return UUID;
+		return this.UUID;
 	}
 }

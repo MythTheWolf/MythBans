@@ -38,7 +38,7 @@ public class user implements CommandExecutor {
 				return true;
 			}
 			pClass = PlayerDataCache.getInstance(pCache.getUUID(args[0]));
-			String UUID = pCache.getPlayerExact(args[0]).getUniqueId().toString();
+			String UUID = pClass.getId();
 			String status = pClass.getStatus();
 			String join = MythDate.formatDate(pClass.getJoinDate());
 			String playTime = MythDate.convertToPd(pClass.getPlayTime());

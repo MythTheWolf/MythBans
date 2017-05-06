@@ -36,7 +36,7 @@ public class IPBan implements CommandExecutor {
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		PL = new PlayerLanguage(sender);
 		boolean recursive = false;
-		boolean silent = true;
+		boolean silent = false;
 		try {
 			if (!sender.hasPermission(ConfigProperties.BANIP_PERMISSION)) {
 				sender.sendMessage(ConfigProperties.PREFIX + PL.languageList.get("ERR_NO_PERMISSION"));

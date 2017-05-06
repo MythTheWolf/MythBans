@@ -11,8 +11,9 @@ public class PlayerDataCache {
 	private static HashMap<String, MythPlayer> PlayerMap;
 
 	public static MythPlayer getInstance(String UUID) {
+		System.out.println("INST:::" + UUID);
 		if (!PlayerMap.containsKey(UUID)) {
-
+			System.out.println("!FOUND");
 			PlayerMap.put(UUID, new MythPlayer(UUID));
 		}
 

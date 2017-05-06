@@ -18,7 +18,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class ConfigProperties {
 	public static String SYSTEM_LOCALE = "en_US";
-	public static final String VERSION = "2.8.4";
+	public static final String VERSION = "2.8.5";
 	public static final String[] LANGS = { "en_US" };
 	public static String PREFIX_UNALTERED;
 	public static List<String> ROOT_ACCOUNTS;
