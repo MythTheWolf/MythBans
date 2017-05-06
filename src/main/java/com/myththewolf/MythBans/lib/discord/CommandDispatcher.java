@@ -22,6 +22,7 @@ public class CommandDispatcher {
 			return;
 		} else {
 			try {
+				
 				MythCommandExecute MCE = MythDiscordBot.getCommandMap().get(split.get(0));
 				AbstractPlayer AP = new AbstractPlayer(sender.getId());
 				@SuppressWarnings("rawtypes")

@@ -23,6 +23,7 @@ public class McLink implements MythCommandExecute {
 	@DiscordCommand(requiresLinked = false, requiresRoot = false)
 	public void runCommand(User theDiscordUser, OfflinePlayer theBukkitUser, String[] args, Message theMessage) {
 		try {
+			
 			if (pCache.isLinked(theMessage.getAuthor().getId())) {
 				theMessage.reply("You are already linked");
 				return;

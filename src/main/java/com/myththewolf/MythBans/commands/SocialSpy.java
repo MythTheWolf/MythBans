@@ -33,7 +33,7 @@ public class SocialSpy implements CommandExecutor {
 			} else {
 				sender.sendMessage(ConfigProperties.PREFIX + "Now spying.");
 				MPM.setSpy(true);
-				return false;
+				return true;
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

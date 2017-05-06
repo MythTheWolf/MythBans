@@ -32,6 +32,7 @@ public class setup implements MythCommandExecute {
 	@Override
 	public void runCommand(User theDiscordUser, OfflinePlayer theBukkitUser, String[] args,Message theMessage) {
 		try {
+			
 			if(myBot.isSetup()){
 				theMessage.reply("This server is already setup. If you want to re-install, wipe the database and delete the proper channels & roles");
 				return;

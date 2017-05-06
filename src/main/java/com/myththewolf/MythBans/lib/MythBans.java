@@ -24,6 +24,7 @@ import com.myththewolf.MythBans.commands.PlayerTime;
 import com.myththewolf.MythBans.commands.Potato;
 import com.myththewolf.MythBans.commands.Probate;
 import com.myththewolf.MythBans.commands.ReloadMythBans;
+import com.myththewolf.MythBans.commands.SocialSpy;
 import com.myththewolf.MythBans.commands.TempBan;
 import com.myththewolf.MythBans.commands.UpdateXenForo;
 import com.myththewolf.MythBans.commands.createUI;
@@ -154,7 +155,7 @@ public class MythBans {
 		MythPlugin.getCommand("potato").setExecutor(new Potato(MythPlugin));
 		MythPlugin.getCommand("softmute").setExecutor(new softmute());
 		MythPlugin.getCommand("mbreload").setExecutor(new ReloadMythBans(MythPlugin));
-		// MythPlugin.getCommand("socialspy").setExecutor(new SocialSpy());
+		MythPlugin.getCommand("socialspy").setExecutor(new SocialSpy());
 		MythPlugin.getCommand("clearchat").setExecutor(new ClearChat());
 		MythPlugin.getCommand("mbfix").setExecutor(new mbfix(this));
 		MythPlugin.getCommand("xenUpdate").setExecutor(new UpdateXenForo());

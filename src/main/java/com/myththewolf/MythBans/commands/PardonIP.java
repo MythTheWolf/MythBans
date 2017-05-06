@@ -32,7 +32,7 @@ public class PardonIP implements CommandExecutor {
 	public PardonIP(JavaPlugin pl) {
 		MythPlugin = pl;
 	}
-
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
 		PL = new PlayerLanguage(sender);
@@ -130,7 +130,6 @@ public class PardonIP implements CommandExecutor {
 		}
 		return true;
 	}
-
 	private String formatMessage(String IP, String format, String byUUID) throws SQLException {
 		String toFormat = format;
 
@@ -140,8 +139,6 @@ public class PardonIP implements CommandExecutor {
 			toFormat = toFormat.replaceAll("\\{0\\}",
 					Bukkit.getOfflinePlayer(UUID.fromString(byUUID)).getName());
 		}
-	
-
 		return toFormat;
 
 	}
