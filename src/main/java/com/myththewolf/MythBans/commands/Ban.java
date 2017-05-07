@@ -48,13 +48,13 @@ public class Ban implements CommandExecutor {
 				if (sender instanceof ConsoleCommandSender) {
 					String reason = Utils.makeString(args, 1);
 					dbc.banUser(pCache.getUUID(args[0]), "CONSOLE", reason);
-					PlayerDataCache.rebuildUser(toBan.getUniqueId().toString());
+					PlayerDataCache.rebuildUser(pCache.getUUID(args[0]));
 					toUUID = pCache.getUUID(args[0]);
 				} else {
 					String reason = Utils.makeString(args, 1);
 					org.bukkit.entity.Player by = (org.bukkit.entity.Player) sender;
 					dbc.banUser(pCache.getUUID(args[0]), by.getUniqueId().toString(), reason);
-					PlayerDataCache.rebuildUser(toBan.getUniqueId().toString());
+					PlayerDataCache.rebuildUser(pCache.getUUID(args[0]));
 					toUUID = pCache.getUUID(args[0]);
 				}
 			}

@@ -43,60 +43,39 @@ public class PlayerJoin implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException {
+		try {
+			e.getPlayer().setInvulnerable(false);
+			e.getPlayer().removeMetadata("is_potato", thePlugin);
+			System.out.println("IMBOUND---->" + e.getPlayer().getName());
 
-		e.getPlayer().setInvulnerable(false);
-		e.getPlayer().removeMetadata("is_potato", thePlugin);
-		System.out.println("IMBOUND---->" + e.getPlayer().getName());
-
-		String message;
-		lang = new PlayerLanguage(e.getPlayer());
-		if (!pc.ipExist(e.getPlayer().getAddress().getAddress().toString())) {
-			pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
-		}
-		if (!ipClass.mappedIpExist(e.getPlayer().getUniqueId().toString(),
-				e.getPlayer().getAddress().getAddress().toString())) {
-			pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
-		}
-		if (pc.getPlayerExact(e.getPlayer().getName()) == null) {
-			MythPlayer.processNewUser(e.getPlayer().getUniqueId().toString(), e.getPlayer().getName());
-			MythPlayer.setSession(e.getPlayer().getUniqueId().toString(), d.formatDate(d.getNewDate()));
-		}
-		PlayerClass = PlayerDataCache.getInstance(e.getPlayer().getUniqueId().toString());
-		switch (PlayerClass.getStatus()) {
-		case "OK":
-
-			dbc.cleanUser(e.getPlayer().getUniqueId().toString());
-			break;
-		case "banned":
-			message = this.formatMessage(e.getPlayer().getUniqueId().toString(),
-					lang.languageList.get("PUNISHMENT_BAN_KICK"), false);
-
-			e.getPlayer().kickPlayer(message);
-			return;
-		case "tempBanned":
-			message = this.formatMessage(e.getPlayer().getUniqueId().toString(),
-					lang.languageList.get("PUNISHMENT_TEMPBAN_KICK"), false);
-			e.getPlayer().getName();
-			if (d.getNewDate().before(PlayerClass.getExpireDate())) {
-				e.getPlayer().kickPlayer(message);
-				return;
-			} else if (d.getNewDate().after(PlayerClass.getExpireDate())) {
-				PlayerClass.clearExpire();
+			String message;
+			lang = new PlayerLanguage(e.getPlayer());
+			if (!pc.ipExist(e.getPlayer().getAddress().getAddress().toString())) {
+				pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
 			}
-			break;
-		default:
-			break;
-		}
-		for (String IP : ipClass.getIPPack(e.getPlayer().getUniqueId().toString())) {
-			switch (dbc.getIPStatus(IP)) {
+			if (!ipClass.mappedIpExist(e.getPlayer().getUniqueId().toString(),
+					e.getPlayer().getAddress().getAddress().toString())) {
+				pc.addIP(e.getPlayer().getUniqueId().toString(), e.getPlayer().getAddress().getAddress().toString());
+			}
+			if (pc.getPlayerExact(e.getPlayer().getName()) == null) {
+				MythPlayer.processNewUser(e.getPlayer().getUniqueId().toString(), e.getPlayer().getName());
+				MythPlayer.setSession(e.getPlayer().getUniqueId().toString(), d.formatDate(d.getNewDate()));
+			}
+			PlayerClass = PlayerDataCache.getInstance(e.getPlayer().getUniqueId().toString());
+			switch (PlayerClass.getStatus()) {
+			case "OK":
+
+				dbc.cleanUser(e.getPlayer().getUniqueId().toString());
+				break;
 			case "banned":
-				message = this.formatMessage(e.getPlayer().getAddress().getAddress().toString(),
-						lang.languageList.get("PUNISHMENT_IPBAN_KICK"), true);
+				message = this.formatMessage(e.getPlayer().getUniqueId().toString(),
+						lang.languageList.get("PUNISHMENT_BAN_KICK"), false);
+
 				e.getPlayer().kickPlayer(message);
 				return;
 			case "tempBanned":
 				message = this.formatMessage(e.getPlayer().getUniqueId().toString(),
-						ConfigProperties.USER_IPTEMPBAN_FORMAT, true);
+						lang.languageList.get("PUNISHMENT_TEMPBAN_KICK"), false);
 				e.getPlayer().getName();
 				if (d.getNewDate().before(PlayerClass.getExpireDate())) {
 					e.getPlayer().kickPlayer(message);
@@ -107,34 +86,58 @@ public class PlayerJoin implements Listener {
 				break;
 			default:
 				break;
-
 			}
-		}
-		List<String> commonUsers = new ArrayList<String>();
-		String theID = e.getPlayer().getUniqueId().toString();
-		String[] IPs = ipClass.getIPPack(theID);
+			for (String IP : ipClass.getIPPack(e.getPlayer().getUniqueId().toString())) {
+				switch (dbc.getIPStatus(IP)) {
+				case "banned":
+					message = this.formatMessage(e.getPlayer().getAddress().getAddress().toString(),
+							lang.languageList.get("PUNISHMENT_IPBAN_KICK"), true);
+					e.getPlayer().kickPlayer(message);
+					return;
+				case "tempBanned":
+					message = this.formatMessage(e.getPlayer().getUniqueId().toString(),
+							ConfigProperties.USER_IPTEMPBAN_FORMAT, true);
+					e.getPlayer().getName();
+					if (d.getNewDate().before(PlayerClass.getExpireDate())) {
+						e.getPlayer().kickPlayer(message);
+						return;
+					} else if (d.getNewDate().after(PlayerClass.getExpireDate())) {
+						PlayerClass.clearExpire();
+					}
+					break;
+				default:
+					break;
 
-		for (String IP : IPs) {
-			if (ipClass.getTheFam(IP, theID) != null) {
-				for (String singleUser : ipClass.getTheFam(IP, theID)) {
-					if (!commonUsers.contains(singleUser)) {
-						commonUsers.add(singleUser);
+				}
+			}
+			List<String> commonUsers = new ArrayList<String>();
+			String theID = e.getPlayer().getUniqueId().toString();
+			String[] IPs = ipClass.getIPPack(theID);
+
+			for (String IP : IPs) {
+				if (ipClass.getTheFam(IP, theID) != null) {
+					for (String singleUser : ipClass.getTheFam(IP, theID)) {
+						if (!commonUsers.contains(singleUser)) {
+							commonUsers.add(singleUser);
+						}
 					}
 				}
 			}
-		}
-		String[] arr = new String[commonUsers.size()];
-		arr = commonUsers.toArray(new String[commonUsers.size()]);
-		if (arr.length > 0) {
-			for (Player p : Bukkit.getOnlinePlayers()) {
-				if (p.hasPermission(ConfigProperties.VIEW_PROBATION_PERMISSION)) {
-					p.sendMessage(ConfigProperties.PREFIX + ChatColor.DARK_RED + "WARNING:" + ChatColor.GOLD
-							+ e.getPlayer().getName() + " has the same IP(s) as " + Arrays.toString(arr));
+			String[] arr = new String[commonUsers.size()];
+			arr = commonUsers.toArray(new String[commonUsers.size()]);
+			if (arr.length > 0) {
+				for (Player p : Bukkit.getOnlinePlayers()) {
+					if (p.hasPermission(ConfigProperties.VIEW_PROBATION_PERMISSION)) {
+						p.sendMessage(ConfigProperties.PREFIX + ChatColor.DARK_RED + "WARNING:" + ChatColor.GOLD
+								+ e.getPlayer().getName() + " has the same IP(s) as " + Arrays.toString(arr));
+					}
 				}
 			}
-		}
-		if (ConfigProperties.use_bot) {
-			MDB.appendThread("\n >>>" + e.getPlayer().getName() + " joined the server <<<");
+			if (ConfigProperties.use_bot) {
+				MDB.appendThread("\n >>>" + e.getPlayer().getName() + " joined the server <<<");
+			}
+		} catch (Exception EE) {
+			e.getPlayer().kickPlayer(ChatColor.DARK_RED+"A INTERNAL ERROR HAS OCCURRED"+ChatColor.GOLD+"\nPlease message one of the owners about this!");
 		}
 	}
 
@@ -152,7 +155,7 @@ public class PlayerJoin implements Listener {
 		} else {
 
 			toFormat = toFormat.replaceAll("\\{1\\}", pc.getName(UUID2));
-			
+
 			if (PlayerClass.getWhoBanned().equals("CONSOLE")) {
 				toFormat = toFormat.replaceAll("\\{0\\}", "CONSOLE");
 			} else {
@@ -163,12 +166,14 @@ public class PlayerJoin implements Listener {
 
 			Date MythDate = new Date();
 			String PD = "undefined";
-			if (MythDate.getNewDate().before(PlayerClass.getExpireDate())) {
-				long mili = MythDate.getTimeDifference(MythDate.getNewDate(), PlayerClass.getExpireDate());
-				PD = MythDate.convertToPd(mili);
-			}
-			toFormat = toFormat.replaceAll("\\{3\\}", PD);
+			if (PlayerDataCache.getInstance(UUID2).getStatus().equals("tempbanned")) {
+				if (MythDate.getNewDate().before(PlayerClass.getExpireDate())) {
+					long mili = MythDate.getTimeDifference(MythDate.getNewDate(), PlayerClass.getExpireDate());
+					PD = MythDate.convertToPd(mili);
+				}
 
+				toFormat = toFormat.replaceAll("\\{3\\}", PD);
+			}
 		}
 		return toFormat;
 	}
