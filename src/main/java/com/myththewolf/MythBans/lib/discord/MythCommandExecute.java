@@ -12,7 +12,7 @@ import de.btobastian.javacord.entities.message.Message;
 public interface MythCommandExecute {
 
 	/**
-	 * 
+	 * The method run on a valid command
 	 * @param theDiscordUser - The JavaCord User object of the message sender
 	 * @param theBukkitUser - The OfflinePlayer object of the User's linked account (null if discord isnt linked)
 	 * @param args - Arguments to the command

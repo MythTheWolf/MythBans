@@ -11,9 +11,18 @@ import com.myththewolf.MythBans.lib.player.AbstractPlayer;
 
 import de.btobastian.javacord.entities.User;
 import de.btobastian.javacord.entities.message.Message;
-
+/**
+ * 
+ * @author MythTheWolf
+ *
+ */
 public class CommandDispatcher {
-
+	/**
+	 * Constructs a new Dispatcher
+	 * @param cmd The literal command string
+	 * @param sender The discord user who sent command
+	 * @param theMessage The message object
+	 */
 	public CommandDispatcher(String cmd, User sender, Message theMessage) {
 		
 		List<String> split = Arrays.asList(cmd.split(" "));
@@ -22,7 +31,6 @@ public class CommandDispatcher {
 			return;
 		} else {
 			try {
-				
 				MythCommandExecute MCE = MythDiscordBot.getCommandMap().get(split.get(0));
 				AbstractPlayer AP = new AbstractPlayer(sender.getId());
 				@SuppressWarnings("rawtypes")

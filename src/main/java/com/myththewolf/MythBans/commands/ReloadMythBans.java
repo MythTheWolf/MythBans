@@ -13,22 +13,23 @@ import net.md_5.bungee.api.ChatColor;
 
 public class ReloadMythBans implements CommandExecutor {
 	private JavaPlugin myth;
+
 	public ReloadMythBans(JavaPlugin pl) {
 		myth = pl;
 	}
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {
-		if(!sender.hasPermission(ConfigProperties.RELOAD))
-		{
-			sender.sendMessage(ConfigProperties.PREFIX+ChatColor.RED+"You do not have permission to use this command.");
+		if (!sender.hasPermission(ConfigProperties.RELOAD)) {
+			sender.sendMessage(
+					ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission to use this command.");
 			return true;
-		}else{
+		} else {
 			MythBans MB = new MythBans(myth);
 			MB.loadConfig();
 			Bukkit.getServer().getPluginManager().disablePlugin(myth);
 			Bukkit.getServer().getPluginManager().enablePlugin(myth);
-			sender.sendMessage(ConfigProperties.PREFIX+ChatColor.GREEN+"MythBans reloaded!");
+			sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GREEN + "MythBans reloaded!");
 			return true;
 		}
 	}
