@@ -3,9 +3,7 @@ package com.myththewolf.MythBans.tasks;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -14,13 +12,16 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
+import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
+import com.myththewolf.MythBans.lib.player.PlayerCache;
 
 public class ImportJSON extends BukkitRunnable {
 
 	private final CommandSender sender;
-	
+
 	private final DatabaseCommands dbc = new DatabaseCommands();
+	private final PlayerCache PC = new PlayerCache(MythSQLConnect.getConnection());
 
 	public ImportJSON(JavaPlugin plugin, CommandSender se) {
 		this.sender = se;
@@ -46,7 +47,7 @@ public class ImportJSON extends BukkitRunnable {
 				String expires = object.get("expires").toString();
 				String reason = object.get("reason").toString();
 				ArrayList<String> checked = new ArrayList<String>();
-				if (!Bukkit.getOfflinePlayer(UUID.fromString(UUID2)).hasPlayedBefore()) {
+				if (PC.getName(UUID2) == null) {
 					if (!checked.contains(UUID2)) {
 						MythPlayer.processNewUser(UUID2, name);
 

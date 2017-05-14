@@ -138,6 +138,7 @@ public class PlayerJoin implements Listener {
 			}
 		} catch (Exception EE) {
 			e.getPlayer().kickPlayer(ChatColor.DARK_RED+"A INTERNAL ERROR HAS OCCURRED"+ChatColor.GOLD+"\nPlease message one of the owners about this!");
+			EE.printStackTrace();
 		}
 	}
 

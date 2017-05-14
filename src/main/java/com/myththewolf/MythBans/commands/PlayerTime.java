@@ -36,12 +36,15 @@ public class PlayerTime implements CommandExecutor {
 			OfflinePlayer p = pCache.getOfflinePlayerExact(args[0]);
 			MythPlayer MP = PlayerDataCache.getInstance(p.getUniqueId().toString());
 			long init;
+			String PD = "ERROR";
 			if (!p.isOnline()) {
 				init = MP.getPlayTime();
+				PD = mythDate.convertToPd(init);
 			} else {
 				init = p.getPlayer().getStatistic(Statistic.PLAY_ONE_TICK);
+				PD = mythDate.convertToPd((init / 20) * 1000);
 			}
-			String PD = mythDate.convertToPd((init / 20) * 1000);
+			
 			sender.sendMessage(ConfigProperties.PREFIX + "User has play time of " + PD);
 		} catch (SQLException e) {
 			e.printStackTrace();
