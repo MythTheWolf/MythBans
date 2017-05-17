@@ -50,7 +50,7 @@ public class MythBans {
 	private MythDiscordBot MBD;
 	private LanguageGoverner LG;
 	private BukkitTask DISABLE_TASK;
-
+	
 	public MythBans(JavaPlugin inst) {
 		this.MythPlugin = inst;
 	}
@@ -105,6 +105,10 @@ public class MythBans {
 			} else {
 				MythPlugin.getLogger().info("Config.yml found, loading!");
 				ConfigProperties.dumpProperties(MythPlugin.getConfig());
+			}
+			file = new File(MythPlugin.getDataFolder(), ".lastversion");
+			if (!file.exists()) {
+				file.createNewFile();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -180,8 +184,6 @@ public class MythBans {
 	}
 
 	public void startDaemon() throws SQLException {
-	
-
 
 	}
 
@@ -191,7 +193,7 @@ public class MythBans {
 		try {
 			if (MBD.isSetup()) {
 				MBD.disconnect();
-	
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

@@ -100,4 +100,7 @@ public class Startup extends JavaPlugin {
 		}
 
 	}
+	public MythBans getInstance(){
+		return this.MB;
+	}
 }
