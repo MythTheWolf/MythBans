@@ -27,6 +27,7 @@ import com.myththewolf.MythBans.commands.ReloadMythBans;
 import com.myththewolf.MythBans.commands.SocialSpy;
 import com.myththewolf.MythBans.commands.TempBan;
 import com.myththewolf.MythBans.commands.UpdateXenForo;
+import com.myththewolf.MythBans.commands.UpgradeTables;
 import com.myththewolf.MythBans.commands.createUI;
 import com.myththewolf.MythBans.commands.getFam;
 import com.myththewolf.MythBans.commands.importJSON;
@@ -37,6 +38,7 @@ import com.myththewolf.MythBans.commands.user;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.player.events.ChunkLoad;
 import com.myththewolf.MythBans.lib.player.events.CommandEvent;
 import com.myththewolf.MythBans.lib.player.events.PlayerChat;
 import com.myththewolf.MythBans.lib.player.events.PlayerDamageEvent;
@@ -118,7 +120,7 @@ public class MythBans {
 	}
 
 	public void loadEvents() {
-
+		MythPlugin.getServer().getPluginManager().registerEvents(new ChunkLoad(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerChat(MBD), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(MythPlugin, MBD), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerQuit(), MythPlugin);
@@ -163,6 +165,7 @@ public class MythBans {
 		MythPlugin.getCommand("clearchat").setExecutor(new ClearChat());
 		MythPlugin.getCommand("mbfix").setExecutor(new mbfix(this));
 		MythPlugin.getCommand("xenUpdate").setExecutor(new UpdateXenForo());
+		MythPlugin.getCommand("upgradeTables").setExecutor(new UpgradeTables(MythPlugin, this));
 	}
 
 	public void buildCommandMap() {

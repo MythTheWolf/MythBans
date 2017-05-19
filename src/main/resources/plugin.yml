@@ -80,4 +80,6 @@ commands:
  xenUpdate:
      description: Set xenforo group
      aliases: []
-
+ upgradeTables:
+     description: Runs SQL table upgrade and update
+     aliases: []

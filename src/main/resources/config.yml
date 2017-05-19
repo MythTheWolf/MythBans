@@ -74,6 +74,8 @@ STAFF-CHAT-GET: "mythbans.staffchat.get"
 IMPORTANT-SEND: 'mythbans.important.send'
 #Other pemissions
 CLEARCHAT-PERMISSION: 'mythbans.clearchat'
+#Other stuff
+MAX-MOB-PER-CHUNK: 20
 #              **********Messages Config********
 AUTO-MUTE: true
 SOFTMUTE-RELEASE: 'accept'

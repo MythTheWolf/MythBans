@@ -18,7 +18,7 @@ import net.md_5.bungee.api.ChatColor;
 
 public class ConfigProperties {
 	public static String SYSTEM_LOCALE = "en_US";
-	public static final String VERSION = "2.8.6";
+	public static final String VERSION = "2.9.0";
 	public static final String[] LANGS = { "en_US" };
 	public static String PREFIX_UNALTERED;
 	public static List<String> ROOT_ACCOUNTS;
@@ -27,6 +27,8 @@ public class ConfigProperties {
 	public static String SQL_PORT;
 	public static String SQL_DATABASE;
 	public static String SQL_USERNAME;
+	public static int MAX_CHUNK_ENTITY_MOB;
+	public static int MAX_CHUNK_ENTITY_ITEM;
 	public static String SQL_PASSWORD;
 	public static int CRON_INTERVAL;
 	public static String PREFIX;
@@ -169,7 +171,7 @@ public class ConfigProperties {
 			AUTO_MUTE = cfg.getBoolean("AUTO-MUTE");
 			CLEARCHAT_PERMISSION = cfg.getString("CLEARCHAT-PERMISSION");
 			ROOT_ACCOUNTS = Arrays.asList(cfg.getString("ROOT-ACCOUNTS").split(","));
-			
+			MAX_CHUNK_ENTITY_MOB = cfg.getInt("MAX-MOB-PER-CHUNK");
 			if (cfg.getBoolean("use_bot") == false) {
 				DISCORD_SETUP = false;
 			}
