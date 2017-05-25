@@ -83,3 +83,6 @@ commands:
  upgradeTables:
      description: Runs SQL table upgrade and update
      aliases: []
+ man:
+     description: Shows manual pages
+     aliases: []

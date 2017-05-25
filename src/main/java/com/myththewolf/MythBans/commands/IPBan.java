@@ -17,7 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.player.IP;
+import com.myththewolf.MythBans.lib.player.MythPlayerIP;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
 import com.myththewolf.MythBans.lib.tool.Utils;
@@ -25,9 +25,10 @@ import com.myththewolf.MythBans.lib.tool.Utils;
 public class IPBan implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private DatabaseCommands dbc = new DatabaseCommands();
-	private IP ipClass = new IP();
+	private MythPlayerIP ipClass = new MythPlayerIP();
 	private String[] packet;
 	private PlayerLanguage PL;
+	private String REASON;
 
 	public IPBan(JavaPlugin pl) {
 	}
@@ -55,37 +56,40 @@ public class IPBan implements CommandExecutor {
 				return true;
 
 			}
+			REASON = Utils.makeString(args, 1);
 			if (args[0].charAt(0) != '/') {
+				
 				packet = ipClass.getIPPack(pCache.getOfflinePlayerExact(args[0]).getUniqueId().toString());
 				Arrays.toString(packet);
-				int pos = 0;
+				
 				for (String I : args) {
-					pos++;
+				
 					if (I.toLowerCase().indexOf("--r") > -1) {
 						sender.sendMessage(ConfigProperties.PREFIX
 								+ " Using recursive mode. All users matching IP will be banned.");
-						args[pos] = args[pos].replaceAll("--r", "");
-						args[pos] = args[pos].replaceAll("--R", "");
+						REASON = REASON.replaceAll("--r", "");
+						REASON = REASON.replaceAll("--R", "");
 						recursive = true;
 
 					} else if (I.toLowerCase().indexOf("--s") > -1) {
 						silent = true;
-						args[pos] = args[pos].replaceAll("--s", "");
-						args[pos] = args[pos].replaceAll("--S", "");
+						REASON = REASON.replaceAll("--s", "");
+						REASON = REASON.replaceAll("--S", "");
 						sender.sendMessage(ConfigProperties.PREFIX + " Using silent mode. No message will be given.");
 					}
 				}
 				List<String> list = new ArrayList<String>();
 				List<String> userPack = new ArrayList<String>();
+				
 				for (String IP : packet) {
 					for (String UUID : pCache.getUUIDbyIP(IP)) {
 						if (recursive && !userPack.contains(pCache.getName(UUID))) {
 							System.out.println("Banning user--->" + pCache.getName(UUID));
 							if (sender instanceof ConsoleCommandSender) {
-								dbc.banUser(UUID, "CONSOLE", Utils.makeString(args, 1));
+								dbc.banUser(UUID, "CONSOLE", REASON);
 							} else {
 								dbc.banUser(UUID, ((Player) sender).getUniqueId().toString(),
-										Utils.makeString(args, 1));
+										REASON);
 							}
 						}
 						if (!userPack.contains(pCache.getName(UUID))) {
@@ -96,10 +100,10 @@ public class IPBan implements CommandExecutor {
 						list.add(IP);
 					}
 					if (sender instanceof ConsoleCommandSender) {
-						dbc.banIP(IP, "CONSOLE", Utils.makeString(args, 1));
+						dbc.banIP(IP, "CONSOLE", REASON);
 					} else {
 						Player p = (Player) sender;
-						dbc.banIP(IP, p.getUniqueId().toString(), Utils.makeString(args, 1));
+						dbc.banIP(IP, p.getUniqueId().toString(), REASON);
 					}
 				}
 				String[] dumpUsers = new String[userPack.size()];

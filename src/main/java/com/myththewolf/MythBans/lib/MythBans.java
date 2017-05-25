@@ -17,6 +17,7 @@ import com.myththewolf.MythBans.commands.IPBan;
 import com.myththewolf.MythBans.commands.IPKick;
 import com.myththewolf.MythBans.commands.Kick;
 import com.myththewolf.MythBans.commands.Link;
+import com.myththewolf.MythBans.commands.Man;
 import com.myththewolf.MythBans.commands.Mute;
 import com.myththewolf.MythBans.commands.PardonIP;
 import com.myththewolf.MythBans.commands.PardonUser;
@@ -52,7 +53,7 @@ public class MythBans {
 	private MythDiscordBot MBD;
 	private LanguageGoverner LG;
 	private BukkitTask DISABLE_TASK;
-	
+
 	public MythBans(JavaPlugin inst) {
 		this.MythPlugin = inst;
 	}
@@ -75,7 +76,6 @@ public class MythBans {
 		if (ConfigProperties.DEBUG) {
 			Bukkit.getLogger().info("All MySQL tables generated.");
 		}
-
 	}
 
 	public void loadConfig() {
@@ -89,15 +89,23 @@ public class MythBans {
 			if (!FF.exists()) {
 				FF.mkdirs();
 			}
+			FF = new File(MythPlugin.getDataFolder() + File.separator + "man-db");
+			if (!FF.exists()) {
+				FF.mkdirs();
+			}
 			for (String theLanguage : ConfigProperties.LANGS) {
 				File specialf = new File(MythPlugin.getDataFolder() + File.separator + "lang", theLanguage + ".yml");
 				if (!specialf.exists()) {
 					specialf.getParentFile().mkdirs();
 					MythPlugin.saveResource("lang" + File.separator + theLanguage + ".yml", false);
 				}
-
 				FileConfiguration daFonts = YamlConfiguration.loadConfiguration(specialf);
 				ConfigProperties.langMap.put(theLanguage, daFonts);
+			}
+			for(String man : ConfigProperties.MAN_ENTRIES){
+				File specialf = new File(MythPlugin.getDataFolder() + File.separator + "man-db", man + ".man");
+					specialf.getParentFile().mkdirs();
+				MythPlugin.saveResource("man-db" + File.separator + man + ".man", true);
 			}
 			File file = new File(MythPlugin.getDataFolder(), "config.yml");
 			if (!file.exists()) {
@@ -166,6 +174,7 @@ public class MythBans {
 		MythPlugin.getCommand("mbfix").setExecutor(new mbfix(this));
 		MythPlugin.getCommand("xenUpdate").setExecutor(new UpdateXenForo());
 		MythPlugin.getCommand("upgradeTables").setExecutor(new UpgradeTables(MythPlugin, this));
+		MythPlugin.getCommand("man").setExecutor(new Man(MythPlugin));
 	}
 
 	public void buildCommandMap() {

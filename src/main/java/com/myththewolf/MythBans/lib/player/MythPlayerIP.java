@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 
-public class IP {
+public class MythPlayerIP {
 	private Connection con = MythSQLConnect.getConnection();
 	private PreparedStatement ps;
 	private ResultSet rs;

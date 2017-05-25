@@ -1,7 +1,6 @@
 package com.myththewolf.MythBans.lib.tool;
 
 import java.io.BufferedReader;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -12,12 +11,16 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.command.CommandSender;
 
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 
@@ -45,9 +48,8 @@ public class Utils {
 	 * null, returns empty string
 	 * 
 	 * @param l
-	 * 		The location to convert
-	 * @return
-	 * 		The location in a serial string
+	 *            The location to convert
+	 * @return The location in a serial string
 	 */
 	static public String serializeLocation(final Location l) {
 		if (l == null) {
@@ -223,4 +225,28 @@ public class Utils {
 
 		return result;
 	}
+
+	public static void paginate(CommandSender sender, HashMap<Integer, String> map, int page, int pageLength,
+			String prefix) {
+		sender.sendMessage(ChatColor.YELLOW + prefix + "(" + String.valueOf(page) + " of "
+				+ (((map.size() % pageLength) == 0) ? map.size() / pageLength : (map.size() / pageLength) + 1));
+		int i = 0, k = 0;
+		page--;
+		for (final Entry<Integer, String> e : map.entrySet()) {
+			k++;
+			if ((((page * pageLength) + i + 1) == k) && (k != ((page * pageLength) + pageLength + 1))) {
+				i++;
+				sender.sendMessage(ChatColor.YELLOW + " - " + e.getValue());
+			}
+		}
+	}
+	public static boolean isNumber(String inte){
+		try{
+			Integer.parseInt(inte);
+		}catch(NumberFormatException e){
+			return false;
+		}
+		return true;
+	}
+
 }

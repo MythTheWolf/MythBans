@@ -1,0 +1,20 @@
+@Properties
+INDEX{
+Synopsis;
+Usage;
+Config;
+}
+@endProperties
+The ban command is used to change a user's status to "banned" in the MythBans database.
+This doesn't write to bans.json. A "dump" command will be written later.
+If there seems to be a database error, or IF SQL credentials on your database server has changed before a restart,
+then this command will not work until you update your config and restart the server.
+@page
+Main usage: /ban <username> [reason]
+----Paramaters----
+Username: The username to ban, this will also ban the UUID.
+Reason: The ban reason. If not given, the default ban reason is subsituted.
+@page
+----Configuration----
+The lang file(s) to control the output messages is located in plugins/MythBans/lang/
+Use the config.yml to set the default ban message

@@ -75,6 +75,7 @@ public class Startup extends JavaPlugin {
 			System.out.println("****** TEST RAN OK ******");
 		}
 		AbstractMaps.buildMaps();
+		
 	}
 
 	public void onDisable() {

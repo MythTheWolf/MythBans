@@ -16,9 +16,10 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
+import com.myththewolf.MythBans.lib.feilds.AbstractMaps;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
-import com.myththewolf.MythBans.lib.player.IP;
+import com.myththewolf.MythBans.lib.player.MythPlayerIP;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
@@ -31,7 +32,7 @@ public class PlayerJoin implements Listener {
 	private MythPlayer PlayerClass;
 	private final com.myththewolf.MythBans.lib.tool.Date d = new Date();
 	private DatabaseCommands dbc = new DatabaseCommands();
-	private IP ipClass = new IP();
+	private MythPlayerIP ipClass = new MythPlayerIP();
 	private JavaPlugin thePlugin;
 	private MythDiscordBot MDB;
 	private PlayerLanguage lang;
@@ -43,7 +44,12 @@ public class PlayerJoin implements Listener {
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException {
+		if(AbstractMaps.serverIsUpgrading()){
+			e.getPlayer().kickPlayer("Database is upgrading. Check back later!");
+			return;
+		}
 		try {
+			
 			e.getPlayer().setInvulnerable(false);
 			e.getPlayer().removeMetadata("is_potato", thePlugin);
 			System.out.println("IMBOUND---->" + e.getPlayer().getName());

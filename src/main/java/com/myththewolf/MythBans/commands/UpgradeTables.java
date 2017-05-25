@@ -8,10 +8,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.lib.MythBans;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
+import com.myththewolf.MythBans.lib.feilds.AbstractMaps;
 import com.myththewolf.MythBans.tasks.UpgradeTablesTask;
 
 public class UpgradeTables implements CommandExecutor{
@@ -31,7 +33,11 @@ public class UpgradeTables implements CommandExecutor{
 			sender.sendMessage("You must be console to run this.");
 			return true;
 		}else{
+			for(Player P : Bukkit.getOnlinePlayers()){
+				P.kickPlayer("Server database is upgrading. Please check back later");
+			}
 			Bukkit.getScheduler().runTaskAsynchronously(myth, new UpgradeTablesTask(this, srv));
+			AbstractMaps.setUpgrade(true);
 		}
 		return true;
 	}

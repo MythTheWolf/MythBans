@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.myththewolf.MythBans.commands.UpgradeTables;
 import com.myththewolf.MythBans.lib.MythBans;
+import com.myththewolf.MythBans.lib.feilds.AbstractMaps;
 
 public class UpgradeTablesTask implements Runnable {
 	private UpgradeTables instance;
@@ -28,6 +29,7 @@ public class UpgradeTablesTask implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		AbstractMaps.setUpgrade(false);
 	}
 
 	public void restructTable(String tableName) throws SQLException {

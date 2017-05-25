@@ -13,14 +13,14 @@ import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.tool.Date;
-import com.myththewolf.MythBans.lib.player.IP;
+import com.myththewolf.MythBans.lib.player.MythPlayerIP;
 import net.md_5.bungee.api.ChatColor;
 
 public class user implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private MythPlayer pClass;
 	private Date MythDate = new Date();
-	private IP ipClass = new IP();
+	private MythPlayerIP ipClass = new MythPlayerIP();
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {

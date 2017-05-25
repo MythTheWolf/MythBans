@@ -41,6 +41,7 @@ public class PlayerChat implements Listener {
 			dbc.cleanUser(p.getUniqueId().toString());
 			p.sendMessage(ConfigProperties.PREFIX + ChatColor.GREEN + "You may now speak!");
 			e.setCancelled(true);
+			PlayerDataCache.rebuildUser(p.getUniqueId().toString());
 			return;
 		}
 		if (playerClass.getStatus().equals("muted")) {

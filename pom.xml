@@ -146,6 +146,14 @@
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</resource>
+			<resource>
+				<directory>src/main/resources/man-db</directory>
+				<!-- Keep filtering at false for other resources to prevent bad magic -->
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
 		</resources>
 		<plugins>
 			<plugin>
