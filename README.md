@@ -1,4 +1,4 @@
-## MythBans  [![Build Status](https://ci.mythserver.ml/buildStatus/icon?job=MythBans)](https://ci.mythserver.ml/job/MythBans/)
+## MythBans  
 
 Powerfull Craftbukkit plugin that allows you to manage bans VIA SQL in-game and through a web UI.
 
