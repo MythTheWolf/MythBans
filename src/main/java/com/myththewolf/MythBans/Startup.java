@@ -29,9 +29,7 @@ public class Startup extends JavaPlugin {
 
 		
 		PlayerDataCache.makeMap();
-		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory
-				.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
-		root.setLevel(Level.INFO);
+		
 		MythBans mb = new MythBans(this);
 		mb.loadConfig();
 		if (mb.loadMySQL() == null) {
