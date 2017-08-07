@@ -53,8 +53,8 @@ public class ImportJSON extends BukkitRunnable {
 
 					}
 				}
-				
-				if (expires.equals("forever")) {
+				MythPlayer MP = new MythPlayer(UUID2);
+				if (expires.equals("forever") && !MP.getStatus().equals("OK")) {
 					sender.sendMessage("UUID: " + UUID2);
 					sender.sendMessage("NAME: " + name);
 					sender.sendMessage("EXPIRES: " + expires);
