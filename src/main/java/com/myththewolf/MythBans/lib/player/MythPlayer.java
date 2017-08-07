@@ -239,6 +239,13 @@ public class MythPlayer {
 	public long getPlayTime() {
 		return PLAY_TIME;
 	}
+	public void setName(String name){
+				ps = (PreparedStatement) MythSQLConnect.getConnection()
+				.prepareStatement("UPDATE MythBans_NameCache SET `Name` = ? WHERE `UUID` = ?");
+		ps.setString(1, name);
+		ps.setString(2, this.UUID);
+		ps.executeUpdate();	PlayerDataCache.rebuildUser(this.UUID);
+	}
 	/**
 	 * Gets the player's probate value.
 	 * @return Boolean - Probate value
