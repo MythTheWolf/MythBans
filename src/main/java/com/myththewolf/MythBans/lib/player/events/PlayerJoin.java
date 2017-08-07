@@ -93,6 +93,7 @@ public class PlayerJoin implements Listener {
 			default:
 				break;
 			}
+			PlayerClass.setName(e.getPlayer().getName());
 			for (String IP : ipClass.getIPPack(e.getPlayer().getUniqueId().toString())) {
 				switch (dbc.getIPStatus(IP)) {
 				case "banned":
