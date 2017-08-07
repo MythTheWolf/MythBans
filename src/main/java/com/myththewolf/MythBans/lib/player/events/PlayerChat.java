@@ -64,7 +64,8 @@ public class PlayerChat implements Listener {
 					pp.sendMessage(ChatColor.translateAlternateColorCodes('&',
 							"&8[&4#!STAFF&8]&6" + ChatColor.GOLD + ChatColor.ITALIC + m));
 					Location location = pp.getLocation();
-					
+					//pp.getWorld().playSound(location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0);
+				}
 			}
 			e.setCancelled(true);
 			return;
