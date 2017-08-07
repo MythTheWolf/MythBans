@@ -239,7 +239,7 @@ public class MythPlayer {
 	public long getPlayTime() {
 		return PLAY_TIME;
 	}
-	public void setName(String name){
+	public void setName(String name) throws SQLException {
 				ps = (PreparedStatement) MythSQLConnect.getConnection()
 				.prepareStatement("UPDATE MythBans_NameCache SET `Name` = ? WHERE `UUID` = ?");
 		ps.setString(1, name);
