@@ -31,6 +31,7 @@ public class ImportJSON extends BukkitRunnable {
 	public void run() {
 		JSONParser parser = new JSONParser();
 		long count = 0;
+		long bypass = 0;
 		try {
 
 			Object obj = parser.parse(new FileReader("banned-players.json"));
@@ -53,7 +54,7 @@ public class ImportJSON extends BukkitRunnable {
 
 					}
 				}
-				int bypass = 0;
+				
 				MythPlayer MP = new MythPlayer(UUID2);
 				if (expires.equals("forever") && !MP.getStatus().equals("banned")) {
 					sender.sendMessage("UUID: " + UUID2);
