@@ -39,7 +39,7 @@ public class ImportJSON extends BukkitRunnable {
 			JSONArray ROOT = (JSONArray) obj;
 			@SuppressWarnings("unchecked")
 			Iterator<JSONObject> i = ROOT.iterator();
-			while (i.hasNext()) {
+			jsonset: while (i.hasNext()) {
 				JSONObject object = i.next();
 				String UUID2 = object.get("uuid").toString();
 				object.get("created").toString();
@@ -69,7 +69,7 @@ public class ImportJSON extends BukkitRunnable {
 
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			sender.sendMessage("Error while reading user data! Username: " + name);
 
 		}
 		sender.sendMessage("Imported " + count + " entries. (skipped " + bypass + ")");
