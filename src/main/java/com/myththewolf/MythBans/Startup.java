@@ -19,7 +19,6 @@ import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.tool.Date;
 import com.myththewolf.MythBans.tasks.DisableDueToError;
 
-//import ch.qos.logback.classic.Level;
 
 public class Startup extends JavaPlugin {
 	private Logger MythLogger = this.getLogger();
@@ -29,9 +28,11 @@ public class Startup extends JavaPlugin {
 
 		
 		PlayerDataCache.makeMap();
+		/*
 		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory
 				.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
 		root.setLevel(Level.INFO);
+		*/
 		MythBans mb = new MythBans(this);
 		mb.loadConfig();
 		if (mb.loadMySQL() == null) {
