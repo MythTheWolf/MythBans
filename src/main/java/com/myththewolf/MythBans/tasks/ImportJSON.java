@@ -32,6 +32,7 @@ public class ImportJSON extends BukkitRunnable {
 		JSONParser parser = new JSONParser();
 		long count = 0;
 		long bypass = 0;
+		String eName = "undefined";
 		try {
 
 			Object obj = parser.parse(new FileReader("banned-players.json"));
@@ -47,6 +48,7 @@ public class ImportJSON extends BukkitRunnable {
 				String source = "CONSOLE";
 				String expires = object.get("expires").toString();
 				String reason = object.get("reason").toString();
+				eName = name;
 				ArrayList<String> checked = new ArrayList<String>();
 				if (PC.getName(UUID2) == null) {
 					if (!checked.contains(UUID2)) {
@@ -69,7 +71,7 @@ public class ImportJSON extends BukkitRunnable {
 
 			}
 		} catch (Exception e) {
-			sender.sendMessage("Error while reading user data! Username: " + name);
+			sender.sendMessage("Error while reading user data! Username: " + eName);
 
 		}
 		sender.sendMessage("Imported " + count + " entries. (skipped " + bypass + ")");
