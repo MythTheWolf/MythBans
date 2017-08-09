@@ -53,7 +53,7 @@ public class ImportJSON extends BukkitRunnable {
 
 					}
 				}
-				int bypass  = 0;
+				int bypass = 0;
 				MythPlayer MP = new MythPlayer(UUID2);
 				if (expires.equals("forever") && !MP.getStatus().equals("banned")) {
 					sender.sendMessage("UUID: " + UUID2);
