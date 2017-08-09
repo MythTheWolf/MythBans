@@ -71,7 +71,7 @@ public class ImportJSON extends BukkitRunnable {
 			e.printStackTrace();
 
 		}
-		sender.sendMessage("Imported " + count + " entries. (skipped "+bypass+")");
+		sender.sendMessage("Imported " + count + " entries. (skipped " + bypass + ")");
 	}
 
 }
