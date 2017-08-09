@@ -53,8 +53,9 @@ public class ImportJSON extends BukkitRunnable {
 
 					}
 				}
+				int bypass  = 0;
 				MythPlayer MP = new MythPlayer(UUID2);
-				if (expires.equals("forever") && !MP.getStatus().equals("OK")) {
+				if (expires.equals("forever") && !MP.getStatus().equals("banned")) {
 					sender.sendMessage("UUID: " + UUID2);
 					sender.sendMessage("NAME: " + name);
 					sender.sendMessage("EXPIRES: " + expires);
@@ -62,7 +63,7 @@ public class ImportJSON extends BukkitRunnable {
 					dbc.banUser(UUID2, source, reason);
 					count++;
 				} else {
-
+    bypass++;
 				}
 
 			}
@@ -70,7 +71,7 @@ public class ImportJSON extends BukkitRunnable {
 			e.printStackTrace();
 
 		}
-		sender.sendMessage("Imported " + count + " entries.");
+		sender.sendMessage("Imported " + count + " entries. (skipped "+bypass+")");
 	}
 
 }
