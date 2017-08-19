@@ -4,6 +4,9 @@ Powerfull Craftbukkit plugin that allows you to manage bans VIA SQL in-game and 
 
 ## Updates
 * Translators needed. Check out [this page](https://github.com/MythTheWolf/MythBans-JavaPlugin/blob/master/TRANSLATE.md) for details.
+* I know the file size is huge...
+* Im removing the man page shit. It was a bad idea
+* I should finish locales
 ## Features
 
 * SQL Storage of all bans, logs, and users
@@ -11,8 +14,11 @@ Powerfull Craftbukkit plugin that allows you to manage bans VIA SQL in-game and 
 * IP Management: Ban,kick,mute,etc supports IPs
 * Manage Server messages & kick messages
 * Custom permissions for each command
-* [Planned] xenForo intergration that moves users to a group in which they can only appeal ban, if accepted, server will auto pardon.
-* Much more to come!
+* XenForo intergration that moves users to a group in which they can only appeal ban, if accepted, server will auto pardon.
+* Discord bot,for chatting via text channel
+* Custom Chat channels
+
+
 
 ## Installation
 
