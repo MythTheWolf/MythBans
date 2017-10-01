@@ -32,10 +32,7 @@
 			<id>activeeon</id>
 			<url>http://repository.activeeon.com/content/repositories/releases/</url>
 		</repository>
-		<repository>
-			<id>javacord-repo</id>
-			<url>http://repo.bastian-oppermann.de</url>
-		</repository>
+
 	</repositories>
 
 	<dependencies>
@@ -52,12 +49,6 @@
 		</dependency>
 
 
-		<!-- https://mvnrepository.com/artifact/org.json/json -->
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20090211</version>
-		</dependency>
 
 
 		<dependency>
@@ -69,27 +60,22 @@
 		<!--Bukkit API -->
 		<dependency>
 			<groupId>org.bukkit</groupId>
+
 			<artifactId>bukkit</artifactId>
 			<version>1.11.2-R0.1-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 
-	
 
 
 
 
-		
 
 
 
-		<dependency>
-			<groupId>de.btobastian.javacord</groupId>
-			<artifactId>javacord</artifactId>
-			<version>2.0.14</version>
-			<!-- This will use the shaded javacord which contains all required dependencies -->
-		</dependency>
-		
+
+
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -128,14 +114,6 @@
 					<exclude>**/*.java</exclude>
 				</excludes>
 			</resource>
-			<resource>
-				<directory>src/main/resources/man-db</directory>
-				<!-- Keep filtering at false for other resources to prevent bad magic -->
-				<filtering>false</filtering>
-				<excludes>
-					<exclude>**/*.java</exclude>
-				</excludes>
-			</resource>
 		</resources>
 		<plugins>
 			<plugin>
@@ -159,12 +137,16 @@
 					</execution>
 				</executions>
 				<configuration>
-				
-					<relocation>
-						<pattern>org.bstats</pattern>
-						<!-- Replace this with your package! -->
-						<shadedPattern>com.myththewolf.mythbans</shadedPattern>
-					</relocation>
+					<artifactSet>
+						<excludes>
+							<exclude>
+								org.bukkit:bukkit:*:jar
+							</exclude>
+							<exclude>
+								org.spigotmc:spigiot-api:*:jar
+							</exclude>
+						</excludes>
+					</artifactSet>
 				</configuration>
 			</plugin>
 		</plugins>

@@ -15,12 +15,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
-import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.feilds.AbstractMaps;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
-import com.myththewolf.MythBans.lib.player.MythPlayerIP;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
+import com.myththewolf.MythBans.lib.player.MythPlayerIP;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
 import com.myththewolf.MythBans.lib.tool.Date;
@@ -34,22 +33,22 @@ public class PlayerJoin implements Listener {
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private MythPlayerIP ipClass = new MythPlayerIP();
 	private JavaPlugin thePlugin;
-	private MythDiscordBot MDB;
+
 	private PlayerLanguage lang;
 
-	public PlayerJoin(JavaPlugin pl, MythDiscordBot MDBI) {
+	public PlayerJoin(JavaPlugin pl) {
 		thePlugin = pl;
-		MDB = MDBI;
+
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent e) throws SQLException {
-		if(AbstractMaps.serverIsUpgrading()){
+		if (AbstractMaps.serverIsUpgrading()) {
 			e.getPlayer().kickPlayer("Database is upgrading. Check back later!");
 			return;
 		}
 		try {
-			
+
 			e.getPlayer().setInvulnerable(false);
 			e.getPlayer().removeMetadata("is_potato", thePlugin);
 			System.out.println("IMBOUND---->" + e.getPlayer().getName());
@@ -140,11 +139,10 @@ public class PlayerJoin implements Listener {
 					}
 				}
 			}
-			if (ConfigProperties.use_bot) {
-				MDB.appendThread("\n >>>" + e.getPlayer().getName() + " joined the server <<<");
-			}
+
 		} catch (Exception EE) {
-			e.getPlayer().kickPlayer(ChatColor.DARK_RED+"A INTERNAL ERROR HAS OCCURRED"+ChatColor.GOLD+"\nPlease message one of the owners about this!");
+			e.getPlayer().kickPlayer(ChatColor.DARK_RED + "A INTERNAL ERROR HAS OCCURRED" + ChatColor.GOLD
+					+ "\nPlease message one of the owners about this!");
 			EE.printStackTrace();
 		}
 	}

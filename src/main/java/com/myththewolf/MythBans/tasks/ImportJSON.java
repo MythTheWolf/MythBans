@@ -40,7 +40,7 @@ public class ImportJSON extends BukkitRunnable {
 			JSONArray ROOT = (JSONArray) obj;
 			@SuppressWarnings("unchecked")
 			Iterator<JSONObject> i = ROOT.iterator();
-			jsonset: while (i.hasNext()) {
+			while (i.hasNext()) {
 				JSONObject object = i.next();
 				String UUID2 = object.get("uuid").toString();
 				object.get("created").toString();
@@ -56,7 +56,7 @@ public class ImportJSON extends BukkitRunnable {
 
 					}
 				}
-				
+
 				MythPlayer MP = new MythPlayer(UUID2);
 				if (expires.equals("forever") && !MP.getStatus().equals("banned")) {
 					sender.sendMessage("UUID: " + UUID2);
@@ -66,7 +66,7 @@ public class ImportJSON extends BukkitRunnable {
 					dbc.banUser(UUID2, source, reason);
 					count++;
 				} else {
-    bypass++;
+					bypass++;
 				}
 
 			}

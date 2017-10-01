@@ -1,11 +1,12 @@
  package com.myththewolf.MythBans.lib.SQL;
  
- import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
  import java.sql.Connection;
- import java.sql.PreparedStatement;
- import java.sql.SQLException;
- import java.util.logging.Logger;
- import org.bukkit.Bukkit;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import org.bukkit.Bukkit;
+
+import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
  
  public class MythSQLConnect
  {

@@ -1,21 +1,22 @@
  package com.myththewolf.MythBans.lib.player.events;
  
- import com.myththewolf.MythBans.lib.feilds.AbstractMaps;
- import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
- import com.myththewolf.MythBans.lib.player.ChatChannel;
- import com.myththewolf.MythBans.lib.player.MythPlayer;
- import com.myththewolf.MythBans.lib.player.MythPlayerMetaData;
- import com.myththewolf.MythBans.lib.player.PlayerCache;
- import java.io.PrintStream;
  import java.util.HashMap;
- import java.util.UUID;
- import net.md_5.bungee.api.ChatColor;
- import org.bukkit.OfflinePlayer;
- import org.bukkit.entity.Player;
- import org.bukkit.event.EventHandler;
- import org.bukkit.event.EventPriority;
- import org.bukkit.event.player.PlayerCommandPreprocessEvent;
- import org.bukkit.plugin.java.JavaPlugin;
+
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import com.myththewolf.MythBans.lib.feilds.AbstractMaps;
+import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.player.ChatChannel;
+import com.myththewolf.MythBans.lib.player.MythPlayer;
+import com.myththewolf.MythBans.lib.player.MythPlayerMetaData;
+import com.myththewolf.MythBans.lib.player.PlayerCache;
+
+import net.md_5.bungee.api.ChatColor;
  
  public class CommandEvent implements org.bukkit.event.Listener
  {

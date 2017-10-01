@@ -22,7 +22,7 @@ commands:
      aliases: [p,probation,trial,pb]
  import:
      description: Dumps your banned players to mySQL
-     aliases: [dump,export]
+     aliases: []
  createUI:
      description: Create a site user
      aliases: []
@@ -83,6 +83,6 @@ commands:
  upgradeTables:
      description: Runs SQL table upgrade and update
      aliases: []
- man:
-     description: Shows manual pages
-     aliases: []
+ dump:
+     description: Dumps banned players to your JSON file.
+     aliases: [export]

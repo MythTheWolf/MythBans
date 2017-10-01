@@ -11,14 +11,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.myththewolf.MythBans.lib.MythBans;
-import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.feilds.AbstractMaps;
-import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.tool.Date;
 import com.myththewolf.MythBans.tasks.DisableDueToError;
-
 
 public class Startup extends JavaPlugin {
 	private Logger MythLogger = this.getLogger();
@@ -26,27 +23,23 @@ public class Startup extends JavaPlugin {
 
 	public void onEnable() {
 
-		
 		PlayerDataCache.makeMap();
 		/*
-		ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) org.slf4j.LoggerFactory
-				.getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
-		root.setLevel(Level.INFO);
-		*/
+		 * ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger)
+		 * org.slf4j.LoggerFactory
+		 * .getLogger(ch.qos.logback.classic.Logger.ROOT_LOGGER_NAME);
+		 * root.setLevel(Level.INFO);
+		 */
 		MythBans mb = new MythBans(this);
 		mb.loadConfig();
 		if (mb.loadMySQL() == null) {
 			Bukkit.getServer().getPluginManager().disablePlugin(this);
+			return;
 		}
 		this.MB = mb;
 
 		MythLogger.info("Loaded 6 tables.");
 
-		if (ConfigProperties.use_bot) {
-			mb.startDiscordBot();
-			ConfigProperties.dumpDiscord();
-
-		}
 		mb.loadCommands();
 		mb.loadEvents();
 		try {
@@ -76,7 +69,7 @@ public class Startup extends JavaPlugin {
 			System.out.println("****** TEST RAN OK ******");
 		}
 		AbstractMaps.buildMaps();
-		
+
 	}
 
 	public void onDisable() {
@@ -92,17 +85,10 @@ public class Startup extends JavaPlugin {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		try {
-			if (ConfigProperties.use_bot && MythDiscordBot.getBot().isSetup()) {
-				this.MB.shutdown();
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 	}
-	public MythBans getInstance(){
+
+	public MythBans getInstance() {
 		return this.MB;
 	}
 }

@@ -17,6 +17,7 @@ public class MythPlayer {
 	private static final com.myththewolf.MythBans.lib.tool.Date MythDate = new com.myththewolf.MythBans.lib.tool.Date();
 	private String PLAYER_STATUS;
 	private String BAN_REASON;
+	private String USERNAME;
 	private String WHO_BANNED;
 	private boolean IS_OVERRIDE;
 	private java.util.Date EXPIRE_DATE;
@@ -44,6 +45,7 @@ public class MythPlayer {
 			this.WHO_BANNED = this.rs.getString("byUUID");
 			this.IS_OVERRIDE = this.rs.getBoolean("override");
 			this.CHANNEL = this.rs.getString("channel");
+			this.USERNAME = this.rs.getString("last_name");
 			if ((this.rs.getString("ignores") != null) && (!this.rs.getString("ignores").equals(""))) {
 
 				for (String a : this.rs.getString("ignores").split(",")) {
@@ -282,7 +284,9 @@ public class MythPlayer {
 		}
 		return this.LANG_FILE;
 	}
-
+	public String getUsername() {
+		return this.USERNAME;
+	}
 	public String getId() {
 		return this.UUID;
 	}

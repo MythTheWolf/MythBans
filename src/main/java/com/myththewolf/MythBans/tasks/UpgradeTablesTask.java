@@ -1,14 +1,14 @@
  package com.myththewolf.MythBans.tasks;
  
- import com.myththewolf.MythBans.commands.UpgradeTables;
- import com.myththewolf.MythBans.lib.MythBans;
- import java.io.PrintStream;
  import java.sql.Connection;
- import java.sql.PreparedStatement;
- import java.sql.ResultSet;
- import java.sql.ResultSetMetaData;
- import java.sql.SQLException;
- import java.util.List;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.List;
+
+import com.myththewolf.MythBans.commands.UpgradeTables;
+import com.myththewolf.MythBans.lib.MythBans;
  
  public class UpgradeTablesTask implements Runnable
  {
@@ -77,8 +77,8 @@
      System.out.println("Upgrading table: " + tableName + " Re-Parsing table meta data...");
      RealTable = con.prepareStatement("SELECT * FROM `" + tableName + "`").executeQuery();
      RealMeta = RealTable.getMetaData();
-     List<String> REAL_COLS = new java.util.ArrayList();
-     List<String> TEMP_COLS = new java.util.ArrayList();
+     List<String> REAL_COLS = new java.util.ArrayList<String>();
+     List<String> TEMP_COLS = new java.util.ArrayList<String>();
      for (int i = 1; i <= RealMeta.getColumnCount(); i++) {
        REAL_COLS.add(RealMeta.getColumnName(i));
      }
@@ -89,7 +89,7 @@
      SQL_BUILD = "";
      VARS = "(";
      
-     List<String> MUT = new java.util.ArrayList();
+     List<String> MUT = new java.util.ArrayList<String>();
      for (String S : REAL_COLS) {
        if (TEMP_COLS.contains(S)) {
          SQL_BUILD = SQL_BUILD + "`" + S + "`,";

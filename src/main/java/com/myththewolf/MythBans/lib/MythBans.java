@@ -13,11 +13,10 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.myththewolf.MythBans.commands.Ban;
 import com.myththewolf.MythBans.commands.ClearChat;
+import com.myththewolf.MythBans.commands.Dump;
 import com.myththewolf.MythBans.commands.IPBan;
 import com.myththewolf.MythBans.commands.IPKick;
 import com.myththewolf.MythBans.commands.Kick;
-import com.myththewolf.MythBans.commands.Link;
-import com.myththewolf.MythBans.commands.Man;
 import com.myththewolf.MythBans.commands.Mute;
 import com.myththewolf.MythBans.commands.PardonIP;
 import com.myththewolf.MythBans.commands.PardonUser;
@@ -37,7 +36,6 @@ import com.myththewolf.MythBans.commands.mythapi;
 import com.myththewolf.MythBans.commands.softmute;
 import com.myththewolf.MythBans.commands.user;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
-import com.myththewolf.MythBans.lib.discord.MythDiscordBot;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.player.events.ChunkLoad;
 import com.myththewolf.MythBans.lib.player.events.CommandEvent;
@@ -50,7 +48,7 @@ import com.myththewolf.MythBans.lib.tool.LanguageGoverner;
 
 public class MythBans {
 	private JavaPlugin MythPlugin;
-	private MythDiscordBot MBD;
+
 	private LanguageGoverner LG;
 	private BukkitTask DISABLE_TASK;
 
@@ -70,14 +68,6 @@ public class MythBans {
 		return DISABLE_TASK;
 	}
 
-	public void startDiscordBot() {
-		MBD = new MythDiscordBot(MythPlugin);
-		MythSQLConnect.getConnection();
-		if (ConfigProperties.DEBUG) {
-			Bukkit.getLogger().info("All MySQL tables generated.");
-		}
-	}
-
 	public void loadConfig() {
 
 		try {
@@ -89,10 +79,6 @@ public class MythBans {
 			if (!FF.exists()) {
 				FF.mkdirs();
 			}
-			FF = new File(MythPlugin.getDataFolder() + File.separator + "man-db");
-			if (!FF.exists()) {
-				FF.mkdirs();
-			}
 			for (String theLanguage : ConfigProperties.LANGS) {
 				File specialf = new File(MythPlugin.getDataFolder() + File.separator + "lang", theLanguage + ".yml");
 				if (!specialf.exists()) {
@@ -101,11 +87,6 @@ public class MythBans {
 				}
 				FileConfiguration daFonts = YamlConfiguration.loadConfiguration(specialf);
 				ConfigProperties.langMap.put(theLanguage, daFonts);
-			}
-			for(String man : ConfigProperties.MAN_ENTRIES){
-				File specialf = new File(MythPlugin.getDataFolder() + File.separator + "man-db", man + ".man");
-					specialf.getParentFile().mkdirs();
-				MythPlugin.saveResource("man-db" + File.separator + man + ".man", true);
 			}
 			File file = new File(MythPlugin.getDataFolder(), "config.yml");
 			if (!file.exists()) {
@@ -129,12 +110,13 @@ public class MythBans {
 
 	public void loadEvents() {
 		MythPlugin.getServer().getPluginManager().registerEvents(new ChunkLoad(), MythPlugin);
-		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerChat(MBD), MythPlugin);
-		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(MythPlugin, MBD), MythPlugin);
+		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerChat(), MythPlugin);
+		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerJoin(MythPlugin), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerQuit(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerEatEvent(MythPlugin), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerDamageEvent(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new CommandEvent(MythPlugin), MythPlugin);
+		
 	}
 
 	public Connection loadMySQL() {
@@ -165,7 +147,6 @@ public class MythBans {
 		MythPlugin.getCommand("mythbans").setExecutor(new mythapi());
 
 		MythPlugin.getCommand("player").setExecutor(new user());
-		MythPlugin.getCommand("link").setExecutor(new Link(MBD));
 		MythPlugin.getCommand("potato").setExecutor(new Potato(MythPlugin));
 		MythPlugin.getCommand("softmute").setExecutor(new softmute());
 		MythPlugin.getCommand("mbreload").setExecutor(new ReloadMythBans(MythPlugin));
@@ -174,7 +155,8 @@ public class MythBans {
 		MythPlugin.getCommand("mbfix").setExecutor(new mbfix(this));
 		MythPlugin.getCommand("xenUpdate").setExecutor(new UpdateXenForo());
 		MythPlugin.getCommand("upgradeTables").setExecutor(new UpgradeTables(MythPlugin, this));
-		MythPlugin.getCommand("man").setExecutor(new Man(MythPlugin));
+		MythPlugin.getCommand("dump").setExecutor(new Dump());
+
 	}
 
 	public void buildCommandMap() {
@@ -202,15 +184,6 @@ public class MythBans {
 	public void shutdown() {
 
 		Bukkit.getScheduler().cancelAllTasks();
-		try {
-			if (MBD.isSetup()) {
-				MBD.disconnect();
-
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 
 	}
 

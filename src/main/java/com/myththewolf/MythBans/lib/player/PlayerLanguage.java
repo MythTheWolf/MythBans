@@ -1,6 +1,5 @@
 package com.myththewolf.MythBans.lib.player;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
@@ -13,7 +12,6 @@ import org.bukkit.entity.Player;
 
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 
-import de.btobastian.javacord.entities.User;
 import net.md_5.bungee.api.ChatColor;
 
 public class PlayerLanguage {
@@ -71,20 +69,9 @@ public class PlayerLanguage {
 		this(UUIDThat(toBan));
 	}
 
-	public PlayerLanguage(User U) {
-		this(UUIDThat(U));
-	}
+	
 
-	private static OfflinePlayer UUIDThat(User u) {
-		AbstractPlayer AB = new AbstractPlayer(u.getId());
-		try {
-			return AB.getPlayer();
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
+	
 
 	public void writeColor() {
 

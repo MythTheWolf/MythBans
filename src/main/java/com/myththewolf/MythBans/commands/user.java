@@ -55,7 +55,7 @@ public class user implements CommandExecutor {
 			if (reason != null && !reason.equals("")) {
 				sender.sendMessage(ChatColor.GOLD + "Reason: " + ChatColor.RED + reason);
 			}
-			if (!(expire == null) && !expire.equals("")) {
+			if (!(expire == null)) {
 				sender.sendMessage(ChatColor.GOLD + "Ban expires on: " + ChatColor.RED + MythDate.formatDate(expire));
 			}
 			sender.sendMessage(
