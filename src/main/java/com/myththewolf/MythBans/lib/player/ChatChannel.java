@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -58,9 +60,11 @@ public class ChatChannel {
 	}
 
 	public void push(Player send, String message) throws SQLException {
+		Logger log = Bukkit.getServer().getLogger();
 		MythPlayer sen = new MythPlayer(send.getUniqueId().toString());
 		String who = send.getDisplayName();
 		String template = "";
+		log.info("["+this.NAME+"]"+send.getName()+": "+ message);
 		if (send.hasPermission("essentials.chat.color")) {
 			template = ChatColor.WHITE + "<" + who + ChatColor.WHITE + "> "
 					+ ChatColor.translateAlternateColorCodes('&', message);
