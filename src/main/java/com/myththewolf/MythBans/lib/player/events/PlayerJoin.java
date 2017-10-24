@@ -17,7 +17,7 @@ import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.AbstractMaps;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
+import com.myththewolf.MythBans.lib.feilds.DataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.MythPlayerIP;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
@@ -38,7 +38,7 @@ public class PlayerJoin implements Listener {
 
 	public PlayerJoin(JavaPlugin pl) {
 		thePlugin = pl;
-
+	
 	}
 
 	@EventHandler(priority = EventPriority.MONITOR)
@@ -66,7 +66,7 @@ public class PlayerJoin implements Listener {
 				MythPlayer.processNewUser(e.getPlayer().getUniqueId().toString(), e.getPlayer().getName());
 				MythPlayer.setSession(e.getPlayer().getUniqueId().toString(), d.formatDate(d.getNewDate()));
 			}
-			PlayerClass = PlayerDataCache.getInstance(e.getPlayer().getUniqueId().toString());
+			PlayerClass = DataCache.getPlayerInstance(e.getPlayer().getUniqueId().toString());
 			switch (PlayerClass.getStatus()) {
 			case "OK":
 
@@ -172,7 +172,7 @@ public class PlayerJoin implements Listener {
 
 			Date MythDate = new Date();
 			String PD = "undefined";
-			if (PlayerDataCache.getInstance(UUID2).getStatus().equals("tempbanned")) {
+			if (DataCache.getPlayerInstance(UUID2).getStatus().equals("tempbanned")) {
 				if (MythDate.getNewDate().before(PlayerClass.getExpireDate())) {
 					long mili = MythDate.getTimeDifference(MythDate.getNewDate(), PlayerClass.getExpireDate());
 					PD = MythDate.convertToPd(mili);

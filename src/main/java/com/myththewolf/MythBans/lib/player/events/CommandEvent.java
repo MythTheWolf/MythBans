@@ -1,8 +1,6 @@
  package com.myththewolf.MythBans.lib.player.events;
  
- import java.util.HashMap;
-
-import org.bukkit.OfflinePlayer;
+ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,7 +9,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.myththewolf.MythBans.lib.feilds.AbstractMaps;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.player.ChatChannel;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.MythPlayerMetaData;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
@@ -71,13 +68,6 @@ import net.md_5.bungee.api.ChatColor;
        else {
          e.getPlayer().sendMessage(ConfigProperties.PREFIX + "Couldnt hook ignore, user not found in database");
        }
-     }
-     ChatChannel temp = new ChatChannel();
-     HashMap<String, String> map = temp.getMap();
-     if (map.containsValue(this.arr[0].substring(1))) {
-       MP.setChannel(this.arr[0].substring(1));
-       e.getPlayer().sendMessage(ConfigProperties.PREFIX + "Changed Channels");
-       e.setCancelled(true);
      }
    }
  }

@@ -10,7 +10,7 @@ import org.bukkit.command.ConsoleCommandSender;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
+import com.myththewolf.MythBans.lib.feilds.DataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 
@@ -35,20 +35,20 @@ public class Probate implements CommandExecutor {
 						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
 			}
-			playerClass = PlayerDataCache.getInstance(pCache.getUUID(args[0]));
+			playerClass = DataCache.getPlayerInstance(pCache.getUUID(args[0]));
 
 			if (playerClass.getProbate()) {
 				if (sender instanceof ConsoleCommandSender) {
 					playerClass.setProbate(false);
 					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Unprobated "
 							+ pCache.getName(pCache.getUUID(args[0])));
-					PlayerDataCache.rebuildUser(pCache.getUUID(args[0]));
+					DataCache.rebuildUser(pCache.getUUID(args[0]));
 					return true;
 				} else {
 					playerClass.setProbate(false);
 					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Unprobated "
 							+ pCache.getName(pCache.getUUID(args[0])));
-					PlayerDataCache.rebuildUser(pCache.getUUID(args[0]));
+					DataCache.rebuildUser(pCache.getUUID(args[0]));
 					return true;
 				}
 			} else {
@@ -57,11 +57,11 @@ public class Probate implements CommandExecutor {
 					playerClass.setProbate(true);
 					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Set "
 							+ pCache.getName(playerClass.getId()) + " on probation.");
-					PlayerDataCache.rebuildUser(pCache.getUUID(args[0]));
+					DataCache.rebuildUser(pCache.getUUID(args[0]));
 					return true;
 				} else {
 					playerClass.setProbate(true);
-					PlayerDataCache.rebuildUser(playerClass.getId());
+					DataCache.rebuildUser(playerClass.getId());
 					sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GOLD + "Set "
 							+ pCache.getName(pCache.getUUID(args[0])) + " on probation.");
 					return true;

@@ -61,8 +61,7 @@ import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
        if (ConfigProperties.DEBUG.booleanValue()) {
          Bukkit.getLogger().info("Loading MySQL Table: PlayerStats");
        }
-       this.ps = con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_PlayerStats` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `override` VARCHAR(255) NULL DEFAULT NULL, `probated` VARCHAR(255) NULL DEFAULT NULL ,`status` VARCHAR(255) NOT NULL,`lang_file` VARCHAR(255) NOT NULL DEFAULT 'en_US' , `group` VARCHAR(255) NOT NULL ,`expires` VARCHAR(255) NULL DEFAULT NULL , `reason` VARCHAR(255) NULL DEFAULT NULL , `timestamp` VARCHAR(255) NOT NULL, `byUUID` VARCHAR(255) NULL DEFAULT NULL , `last_quit_date` VARCHAR(255) NULL DEFAULT NULL, `last_name` VARCHAR(255) NOT NULL, `playtime` LONGTEXT NULL DEFAULT NULL,`notes` TEXT NULL DEFAULT NULL ,`session_start` VARCHAR(255) NULL DEFAULT NULL,`ignores` TEXT DEFAULT NULL,PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
-       
+       this.ps = con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans_PlayerStats` ( `ID` INT NOT NULL AUTO_INCREMENT, `UUID` VARCHAR(255) NOT NULL , `override` VARCHAR(255) NULL DEFAULT NULL, `probated` VARCHAR(255) NULL DEFAULT NULL ,`status` VARCHAR(255) NOT NULL,`lang_file` VARCHAR(255) NOT NULL DEFAULT 'en_US' , `group` VARCHAR(255) NOT NULL ,`expires` VARCHAR(255) NULL DEFAULT NULL , `reason` VARCHAR(255) NULL DEFAULT NULL , `timestamp` VARCHAR(255) NOT NULL, `byUUID` VARCHAR(255) NULL DEFAULT NULL , `last_quit_date` VARCHAR(255) NULL DEFAULT NULL, `last_name` VARCHAR(255) NOT NULL, `playtime` LONGTEXT NULL DEFAULT NULL,`notes` TEXT NULL DEFAULT NULL ,`session_start` VARCHAR(255) NULL DEFAULT NULL,`ignores` TEXT DEFAULT NULL,`activeChannel` VARCHAR(255) NOT NULL DEFAULT `GLOBAL`,PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
        this.ps.executeUpdate();
        
        if (ConfigProperties.DEBUG.booleanValue()) {

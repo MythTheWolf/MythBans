@@ -33,6 +33,7 @@ import com.myththewolf.MythBans.commands.getFam;
 import com.myththewolf.MythBans.commands.importJSON;
 import com.myththewolf.MythBans.commands.mbfix;
 import com.myththewolf.MythBans.commands.mythapi;
+import com.myththewolf.MythBans.commands.open;
 import com.myththewolf.MythBans.commands.softmute;
 import com.myththewolf.MythBans.commands.user;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
@@ -156,7 +157,7 @@ public class MythBans {
 		MythPlugin.getCommand("xenUpdate").setExecutor(new UpdateXenForo());
 		MythPlugin.getCommand("upgradeTables").setExecutor(new UpgradeTables(MythPlugin, this));
 		MythPlugin.getCommand("dump").setExecutor(new Dump());
-
+		MythPlugin.getCommand("open").setExecutor(new open());
 	}
 
 	public void buildCommandMap() {

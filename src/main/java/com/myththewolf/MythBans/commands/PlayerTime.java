@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
+import com.myththewolf.MythBans.lib.feilds.DataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
@@ -34,7 +34,7 @@ public class PlayerTime implements CommandExecutor {
 				return true;
 			}
 			OfflinePlayer p = pCache.getOfflinePlayerExact(args[0]);
-			MythPlayer MP = PlayerDataCache.getInstance(p.getUniqueId().toString());
+			MythPlayer MP = DataCache.getPlayerInstance(p.getUniqueId().toString());
 			long init;
 			String PD = "ERROR";
 			if (!p.isOnline()) {

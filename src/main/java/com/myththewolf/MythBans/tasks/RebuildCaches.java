@@ -1,6 +1,6 @@
 package com.myththewolf.MythBans.tasks;
 
-import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
+import com.myththewolf.MythBans.lib.feilds.DataCache;
 
 public class RebuildCaches implements Runnable {
 
@@ -10,7 +10,7 @@ public class RebuildCaches implements Runnable {
 
 	@Override
 	public void run() {
-		PlayerDataCache.rebuildCaches();
+		DataCache.rebuildCaches();
 	}
 
 }

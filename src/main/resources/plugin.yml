@@ -86,3 +86,6 @@ commands:
  dump:
      description: Dumps banned players to your JSON file.
      aliases: [export]
+ open:
+     description: Sets which channel you are active to
+     aliases: []

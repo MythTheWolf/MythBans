@@ -12,7 +12,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.myththewolf.MythBans.lib.MythBans;
 import com.myththewolf.MythBans.lib.feilds.AbstractMaps;
-import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
+import com.myththewolf.MythBans.lib.feilds.DataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.tool.Date;
 import com.myththewolf.MythBans.tasks.DisableDueToError;
@@ -23,7 +23,7 @@ public class Startup extends JavaPlugin {
 
 	public void onEnable() {
 
-		PlayerDataCache.makeMap();
+		DataCache.makeMap();
 		/*
 		 * ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger)
 		 * org.slf4j.LoggerFactory

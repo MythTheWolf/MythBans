@@ -17,7 +17,7 @@ import org.joda.time.format.PeriodFormatterBuilder;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
+import com.myththewolf.MythBans.lib.feilds.DataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
@@ -49,7 +49,7 @@ public class TempBan implements CommandExecutor {
 						ConfigProperties.PREFIX + PL.languageList.get("ERR_NO_PERMISSION"));
 				return true;
 			} else {
-				PlayerClass = PlayerDataCache.getInstance(pCache.getUUID(args[0]));
+				PlayerClass = DataCache.getPlayerInstance(pCache.getUUID(args[0]));
 				final PeriodFormatter format = new PeriodFormatterBuilder().appendDays().appendSuffix("d").appendWeeks()
 						.appendSuffix("w").appendMonths().appendSuffix("mon").appendYears().appendSuffix("y")
 						.appendMinutes().appendSuffix("m").appendSeconds().appendSuffix("s").appendHours()
@@ -64,14 +64,14 @@ public class TempBan implements CommandExecutor {
 					if (sender instanceof org.bukkit.entity.Player) {
 						String byUUID = ((org.bukkit.entity.Player) sender).getUniqueId().toString();
 						dbc.tmpBanUser(UUID, byUUID, reason, dateStr);
-						PlayerDataCache.rebuildUser(UUID);
+						DataCache.rebuildUser(UUID);
 						p = pCache.getOfflinePlayerExact(args[0]);
 					} else {
 						dbc.tmpBanUser(UUID, "CONSOLE", reason, dateStr);
-						PlayerDataCache.rebuildUser(UUID);
+						DataCache.rebuildUser(UUID);
 						p = pCache.getOfflinePlayerExact(args[0]);
 					}
-					PlayerClass = PlayerDataCache.getInstance(UUID);
+					PlayerClass = DataCache.getPlayerInstance(UUID);
 					for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 						PL = new PlayerLanguage(player);
 						if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {

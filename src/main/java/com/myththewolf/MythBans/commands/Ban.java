@@ -13,7 +13,7 @@ import org.bukkit.command.ConsoleCommandSender;
 import com.myththewolf.MythBans.lib.SQL.DatabaseCommands;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
+import com.myththewolf.MythBans.lib.feilds.DataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
@@ -44,21 +44,21 @@ public class Ban implements CommandExecutor {
 			} else {
 				toBan = pCache.getOfflinePlayerExact(args[0]);
 
-				PlayerClass = PlayerDataCache.getInstance(toBan.getUniqueId().toString());
+				PlayerClass = DataCache.getPlayerInstance(toBan.getUniqueId().toString());
 				if (sender instanceof ConsoleCommandSender) {
 					String reason = Utils.makeString(args, 1);
 					dbc.banUser(pCache.getUUID(args[0]), "CONSOLE", reason);
-					PlayerDataCache.rebuildUser(pCache.getUUID(args[0]));
+					DataCache.rebuildUser(pCache.getUUID(args[0]));
 					toUUID = pCache.getUUID(args[0]);
 				} else {
 					String reason = Utils.makeString(args, 1);
 					org.bukkit.entity.Player by = (org.bukkit.entity.Player) sender;
 					dbc.banUser(pCache.getUUID(args[0]), by.getUniqueId().toString(), reason);
-					PlayerDataCache.rebuildUser(pCache.getUUID(args[0]));
+					DataCache.rebuildUser(pCache.getUUID(args[0]));
 					toUUID = pCache.getUUID(args[0]);
 				}
 			}
-			PlayerClass = PlayerDataCache.getInstance(toUUID);
+			PlayerClass = DataCache.getPlayerInstance(toUUID);
 			for (org.bukkit.entity.Player player : Bukkit.getServer().getOnlinePlayers()) {
 				PL = new PlayerLanguage(player);
 				if (player.hasPermission(ConfigProperties.VIEWMSG_PERM)) {

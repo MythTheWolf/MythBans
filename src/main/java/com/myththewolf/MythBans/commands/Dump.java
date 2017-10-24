@@ -18,7 +18,7 @@ import org.json.simple.JSONObject;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
+import com.myththewolf.MythBans.lib.feilds.DataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.tool.Date;
 
@@ -52,7 +52,7 @@ public class Dump implements CommandExecutor {
 					if (rs.getString("byUUID").equals("CONSOLE")) {
 						SOURCE = "CONSOLE";
 					} else {
-						MythPlayer MP = PlayerDataCache.getInstance(rs.getString("byUUID"));
+						MythPlayer MP = DataCache.getPlayerInstance(rs.getString("byUUID"));
 						SOURCE = MP.getUsername();
 					}
 					JSONObject ob = new JSONObject();

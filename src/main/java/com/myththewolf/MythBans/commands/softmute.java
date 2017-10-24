@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import com.myththewolf.MythBans.lib.feilds.PlayerDataCache;
+import com.myththewolf.MythBans.lib.feilds.DataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 
@@ -29,15 +29,15 @@ public class softmute implements CommandExecutor {
 						ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission for that command.");
 				return true;
 			} else {
-				pClass = PlayerDataCache.getInstance(pCache.getUUID(args[0]));
+				pClass = DataCache.getPlayerInstance(pCache.getUUID(args[0]));
 				if (pClass.getStatus().equals("softmuted")) {
 					pClass.setStatus("OK");
 					MythPlayer.setOverride(pClass.getId(),false);
-					PlayerDataCache.rebuildUser(pClass.getId());
+					DataCache.rebuildUser(pClass.getId());
 					sender.sendMessage(ConfigProperties.PREFIX + "Unsoftmuted player.");
 				} else {
 					pClass.setStatus("softmuted");
-					PlayerDataCache.rebuildUser(pClass.getId());
+					DataCache.rebuildUser(pClass.getId());
 					sender.sendMessage(ConfigProperties.PREFIX + "Softmuted player.");
 				}
 			}

@@ -1,136 +1,74 @@
 package com.myththewolf.MythBans.lib.player;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.logging.Logger;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
+import com.myththewolf.MythBans.lib.feilds.DataCache;
 
-public class ChatChannel {
-	private String NAME;
-	private String NODE;
-	private String PREFIX;
-	private String SHORTCUT;
-	private ResultSet rs;
-	private PreparedStatement ps;
-	private Connection con;
-	private HashMap<String, String> chanMap;
-	private boolean EXIST;
+public class ChatChannel{
+    
+    private String CHANNEL_NAME = "undefined";
+    private String CHANNEL_PREFIX = "[UNDEFINED NAME]";
+    private String CHANNEL_SHORTCUT = "undefinedmythbansshourtcut&#&$";
 
-	public ChatChannel() throws SQLException {
-		this.chanMap = new HashMap<String, String>();
-		this.con = com.myththewolf.MythBans.lib.SQL.MythSQLConnect.getConnection();
-		this.ps = this.con.prepareStatement("SELECT * FROM MythBans_Channels");
-		this.rs = this.ps.executeQuery();
-		while (this.rs.next()) {
-			this.chanMap.put(this.rs.getString("shortcut"), this.rs.getString("name"));
-		}
-	}
+    public ChatChannel(String name) {
 
-	public HashMap<String, String> getMap() {
-		return this.chanMap;
-	}
+    }
 
-	public ChatChannel(String name) throws SQLException {
-		this.NAME = name;
-		this.NODE = "mythbans.nullperm";
-		this.PREFIX = ("[" + name + "]");
-		this.EXIST = true;
-		this.SHORTCUT = "undefinedmythbansshortcut";
-		this.con = com.myththewolf.MythBans.lib.SQL.MythSQLConnect.getConnection();
-		this.ps = this.con.prepareStatement("SELECT * FROM MythBans_Channels WHERE `name` = ?");
-		this.ps.setString(1, name);
-		this.rs = this.ps.executeQuery();
-		if (!this.rs.next()) {
-			this.EXIST = false;
-			return;
-		}
+    public void push(MythPlayer sender, String message) {
+        // This is to send to all people writing
+        Bukkit.getServer().getOnlinePlayers().stream().filter(rawPlayer -> {
+            MythPlayer MP = DataCache.getPlayerInstance(rawPlayer.getUniqueId().toString());
+            return (MP.getChannels().contains(this) && !MP.isIgnoring(MP.getId())
+                    && MP.getWritingChannel().equals(this));
+        }).forEach(player -> {
+            player.sendMessage(ChatColor.GREEN + this.CHANNEL_PREFIX
+                    + sender.getBukkitPlayer()
+                            .orElseThrow(
+                                    () -> new IllegalStateException("Tried to send message but player doesn't exist!"))
+                            .getDisplayName()
+                    + ": " + message);
+        });
 
-		this.NAME = this.rs.getString("name");
-		this.NODE = this.rs.getString("node");
-		this.PREFIX = this.rs.getString("prefix");
-		this.SHORTCUT = this.rs.getString("shortcut");
-	}
+        // All write channels are done,now lets do read onlys.
+        Bukkit.getServer().getOnlinePlayers().stream().filter(rawPlayer -> {
+            MythPlayer MP = DataCache.getPlayerInstance(rawPlayer.getUniqueId().toString());
+            return (MP.getChannels().contains(this) && !MP.isIgnoring(MP.getId())
+                    && !MP.getWritingChannel().equals(this));
+        }).forEach(player -> {
+            player.sendMessage(ChatColor.GREEN + this.CHANNEL_PREFIX
+                    + sender.getBukkitPlayer()
+                            .orElseThrow(
+                                    () -> new IllegalStateException("Tried to send message but player doesn't exist!"))
+                            .getDisplayName()
+                    + ": " + message);
+        });
 
-	public void push(Player send, String message) throws SQLException {
-		Logger log = Bukkit.getServer().getLogger();
-		MythPlayer sen = new MythPlayer(send.getUniqueId().toString());
-		String who = send.getDisplayName();
-		String template = "";
-		log.info("["+this.NAME+"]"+send.getName()+": "+ message);
-		if (send.hasPermission("essentials.chat.color")) {
-			template = ChatColor.WHITE + "<" + who + ChatColor.WHITE + "> "
-					+ ChatColor.translateAlternateColorCodes('&', message);
-		} else {
-			template = ChatColor.WHITE + "<" + who + ChatColor.WHITE + "> " + message;
-		}
-		for (Player i : org.bukkit.Bukkit.getOnlinePlayers()) {
-			MythPlayer get = new MythPlayer(i.getUniqueId().toString());
-			if (get.isIgnoring(sen.getId())) {
+    }
 
-			} else if (i.hasPermission(ConfigProperties.STAFF_CHAT_GET)) {
-				if (sen.getProbate()) {
-					i.sendMessage(this.PREFIX + ChatColor.RED + "* " + template);
-				} else {
-					i.sendMessage(this.PREFIX + template);
-				}
-			} else if ((get.getChannel().equals(this.NAME)) || (i.hasPermission(ConfigProperties.STAFF_CHAT_GET))) {
+    public List<Player> getAllPlayers() {
+        return Bukkit.getServer().getOnlinePlayers().stream().filter(entry -> {
+            return DataCache.getPlayerInstance(entry.getUniqueId().toString()).getChannels().contains(this);
+        }).collect(Collectors.toList());
+    }
 
-				if (get.getChannel().equals(this.NAME)) {
-					i.sendMessage(template);
-				}
-			}
-		}
-	}
+    public String getName() {
+        return this.CHANNEL_NAME;
+    }
 
-	public boolean canUse(Player p) {
-		return p.hasPermission(this.NODE);
-	}
+    public String getPrefix() {
+        return this.CHANNEL_PREFIX;
+    }
 
-	public boolean exists() {
-		return this.EXIST;
-	}
-
-	public void create() {
-	}
-
-	public void setPrefix(String name) {
-		this.PREFIX = name;
-	}
-
-	public void setShortcut(String shor) {
-		this.SHORTCUT = shor;
-	}
-
-	public void setNode(String perm) {
-	}
-
-	public java.util.List<String> getOnline() throws SQLException {
-		java.util.List<String> tmp = new java.util.ArrayList<String>();
-		for (Player p : org.bukkit.Bukkit.getOnlinePlayers()) {
-			MythPlayer M = new MythPlayer(p.getUniqueId().toString());
-			if ((M.getChannel().equals(this.NAME)) || (p.hasPermission(ConfigProperties.STAFF_CHAT_GET))) {
-				tmp.add(p.getUniqueId().toString());
-			}
-		}
-		return tmp;
-	}
-
-	public String getNode() {
-		return this.NODE;
-	}
-
-	public void compile() {
-	}
-
-	public String getShortcut() {
-		return this.SHORTCUT;
-	}
+    public boolean equals(ChatChannel obj) {
+        return getName().equals(obj.getName());
+    }
+    
+    public String getShortcut() {
+        return this.CHANNEL_SHORTCUT;
+    }
 }
