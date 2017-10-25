@@ -89,3 +89,6 @@ commands:
  open:
      description: Sets which channel you are active to
      aliases: []
+ view:
+     description: Toggles viewing
+     aliases: []

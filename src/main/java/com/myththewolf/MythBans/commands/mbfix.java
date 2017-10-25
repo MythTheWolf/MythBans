@@ -29,7 +29,6 @@ public class mbfix implements CommandExecutor {
 		}else{
 			System.out.println("**** AutoFix Succeeded ****");
 			Bukkit.getScheduler().cancelTask(MB.getDisableTask().getTaskId());
-			MB.loadConfig();
 			Bukkit.getServer().getPluginManager().disablePlugin(MB.getJavaPlugin());
 			Bukkit.getServer().getPluginManager().enablePlugin(MB.getJavaPlugin());
 		}

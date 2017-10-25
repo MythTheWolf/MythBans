@@ -23,7 +23,7 @@ public class Startup extends JavaPlugin {
 
 	public void onEnable() {
 
-		DataCache.makeMap();
+		
 		/*
 		 * ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger)
 		 * org.slf4j.LoggerFactory
@@ -31,47 +31,40 @@ public class Startup extends JavaPlugin {
 		 * root.setLevel(Level.INFO);
 		 */
 		MythBans mb = new MythBans(this);
-		mb.loadConfig();
-		if (mb.loadMySQL() == null) {
-			Bukkit.getServer().getPluginManager().disablePlugin(this);
-			return;
-		}
-		this.MB = mb;
-
-		MythLogger.info("Loaded 6 tables.");
-
-		mb.loadCommands();
-		mb.loadEvents();
-		try {
-			mb.startDaemon();
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		boolean RUN = false;
-		try {
-			System.out.println("****** RUNNING TESTS ******");
-			RUN = mb.runTests();
-			if (!RUN) {
-				this.MythLogger.severe("Lang files are messed up! Run 'mbfix' to try to fix this issue.");
-				this.MythLogger
-						.severe("MythBans will disable istself in 1 minute, if you want to run fixes, do them now.");
-				BukkitTask ID = Bukkit.getScheduler().runTaskLater(this, new DisableDueToError(this), 1200L);
-				MB.setDisableTask(ID);
-			}
-		} catch (IOException e) {
-			this.MythLogger.severe("Lang files are messed up! Run 'mbfix' to try to fix this issue.");
-			this.MythLogger.severe("MythBans will disable istself in 1 minute, if you want to run fixes, do them now.");
-			BukkitTask ID = Bukkit.getScheduler().runTaskLater(this, new DisableDueToError(this), 1200L);
-			MB.setDisableTask(ID);
-		}
-		if (RUN) {
-			System.out.println("****** TEST RAN OK ******");
-		}
-		AbstractMaps.buildMaps();
-
+		mb.loadConfig(this);
 	}
-
+	public void onConfigReady(MythBans mb) {
+	    mb.loadCommands();
+        mb.loadEvents();
+        try {
+            mb.startDaemon();
+        } catch (SQLException e1) {
+            // TODO Auto-generated catch block
+            e1.printStackTrace();
+        }
+        boolean RUN = false;
+        try {
+            System.out.println("****** RUNNING TESTS ******");
+            RUN = mb.runTests();
+            if (!RUN) {
+                this.MythLogger.severe("Lang files are messed up! Run 'mbfix' to try to fix this issue.");
+                this.MythLogger
+                        .severe("MythBans will disable istself in 1 minute, if you want to run fixes, do them now.");
+                BukkitTask ID = Bukkit.getScheduler().runTaskLater(this, new DisableDueToError(this), 1200L);
+                MB.setDisableTask(ID);
+            }
+        } catch (IOException e) {
+            this.MythLogger.severe("Lang files are messed up! Run 'mbfix' to try to fix this issue.");
+            this.MythLogger.severe("MythBans will disable istself in 1 minute, if you want to run fixes, do them now.");
+            BukkitTask ID = Bukkit.getScheduler().runTaskLater(this, new DisableDueToError(this), 1200L);
+            MB.setDisableTask(ID);
+        }
+        if (RUN) {
+            System.out.println("****** TEST RAN OK ******");
+        }
+        AbstractMaps.buildMaps();
+        DataCache.makeMap();
+	}
 	public void onDisable() {
 
 		Date date = new Date();

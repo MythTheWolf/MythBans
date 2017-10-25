@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.myththewolf.MythBans.lib.MythBans;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 
 import net.md_5.bungee.api.ChatColor;
@@ -25,8 +24,7 @@ public class ReloadMythBans implements CommandExecutor {
 					ConfigProperties.PREFIX + ChatColor.RED + "You do not have permission to use this command.");
 			return true;
 		} else {
-			MythBans MB = new MythBans(myth);
-			MB.loadConfig();
+			
 			Bukkit.getServer().getPluginManager().disablePlugin(myth);
 			Bukkit.getServer().getPluginManager().enablePlugin(myth);
 			sender.sendMessage(ConfigProperties.PREFIX + ChatColor.GREEN + "MythBans reloaded!");

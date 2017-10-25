@@ -11,6 +11,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import com.myththewolf.MythBans.Startup;
 import com.myththewolf.MythBans.commands.Ban;
 import com.myththewolf.MythBans.commands.ClearChat;
 import com.myththewolf.MythBans.commands.Dump;
@@ -36,6 +37,7 @@ import com.myththewolf.MythBans.commands.mythapi;
 import com.myththewolf.MythBans.commands.open;
 import com.myththewolf.MythBans.commands.softmute;
 import com.myththewolf.MythBans.commands.user;
+import com.myththewolf.MythBans.commands.view;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.player.events.ChunkLoad;
@@ -69,7 +71,7 @@ public class MythBans {
 		return DISABLE_TASK;
 	}
 
-	public void loadConfig() {
+	public void loadConfig(Startup startup) {
 
 		try {
 			if (!MythPlugin.getDataFolder().exists()) {
@@ -95,18 +97,17 @@ public class MythBans {
 				MythPlugin.saveDefaultConfig();
 				ConfigProperties.dumpProperties(MythPlugin.getConfig());
 			} else {
-				MythPlugin.getLogger().info("Config.yml found, loading!");
+				MythPlugin.getLogger().info("--------->Config.yml found, loading!");
 				ConfigProperties.dumpProperties(MythPlugin.getConfig());
 			}
-			file = new File(MythPlugin.getDataFolder(), ".lastversion");
-			if (!file.exists()) {
-				file.createNewFile();
-			}
+			
 		} catch (Exception e) {
-			e.printStackTrace();
+			
 
 		}
-
+		
+		System.out.println("...Done..");
+		startup.onConfigReady(this);
 	}
 
 	public void loadEvents() {
@@ -158,6 +159,7 @@ public class MythBans {
 		MythPlugin.getCommand("upgradeTables").setExecutor(new UpgradeTables(MythPlugin, this));
 		MythPlugin.getCommand("dump").setExecutor(new Dump());
 		MythPlugin.getCommand("open").setExecutor(new open());
+		MythPlugin.getCommand("view").setExecutor(new view());
 	}
 
 	public void buildCommandMap() {

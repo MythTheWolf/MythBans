@@ -11,10 +11,10 @@ import java.util.TreeMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
-import org.bukkit.entity.Player;
 
 public class PlayerTicket {
 	private PreparedStatement ps;

@@ -1,7 +1,6 @@
 package com.myththewolf.MythBans.lib.tool;
 
 import java.text.ParseException;
-
 import java.text.SimpleDateFormat;
 
 import org.joda.time.DateTime;

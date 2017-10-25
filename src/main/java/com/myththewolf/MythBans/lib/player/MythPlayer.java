@@ -88,9 +88,11 @@ public class MythPlayer {
 
             Arrays.stream(this.rs.getString("channel").split(",")).forEach(chanName -> {
                 if (!this.channels.stream().anyMatch(chan -> chan.equals(new ChatChannel(chanName))))
-                    ;
+                {
 
                 this.channels.add(new ChatChannel(chanName));
+             
+                }
             });
         } catch (SQLException e) {
 
@@ -321,5 +323,39 @@ public class MythPlayer {
 
     public String getId() {
         return this.UUID;
+    }
+
+    public void updateChannel(String write) {
+        this.writingTo = DataCache.getChannel(write);
+        try {
+            PreparedStatement PS = MythSQLConnect.getConnection().prepareStatement("UPDATE `MythBans_PlayerStats` SET `activeChannel` = ? WHERE `UUID` = ?");
+            PS.setString(1, write);
+            PS.setString(2, UUID);
+            PS.executeUpdate();
+            addChannel(write);
+            DataCache.rebuildUser(UUID);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        
+    }
+
+    public void removeChannel(String name) throws SQLException {
+        chanSet = "";
+
+        if (this.channels.stream().anyMatch(single -> single.getName().equals(name)))
+            this.channels.remove(DataCache.getChannel(name));
+
+        this.channels.forEach(iteration -> {
+            chanSet += iteration.toString() + ",";
+        });
+      
+        ps = MythSQLConnect.getConnection()
+                .prepareStatement("UPDATE MythBans_PlayerStats SET `channel` = ? WHERE UUID = ?");
+        ps.setString(1, chanSet.substring(0, chanSet.length() - 1));
+        ps.setString(2, this.UUID);
+        ps.executeUpdate();
+        DataCache.rebuildUser(this.UUID);
     }
 }

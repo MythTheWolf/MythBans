@@ -16,7 +16,7 @@ public class DataCache {
 
     private static HashMap<String, MythPlayer> PlayerMap;
     private static List<ChatChannel> currentChannels;
-
+    private static HashMap<String, ChatChannel> ChannelMap;
     public static MythPlayer getPlayerInstance(String UUID) {
         if (!PlayerMap.containsKey(UUID)) {
             PlayerMap.put(UUID, new MythPlayer(UUID));
@@ -25,9 +25,12 @@ public class DataCache {
     }
 
     public static List<ChatChannel> getAvailibleChannels() {
+        currentChannels = new ArrayList<>();
+        ChannelMap.forEach((key,value) ->{
+            currentChannels.add(value);
+        });
         return currentChannels;
     }
-
     public static void rebuildCaches() {
 
         Iterator<Entry<String, MythPlayer>> it = PlayerMap.entrySet().iterator();
@@ -51,12 +54,14 @@ public class DataCache {
             PreparedStatement ps = con.prepareStatement("SELECT * FROM MythBans_Channels");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-               currentChannels.add(new ChatChannel(rs.getString("name")));
+               ChannelMap.put(rs.getString("name"),new ChatChannel(rs.getString("name")));
             }
             
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
+    public static ChatChannel getChannel(String name) {
+        return ChannelMap.get(name);
+    }
 }

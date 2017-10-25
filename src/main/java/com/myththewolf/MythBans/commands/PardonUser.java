@@ -2,7 +2,6 @@ package com.myththewolf.MythBans.commands;
 
 import java.sql.SQLException;
 
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
