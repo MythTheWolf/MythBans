@@ -22,7 +22,7 @@ import com.myththewolf.MythBans.lib.feilds.DataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
-import com.myththewolf.MythBans.lib.tool.Date;
+import com.myththewolf.MythBans.lib.tool.MythDate;
 import com.myththewolf.MythBans.lib.tool.Utils;
 
 import net.md_5.bungee.api.ChatColor;
@@ -30,7 +30,7 @@ import net.md_5.bungee.api.ChatColor;
 public class TempBan implements CommandExecutor {
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
-	private com.myththewolf.MythBans.lib.tool.Date date = new Date();
+	private com.myththewolf.MythBans.lib.tool.MythDate date = new MythDate();
 	private MythPlayer PlayerClass;
 	private OfflinePlayer p;
 	private PlayerLanguage PL;
@@ -110,7 +110,7 @@ public class TempBan implements CommandExecutor {
 
 		toFormat = toFormat.replaceAll("\\{1\\}", pCache.getName(UUID2));
 		toFormat = toFormat.replaceAll("\\{2\\}", PlayerClass.getReason());
-		Date MythDate = new Date();
+		MythDate MythDate = new MythDate();
 		String PD = MythDate.convertToPd(MythDate.getTimeDifference(MythDate.getNewDate(),PlayerClass.getExpireDate()));
 		toFormat = toFormat.replaceAll("\\{3\\}", PD);
 		return toFormat;

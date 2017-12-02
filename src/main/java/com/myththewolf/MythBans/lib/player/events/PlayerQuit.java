@@ -10,10 +10,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.myththewolf.MythBans.lib.feilds.DataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
-import com.myththewolf.MythBans.lib.tool.Date;
+import com.myththewolf.MythBans.lib.tool.MythDate;
 
 public class PlayerQuit implements Listener {
-	private Date date = new Date();
+	private MythDate date = new MythDate();
 	private MythPlayer pClass;
 
 	@EventHandler

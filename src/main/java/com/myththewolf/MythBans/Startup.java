@@ -14,7 +14,7 @@ import com.myththewolf.MythBans.lib.MythBans;
 import com.myththewolf.MythBans.lib.feilds.AbstractMaps;
 import com.myththewolf.MythBans.lib.feilds.DataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
-import com.myththewolf.MythBans.lib.tool.Date;
+import com.myththewolf.MythBans.lib.tool.MythDate;
 import com.myththewolf.MythBans.tasks.DisableDueToError;
 
 public class Startup extends JavaPlugin {
@@ -68,7 +68,7 @@ public class Startup extends JavaPlugin {
 	}
 	public void onDisable() {
 
-		Date date = new Date();
+		MythDate date = new MythDate();
 		try {
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				MythPlayer pClass = new MythPlayer(p.getUniqueId().toString());

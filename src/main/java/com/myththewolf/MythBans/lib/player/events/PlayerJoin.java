@@ -22,14 +22,14 @@ import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.MythPlayerIP;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
-import com.myththewolf.MythBans.lib.tool.Date;
+import com.myththewolf.MythBans.lib.tool.MythDate;
 
 import net.md_5.bungee.api.ChatColor;
 
 public class PlayerJoin implements Listener {
 	private PlayerCache pc = new PlayerCache(MythSQLConnect.getConnection());
 	private MythPlayer PlayerClass;
-	private final com.myththewolf.MythBans.lib.tool.Date d = new Date();
+	private final com.myththewolf.MythBans.lib.tool.MythDate d = new MythDate();
 	private DatabaseCommands dbc = new DatabaseCommands();
 	private MythPlayerIP ipClass = new MythPlayerIP();
 	private JavaPlugin thePlugin;
@@ -170,7 +170,7 @@ public class PlayerJoin implements Listener {
 
 			toFormat = toFormat.replaceAll("\\{2\\}", PlayerClass.getReason());
 
-			Date MythDate = new Date();
+			MythDate MythDate = new MythDate();
 			String PD = "undefined";
 			if (DataCache.getPlayerInstance(UUID2).getStatus().equals("tempbanned")) {
 				if (MythDate.getNewDate().before(PlayerClass.getExpireDate())) {

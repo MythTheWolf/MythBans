@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 
 import org.joda.time.DateTime;
 
-public class Date {
+public class MythDate {
 	private SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd kk:mm:ss");
 
 	public java.util.Date getNewDate() {

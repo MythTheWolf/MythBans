@@ -14,12 +14,12 @@ import com.myththewolf.MythBans.lib.feilds.DataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
 import com.myththewolf.MythBans.lib.player.PlayerLanguage;
-import com.myththewolf.MythBans.lib.tool.Date;
+import com.myththewolf.MythBans.lib.tool.MythDate;
 
 public class PlayerTime implements CommandExecutor {
 	private PlayerCache pCache = new PlayerCache(MythSQLConnect.getConnection());
 	private PlayerLanguage PL;
-	private Date mythDate = new Date();
+	private MythDate mythDate = new MythDate();
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] args) {

@@ -20,7 +20,7 @@ import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.feilds.DataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
-import com.myththewolf.MythBans.lib.tool.Date;
+import com.myththewolf.MythBans.lib.tool.MythDate;
 
 public class Dump implements CommandExecutor {
 
@@ -60,7 +60,7 @@ public class Dump implements CommandExecutor {
 					ob.put("name", cachedName);
 					ob.put("source", SOURCE);
 					ob.put("expires", "forever");
-					ob.put("created", (new Date()).toString());
+					ob.put("created", (new MythDate()).toString());
 					ob.put("reason", rs.getString("reason"));
 					root.add(ob);
 				}
