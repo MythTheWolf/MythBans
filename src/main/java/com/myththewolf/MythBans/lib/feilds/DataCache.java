@@ -49,6 +49,7 @@ public class DataCache {
     public static void makeMap() {
         PlayerMap = new HashMap<String, MythPlayer>();
         currentChannels = new ArrayList<>();
+        ChannelMap = new HashMap<>();
         try {
             Connection con = com.myththewolf.MythBans.lib.SQL.MythSQLConnect.getConnection();
             PreparedStatement ps = con.prepareStatement("SELECT * FROM MythBans_Channels");
