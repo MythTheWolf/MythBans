@@ -38,6 +38,7 @@ public class Startup extends JavaPlugin {
         mb.loadEvents();
         try {
             mb.startDaemon();
+		mb.loadMySQL();
         } catch (SQLException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
