@@ -14,7 +14,7 @@ public class AbstractMaps {
 	public static HashMap<String, String> aliases;
 	public static HashMap<Integer, String> commands;
 	public static HashMap<String, Boolean> randVals;
-
+	
 	public static void buildMaps() {
 		new_join_count = new HashMap<>();
 		read_rules = new HashMap<>();
