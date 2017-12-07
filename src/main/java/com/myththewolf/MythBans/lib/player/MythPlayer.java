@@ -38,6 +38,7 @@ public class MythPlayer {
 	private List<String> IG = new ArrayList<String>();
 	private ChatChannel writingTo;
 	private String chanSet = "";
+	private String displayName;
 
 	public MythPlayer(String theUUID) {
 		try {
@@ -96,6 +97,12 @@ public class MythPlayer {
 		} catch (SQLException e) {
 
 			e.printStackTrace();
+		}
+		getBukkitPlayer().ifPresent(player -> {
+			this.displayName = player.getDisplayName();
+		});
+		if (!getBukkitPlayer().isPresent()) {
+			this.displayName = getUsername();
 		}
 	}
 
@@ -360,5 +367,9 @@ public class MythPlayer {
 		ps.setString(2, this.UUID);
 		ps.executeUpdate();
 		DataCache.rebuildUser(this.UUID);
+	}
+
+	public String getDisplayName() {
+		return this.displayName;
 	}
 }

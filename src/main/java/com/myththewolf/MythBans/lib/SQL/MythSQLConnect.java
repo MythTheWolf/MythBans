@@ -12,13 +12,14 @@ import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 public class MythSQLConnect {
     private static Connection con;
     private PreparedStatement ps;
-
+    private static boolean Error = false;
     public static Connection getConnection() {
         String HOST = ConfigProperties.SQL_HOST;
         String PORT = ConfigProperties.SQL_PORT;
         String USER = ConfigProperties.SQL_USERNAME;
         String PASS = ConfigProperties.SQL_PASSWORD;
         String DATABASE = ConfigProperties.SQL_DATABASE;
+       
         if (!isConnected()) {
             try {
                 String url = "jdbc:mysql://" + HOST + ":" + PORT + "/" + DATABASE;
@@ -27,6 +28,7 @@ public class MythSQLConnect {
             } catch (SQLException e) {
                 Bukkit.getConsoleSender().sendMessage("SERVERE: MySQL Connection FAILED!");
                 e.printStackTrace();
+                Error = true;
                 return null;
             }
         }
@@ -34,7 +36,14 @@ public class MythSQLConnect {
     }
 
     public static boolean isConnected() {
-        return con != null;
+        try {
+			return con != null && !con.isClosed();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			Error = true;
+		}
+        return false;
     }
 
     public void makeTables() {
@@ -128,6 +137,11 @@ public class MythSQLConnect {
         } catch (SQLException e) {
             Bukkit.getConsoleSender().sendMessage("SERVERE: Fatal MySQL Error!");
             e.printStackTrace();
+            Error = true;
         }
+    }
+    
+    public static boolean hasErrored() {
+    	return Error;
     }
 }
