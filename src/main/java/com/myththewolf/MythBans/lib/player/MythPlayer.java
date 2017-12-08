@@ -98,9 +98,12 @@ public class MythPlayer {
 
 			e.printStackTrace();
 		}
+
 		getBukkitPlayer().ifPresent(player -> {
+
 			this.displayName = player.getDisplayName();
 		});
+
 		if (!getBukkitPlayer().isPresent()) {
 			this.displayName = getUsername();
 		}
