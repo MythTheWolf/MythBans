@@ -14,35 +14,50 @@
 #                 If you have any questions, visit the github page.
 #
 #
+
+
 #                 *********SQL INFO*********
 #The Hostname/Server IP For your mySQL Database
 SQL-HOST: 'localhost'
+
+
 #The port number that the server runs on, default MySQL port is 3306
 SQL-PORT: '3306'
+
+
 #The name of the database to use, note that this Database must ALREADY be created.
 SQL-DATABASE: 'main'
+
+
 #Username to use to connect to the database
 SQL-USER: 'root'
+
+
 #Password for that user
 SQL-PASSWORD: 'root'
+
+
 #                 *********System config*********
 #How often (in server ticks) should the plugin read and execute CronJobs from the Web UI?
 CRON-UPDATE-TIME: '40'
+
 #xenAPI Domain Endpoint To use for xenForo E.G http://mydomain.org/forum/API.php
 API-STARTPOINT: 'localhost/API.php'
+
 #xenAPI Secret key to use
 API-KEY: 'somesecretcode'
+
 #XenForo database
 XEN-SQL-HOST: 'localhost'
 XEN-SQL-PORT: '3306'
 XEN-SQL-DATABASE: 'main'
 XEN-SQL-USER: 'root'
 XEN-SQL-PASSWORD: 'root'
-#Discord bot
-USE-BOT: false
-DISCORD-BOT-KEY: 'mykey'
+
 #Should the console spit out a lot of information?
 DEBUG-MODE: false
+
+
 # ******************Permission Config*************************
 #Permissions for punishment commands
 BAN-PERMISSION: 'mythbans.ban'
@@ -58,24 +73,41 @@ PARDON-PERMISSION: 'mythbans.pardon'
 POTATO-PERMISSION: 'mythbans.potato'
 RELOAD-PERMISSION: 'mythbans.reload'
 SOCIALSPY-PERMISSION: 'mythbans.socialspy'
+
+
 #Permission user must have in order to see In-Game messages
 BANMESSAGE-PERMISSION: 'mythbans.viewmessages'
+
+
 #Permission to create a web UI user, allowing them to manage bans/etc from the webUI
 CREATE-UI-PERMISSION: 'mythbans.createui'
+
 #Permision to see probation users
 VIEW-PROBATIONS-PERMISSION: 'mythbans.viewprobate'
+
+
 #Tickets permissions
 VIEW-SERVER-TICKETS-PERMISSION: "mythbans.tickets.other"
 CLOSE-TICKET-PERMISSION: "mythbans.closeticket"
+
+
 #Staff chat things
 STAFF-CHAT-SEND: "mythbans.staffchat.send"
 STAFF-CHAT-GET: "mythbans.staffchat.get"
+
+
 #Important messages
 IMPORTANT-SEND: 'mythbans.important.send'
+
+
 #Other pemissions
 CLEARCHAT-PERMISSION: 'mythbans.clearchat'
-#Other stuff
+
+
+#Chunk limiter
 MAX-MOB-PER-CHUNK: 20
+
+
 #              **********Messages Config********
 AUTO-MUTE: true
 SOFTMUTE-RELEASE: 'accept'
@@ -103,9 +135,9 @@ SERVER-IP-KICK-FORMAT: '&b{staffMember}&6 kicked IP &b{culprint}&6 for &b{reason
 SERVER-IP-TEMPBAN-FORMAT: '&b{staffMember}&6 banned IP &b{culprint}&6 until &b{expire}&6 for &b{reason}'
 SERVER-IPPARDON-FORMAT: '&b{staffMember}&6 unbanned IP &b{culprint}&6'
 DEFAULT-BAN-REASON: 'Being a naughty child'
+
+
+
 #Chat Prefix to use for In game messages
 #You can leave it to it's default if you want to support me :-)
 PREFIX: '&8[&aMythBans&8]&6'
-#Any UUID in this list can use the discord minecraft channel as superuser (any server command)
-#Seperate by commas
-ROOT-ACCOUNTS: ""
