@@ -32,7 +32,10 @@
 			<id>activeeon</id>
 			<url>http://repository.activeeon.com/content/repositories/releases/</url>
 		</repository>
-
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
 	</repositories>
 
 	<dependencies>
@@ -82,6 +85,12 @@
 			<version>4.12</version>
 		</dependency>
 
+		<dependency>
+			<groupId>de.btobastian</groupId>
+			<artifactId>Javacord</artifactId>
+			<!-- See below what to insert here -->
+			<version>8c0c7b7</version>
+		</dependency>
 	</dependencies>
 	<build>
 
