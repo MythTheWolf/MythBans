@@ -38,11 +38,21 @@ XEN-SQL-PORT: '3306'
 XEN-SQL-DATABASE: 'main'
 XEN-SQL-USER: 'root'
 XEN-SQL-PASSWORD: 'root'
-#Discord bot
-USE-BOT: false
-DISCORD-BOT-KEY: 'mykey'
 #Should the console spit out a lot of information?
 DEBUG-MODE: false
+
+#**************DISCORD CONFIG****************
+#Note: You MUST use the "MythBans-Discord" jar for this!
+#By setting this to true, the bot will make discord channels mapped to MC channels in game, and allow for communication between the two.
+USE-BOT: false
+
+#The token of the bot you wish to use. 
+BOT-TOKEN = 'myspecialtoken'
+
+
+
+
+
 # ******************Permission Config*************************
 #Permissions for punishment commands
 BAN-PERMISSION: 'mythbans.ban'
@@ -106,6 +116,6 @@ DEFAULT-BAN-REASON: 'Being a naughty child'
 #Chat Prefix to use for In game messages
 #You can leave it to it's default if you want to support me :-)
 PREFIX: '&8[&aMythBans&8]&6'
-#Any UUID in this list can use the discord minecraft channel as superuser (any server command)
-#Seperate by commas
-ROOT-ACCOUNTS: ""
+
+
+
