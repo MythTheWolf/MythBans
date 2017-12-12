@@ -19,7 +19,6 @@ import com.myththewolf.MythBans.lib.player.Emote;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.player.MythPlayerMetaData;
 import com.myththewolf.MythBans.lib.player.PlayerCache;
-import com.myththewolf.MythBans.lib.tool.Utils;
 
 import net.md_5.bungee.api.ChatColor;
 
