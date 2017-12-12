@@ -2,10 +2,13 @@ package com.myththewolf.MythBans.lib.feilds;
 
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import com.myththewolf.MythBans.lib.player.Emote;
 
 public class AbstractMaps {
 	public static HashMap<String, Integer> new_join_count;
@@ -14,11 +17,13 @@ public class AbstractMaps {
 	public static HashMap<String, String> aliases;
 	public static HashMap<Integer, String> commands;
 	public static HashMap<String, Boolean> randVals;
-	
+	public static ArrayList<Emote> ServerEmotes;
+
 	public static void buildMaps() {
 		new_join_count = new HashMap<>();
 		read_rules = new HashMap<>();
 		randVals = new HashMap<>();
+		ServerEmotes = new ArrayList<>();
 		randVals.put("SRV_DATABASE_UPGRADE", false);
 	}
 
