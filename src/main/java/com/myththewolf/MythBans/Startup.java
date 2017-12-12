@@ -13,6 +13,7 @@ import org.bukkit.scheduler.BukkitTask;
 import com.myththewolf.MythBans.lib.MythBans;
 import com.myththewolf.MythBans.lib.SQL.MythSQLConnect;
 import com.myththewolf.MythBans.lib.feilds.AbstractMaps;
+import com.myththewolf.MythBans.lib.feilds.ConfigProperties;
 import com.myththewolf.MythBans.lib.feilds.DataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.tool.MythDate;
@@ -69,6 +70,9 @@ public class Startup extends JavaPlugin {
 		if (MythSQLConnect.hasErrored()) {
 			System.out.println("Dected error in startup, shutting self down.");
 			Bukkit.getPluginManager().disablePlugin(this);
+		}
+		if (ConfigProperties.USE_DISCORD) {
+
 		}
 	}
 
