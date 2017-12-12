@@ -136,7 +136,10 @@ public class MythSQLConnect {
 			this.ps = con.prepareStatement(
 					"CREATE TABLE IF NOT EXISTS `MythBans_Channels` ( `ID` INT NOT NULL AUTO_INCREMENT, `name` VARCHAR(255) NULL DEFAULT NULL , `node` VARCHAR(255) NULL DEFAULT NULL , `prefix` VARCHAR(255) NULL DEFAULT NULL, `shortcut` VARCHAR(255) NULL DEFAULT NULL,PRIMARY KEY (`ID`) ) ENGINE = InnoDB;");
 			this.ps.executeUpdate();
-			this.ps = this.con.prepareStatement("CREATE TABLE IF NOT EXISTS `MythBans");
+			
+			this.ps = con.prepareStatement(
+					"CREATE TABLE IF NOT EXISTS `MythBans_Emotes` `MythBans_Emotes` ( `ID` INT NOT NULL AUTO_INCREMENT , `send_message` TEXT NOT NULL , `user_template` TEXT NOT NULL , `channel_template` TEXT NOT NULL , `command` TEXT NOT NULL , `permission_node` TEXT NOT NULL , `sound` TEXT NOT NULL , PRIMARY KEY (`ID`)) ENGINE = InnoDB;");
+			this.ps.executeUpdate();
 		} catch (SQLException e) {
 			Bukkit.getConsoleSender().sendMessage("SERVERE: Fatal MySQL Error!");
 			e.printStackTrace();
