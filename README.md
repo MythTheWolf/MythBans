@@ -1,3 +1,6 @@
+##This branch contains all of the require dependencies and code for Discord intergration
+With this being said, this build contains a fat build/jar. If you dont need discord intergration, use the master branch.
+
 ## MythBans  
 
 Powerfull Craftbukkit plugin that allows you to manage bans VIA SQL in-game and through a web UI.
