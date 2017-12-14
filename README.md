@@ -1,4 +1,4 @@
-##This branch contains all of the require dependencies and code for Discord intergration
+## This branch contains all of the require dependencies and code for Discord intergration
 With this being said, this build contains a fat build/jar. If you dont need discord intergration, use the master branch.
 
 ## MythBans  
