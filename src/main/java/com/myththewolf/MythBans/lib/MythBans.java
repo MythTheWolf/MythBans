@@ -1,10 +1,11 @@
 package com.myththewolf.MythBans.lib;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+
+import javax.security.auth.login.LoginException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -50,7 +51,9 @@ import com.myththewolf.MythBans.lib.player.events.PlayerJoin;
 import com.myththewolf.MythBans.lib.player.events.PlayerQuit;
 import com.myththewolf.MythBans.lib.tool.LanguageGoverner;
 
+import de.btobastian.javacord.AccountType;
 import de.btobastian.javacord.DiscordApi;
+import de.btobastian.javacord.DiscordApiBuilder;
 
 public class MythBans {
 	private JavaPlugin MythPlugin;
@@ -108,15 +111,13 @@ public class MythBans {
 				MythPlugin.saveDefaultConfig();
 				ConfigProperties.dumpProperties(MythPlugin.getConfig());
 			} else {
-				MythPlugin.getLogger().info("--------->Config.yml found, loading!");
+				MythPlugin.getLogger().info("Config.yml found, loading!");
 				ConfigProperties.dumpProperties(MythPlugin.getConfig());
 			}
 
 		} catch (Exception e) {
 
 		}
-
-		System.out.println("...Done..");
 		startup.onConfigReady(this);
 	}
 
@@ -197,10 +198,24 @@ public class MythBans {
 	public void shutdown() {
 
 		Bukkit.getScheduler().cancelAllTasks();
+		getBotInstance().disconnect();
 
 	}
 
 	public void disableSelf() {
 		Bukkit.getPluginManager().disablePlugin(MythPlugin);
+	}
+
+	public void startBot() throws LoginException {
+
+		boolean result = new DiscordApiBuilder().setAccountType(AccountType.BOT)
+				.setToken(ConfigProperties.DISCORD_BOT_KEY).login().thenAccept(api -> {
+					setBotInstance(api);
+				}).isCompletedExceptionally();
+		
+		if (result) {
+			throw new LoginException();
+		}
+
 	}
 }

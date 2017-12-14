@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
+import javax.security.auth.login.LoginException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
@@ -18,11 +20,6 @@ import com.myththewolf.MythBans.lib.feilds.DataCache;
 import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.tool.MythDate;
 import com.myththewolf.MythBans.tasks.DisableDueToError;
-
-import de.btobastian.javacord.AccountType;
-import de.btobastian.javacord.DiscordApi;
-import de.btobastian.javacord.DiscordApiBuilder;
-import jdk.nashorn.internal.runtime.regexp.joni.Config;
 
 public class Startup extends JavaPlugin {
 	private Logger MythLogger = this.getLogger();
@@ -76,11 +73,13 @@ public class Startup extends JavaPlugin {
 			System.out.println("Dected error in startup, shutting self down.");
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
-		if (ConfigProperties.USE_DISCORD) {
-			new DiscordApiBuilder().setAccountType(AccountType.BOT).setToken(ConfigProperties.DISCORD_BOT_KEY).login()
-					.thenAccept(api -> {
-						mb.setBotInstance(api);
-					});
+		this.getLogger().info("Waiting starting discord bot...");
+		try {
+
+			mb.startBot();
+		} catch (LoginException e) {
+			this.getLogger().info("Login failed for discord, discord functionality will no loner work");
+			ConfigProperties.use_bot = false;
 		}
 	}
 
