@@ -1,6 +1,7 @@
 package com.myththewolf.MythBans.lib;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -49,14 +50,24 @@ import com.myththewolf.MythBans.lib.player.events.PlayerJoin;
 import com.myththewolf.MythBans.lib.player.events.PlayerQuit;
 import com.myththewolf.MythBans.lib.tool.LanguageGoverner;
 
+import de.btobastian.javacord.DiscordApi;
+
 public class MythBans {
 	private JavaPlugin MythPlugin;
-
+	private DiscordApi BOT;
 	private LanguageGoverner LG;
 	private BukkitTask DISABLE_TASK;
 
 	public MythBans(JavaPlugin inst) {
 		this.MythPlugin = inst;
+	}
+
+	public DiscordApi getBotInstance() {
+		return this.BOT;
+	}
+
+	public void setBotInstance(DiscordApi ap) {
+		this.BOT = ap;
 	}
 
 	public JavaPlugin getJavaPlugin() {
@@ -100,12 +111,11 @@ public class MythBans {
 				MythPlugin.getLogger().info("--------->Config.yml found, loading!");
 				ConfigProperties.dumpProperties(MythPlugin.getConfig());
 			}
-			
+
 		} catch (Exception e) {
-			
 
 		}
-		
+
 		System.out.println("...Done..");
 		startup.onConfigReady(this);
 	}
@@ -118,7 +128,7 @@ public class MythBans {
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerEatEvent(MythPlugin), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new PlayerDamageEvent(), MythPlugin);
 		MythPlugin.getServer().getPluginManager().registerEvents(new CommandEvent(MythPlugin), MythPlugin);
-		
+
 	}
 
 	public Connection loadMySQL() {

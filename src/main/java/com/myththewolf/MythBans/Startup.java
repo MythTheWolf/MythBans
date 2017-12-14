@@ -19,6 +19,11 @@ import com.myththewolf.MythBans.lib.player.MythPlayer;
 import com.myththewolf.MythBans.lib.tool.MythDate;
 import com.myththewolf.MythBans.tasks.DisableDueToError;
 
+import de.btobastian.javacord.AccountType;
+import de.btobastian.javacord.DiscordApi;
+import de.btobastian.javacord.DiscordApiBuilder;
+import jdk.nashorn.internal.runtime.regexp.joni.Config;
+
 public class Startup extends JavaPlugin {
 	private Logger MythLogger = this.getLogger();
 	private MythBans MB;
@@ -72,7 +77,10 @@ public class Startup extends JavaPlugin {
 			Bukkit.getPluginManager().disablePlugin(this);
 		}
 		if (ConfigProperties.USE_DISCORD) {
-
+			new DiscordApiBuilder().setAccountType(AccountType.BOT).setToken(ConfigProperties.DISCORD_BOT_KEY).login()
+					.thenAccept(api -> {
+						mb.setBotInstance(api);
+					});
 		}
 	}
 
